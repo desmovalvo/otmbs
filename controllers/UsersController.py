@@ -23,6 +23,7 @@ class UsersController:
         """This method is used to retrieve all the Users"""
 
         u = User(self.settings)
+        users_list = []
         if user_id:
             users_list = u.find(user_id)
         else:

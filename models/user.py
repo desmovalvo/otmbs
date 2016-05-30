@@ -66,12 +66,13 @@ class User:
             PREFIX ns:<%s>
             SELECT ?person_name ?person_uid ?vehicle_id
             WHERE {
-                ns:%s rdf:type ns:Person .
-                ns:%s ns:hasUserIdentifier ?person_uid .
-                ns:%s ns:hasName ?person_name .
-                OPTIONAL { ns:%s ns:hasVehicle ?vehicle_id }
+                ?person_uri rdf:type ns:Person .
+                ?person_uri ns:hasUserIdentifier "%s" .
+                ?person_uri ns:hasName ?person_name .
+                OPTIONAL { ?person_uri ns:hasVehicle ?vehicle_id }
             }"""
-            kp.load_query_sparql(query % (RDF, NS, user_id, user_id, user_id, user_id))
+            print query % (RDF, NS, user_id)
+            kp.load_query_sparql(query % (RDF, NS, user_id))
             results = kp.result_sparql_query           
             
         else:
