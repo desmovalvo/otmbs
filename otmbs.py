@@ -29,12 +29,24 @@ app = Flask(__name__)
 # creating an instance of each controller
 vehicles_controller = VehiclesController(settings)
 
+################################################
+#
 # setting routes for the vehicle controller
+#
+################################################
+
 @app.route('/vehicles', methods=['GET'])
 def vehicles_controller_showall():
-    res = vehicles_controller.showall()
+    res = vehicles_controller.show()
     print res
     return jsonify(results = res)
+
+@app.route('/vehicles/<vehicle_id>', methods=['GET'])
+def vehicles_controller_show(vehicle_id):
+    res = vehicles_controller.show(vehicle_id)
+    print res
+    return jsonify(results = res)
+
 
 # main
 if __name__ == '__main__':

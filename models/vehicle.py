@@ -63,18 +63,18 @@ class Vehicle:
             
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?brand ?model ?person_uri ?person_name
+            SELECT ?brand ?model ?person_uri ?person_name ?person_uid
             WHERE {
-                ns:%s rdf:type %s .
+                ns:%s rdf:type <%s> .
                 ns:%s ns:hasManufacturer ?brand .
                 ns:%s ns:hasModel ?model .
                 ?person_uri ns:hasVehicle ns:%s .
                 ?person_uri ns:hasName ?person_name .
                 ?person_uri ns:hasUserIdentifier ?person_uid
             }"""
-
-            kp.load_query_sparql(query % (RDF, NS, vehicle_id, VEHICLE_CLASS, vehicle_id, vehicle_id))
-            results = kp.results_sparql_query
+            print query % (RDF, NS, vehicle_id, VEHICLE_CLASS, vehicle_id, vehicle_id, vehicle_id)
+            kp.load_query_sparql(query % (RDF, NS, vehicle_id, VEHICLE_CLASS, vehicle_id, vehicle_id, vehicle_id))
+            results = kp.result_sparql_query
             
         else:
 
