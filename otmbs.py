@@ -6,8 +6,10 @@ import ConfigParser
 
 # importing models, controllers and views
 from libs.n3loader import *
+from models.user import *
 from models.vehicle import *
 from controllers.VehiclesController import *
+from controllers.UsersController import *
 
 # reading configuration
 settings = {}
@@ -28,6 +30,7 @@ app = Flask(__name__)
 
 # creating an instance of each controller
 vehicles_controller = VehiclesController(settings)
+users_controller = UsersController(settings)
 
 ################################################
 #
@@ -44,6 +47,25 @@ def vehicles_controller_showall():
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
 def vehicles_controller_show(vehicle_id):
     res = vehicles_controller.show(vehicle_id)
+    print res
+    return jsonify(results = res)
+
+
+################################################
+#
+# setting routes for the user controller
+#
+################################################
+
+@app.route('/users', methods=['GET'])
+def users_controller_showall():
+    res = users_controller.show()
+    print res
+    return jsonify(results = res)
+
+@app.route('/users/<user_id>', methods=['GET'])
+def users_controller_show(user_id):
+    res = users_controller.show(user_id)
     print res
     return jsonify(results = res)
 
