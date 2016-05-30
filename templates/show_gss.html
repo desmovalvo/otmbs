@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Demo</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  </head>
+  <body>
+    <h1>Ground Stations</h1>
+    <div id="map" style="height: 440px; border: 1px solid #AAA; width: 640px"></div>
+    <script language="javascript">
+      document.write();
+      var map = L.map( 'map', {
+      center: [44.495, 11.34],
+      minZoom: 2,
+      zoom: 14
+      });
+L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
+    subdomains: ['otile1','otile2','otile3','otile4']
+}).addTo( map );
+
+      {% for marker in markers %}
+      L.marker( [{{ marker["lat"]}}, {{marker["lng"]}} ]).addTo( map );
+      {% endfor %}
+
+// https://asmaloney.com/2014/01/code/creating-an-interactive-map-with-leaflet-and-openstreetmap/
+    </script>
+  </body>
+</html>
