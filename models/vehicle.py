@@ -25,13 +25,13 @@ class Vehicle:
         # initialization of class attributes
         self.brand = None
         self.model = None
-        self.user_id = None
+        self.user_uri = None
         self.vehicle_id = None
         self.vehicle_uri = None
 
 
     # create vehicles
-    def create(self, brand, model, user_id = None):
+    def create(self, brand, model, user_uri):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
@@ -39,8 +39,7 @@ class Vehicle:
         # read attributes
         self.brand = brand
         self.model = model
-        if user_id:
-            self.user_id = user_id
+        self.user_uri = user_uri
 
         # generating an UUID for the vehicle
         vehicle_uuid = str(uuid.uuid4())
@@ -55,10 +54,7 @@ class Vehicle:
         triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(self.vehicle_id)))
         triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
         triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
-
-        # TODO: in this case we must obtain the user UUID!
-        if user_id:
-            triples.append(Triple(URI(NS + user_id), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
+        triples.append(Triple(URI(self.user_uri), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
         
         # putting triples
         try:

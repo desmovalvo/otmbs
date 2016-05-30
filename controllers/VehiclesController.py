@@ -42,17 +42,13 @@ class VehiclesController:
 
 
     # create vehicle
-    def create_vehicle(self, manufacturer, model, user_id = None):
+    def create_vehicle(self, manufacturer, model, user_uri):
 
         """This method is used to create a new vehicle"""
 
         # create the vehicle
         v = Vehicle(self.settings)
-        status = None
-        if user_id:
-            status = v.create(manufacturer, model, user_id)
-        else:
-            status = v.create(manufacturer, model)
-
+        status = v.create(manufacturer, model, user_uri)
+        
         # return
         return status

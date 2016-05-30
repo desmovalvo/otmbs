@@ -66,17 +66,18 @@ def vehicles_show(vehicle_id):
 @app.route('/vehicles/new', methods=['GET'])
 def vehicles_new():
 
-    # TODO: get all the available users to fill a combo in the view
+    # get all the available users to fill a combo in the view
+    users_list = users_controller.show()
 
     # render the html form
-    return render_template("new_vehicle.html")
+    return render_template("new_vehicle.html", users=users_list)
 
 
 @app.route('/vehicles', methods=['POST'])
 def vehicles_create():
     
     # invoke the controller
-    res = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"])
+    res = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["user_uri"])
 
     # redirect to the index
     return redirect("/vehicles")

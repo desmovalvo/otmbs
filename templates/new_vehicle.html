@@ -11,7 +11,12 @@
      <input type="text" name="manufacturer" /><br />
      <label for="model">Model:</label>
      <input type="text" name="model" /><br />
-     <input type="submit" />
+     User: <select name="user_uri">
+       {% for user in users %}
+       <option value={{ user.person_uri }}>{{ user.person_uid }}</option>
+       {% endfor %}
+     </select><br/>
+     <input type="submit" />    
    </form>
 
   </body>
