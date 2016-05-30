@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>New Vehicle</title>
+  </head>
+
+  <body>
+    <h1>Create a new vehicle</h1>
+
+   <form method="post" action="{{ url_for('vehicles_create') }}">
+     <label for="manufacturer">Manufacturer:</label>
+     <input type="text" name="manufacturer" /><br />
+     <label for="model">Model:</label>
+     <input type="text" name="model" /><br />
+     <input type="submit" />
+   </form>
+
+  </body>
+</html>

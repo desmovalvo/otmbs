@@ -17,8 +17,10 @@
 
       {% for entry in entries %}
       <tr>
-	<td><a href="{{ url_for('vehicles_controller_show', vehicle_id=entry['vehicle_id']) }}">{{ entry['brand'] + entry['model'] }}</a></td>
-	<td><a href="{{ url_for('users_controller_show', user_id=entry['person_uid']) }}">{% print entry["person_name"] %}</a></td>
+	<td><a href="{{ url_for('vehicles_show', vehicle_id=entry['vehicle_id']) }}">{{ entry['brand'] + entry['model'] }}</a></td>
+	{% if entry["person_uid"] %}
+	<td><a href="{{ url_for('users_show', user_id=entry['person_uid']) }}">{{ entry["person_name"] }}</a></td>
+	{% endif %}
       <tr>
 	{% endfor %}
 

@@ -31,27 +31,43 @@ class Vehicle:
 
 
     # create vehicles
-    def create(self, brand, model, vehicle_id, user_id = None):
+    def create(self, brand, model, user_id = None):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
 
+        # read attributes
+        self.brand = brand
+        self.model = model
+        if user_id:
+            self.user_id = user_id
+
         # generating an UUID for the vehicle
-        self.vehicle_uri = NS + str(uuid.uuid4())
+        vehicle_uuid = str(uuid.uuid4())
+        self.vehicle_uri = NS + vehicle_uuid
+
+        # generate the vehicle id
+        self.vehicle_id = self.brand.replace(" ", "") + self.model.replace(" ", "") + "_" + vehicle_uuid[0:3]
         
         # creating the triples
         triples = []
         triples.append(Triple(URI(self.vehicle_uri), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(vehicle_id)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(brand)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(model)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(self.vehicle_id)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
+
+        # TODO: in this case we must obtain the user UUID!
         if user_id:
             triples.append(Triple(URI(NS + user_id), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
         
         # putting triples
-        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-        kp.load_rdf_insert(triples)
-
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_rdf_insert(triples)
+            return True
+        except Exception as e:
+            return False
+            
     
     # find
     def find(self, vehicle_id = None):
@@ -72,9 +88,11 @@ class Vehicle:
                 ?vehicle_uri ns:hasManufacturer ?brand .
                 ?vehicle_uri ns:hasModel ?model .
                 ?vehicle_uri ns:hasVehicleIdentifier "%s" .
-                ?person_uri ns:hasVehicle ?vehicle_uri .
-                ?person_uri ns:hasName ?person_name .
-                ?person_uri ns:hasUserIdentifier ?person_uid
+                OPTIONAL {
+                    ?person_uri ns:hasVehicle ?vehicle_uri .
+                    ?person_uri ns:hasName ?person_name .
+                    ?person_uri ns:hasUserIdentifier ?person_uid
+                }
             }"""
             print query % (RDF, NS, VEHICLE_CLASS, vehicle_id)
             kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, vehicle_id))
@@ -91,9 +109,11 @@ class Vehicle:
                 ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
                 ?vehicle ns:hasManufacturer ?brand .
                 ?vehicle ns:hasModel ?model .
-                ?person_uri ns:hasVehicle ?vehicle .
-                ?person_uri ns:hasName ?person_name .
-                ?person_uri ns:hasUserIdentifier ?person_uid
+                OPTIONAL {
+                    ?person_uri ns:hasVehicle ?vehicle .
+                    ?person_uri ns:hasName ?person_name .
+                    ?person_uri ns:hasUserIdentifier ?person_uid
+                }
             }"""
             kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
             results = kp.result_sparql_query           

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # system-wide requirements
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect
 import ConfigParser
 
 # importing models, controllers and views
@@ -39,19 +39,47 @@ users_controller = UsersController(settings)
 ################################################
 
 @app.route('/vehicles', methods=['GET'])
-def vehicles_controller_showall():
-    print request.args
+def vehicles_showall():
+
+    # invoke the controller
     res = vehicles_controller.show()
+
+    # select the proper output form
     if request.args.has_key('format'):
         if request.args['format'] == 'json':
             return jsonify(results = res)
     else:
+        print res
         return render_template("show_vehicles.html", entries=res)
 
+
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
-def vehicles_controller_show(vehicle_id):
+def vehicles_show(vehicle_id):
+
+    # invoke the controller
     res = vehicles_controller.show(vehicle_id)
+
+    # return
     return jsonify(results = res)
+
+
+@app.route('/vehicles/new', methods=['GET'])
+def vehicles_new():
+
+    # TODO: get all the available users to fill a combo in the view
+
+    # render the html form
+    return render_template("new_vehicle.html")
+
+
+@app.route('/vehicles', methods=['POST'])
+def vehicles_create():
+    
+    # invoke the controller
+    res = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"])
+
+    # redirect to the index
+    return redirect("/vehicles")
 
 
 ################################################
@@ -61,13 +89,13 @@ def vehicles_controller_show(vehicle_id):
 ################################################
 
 @app.route('/users', methods=['GET'])
-def users_controller_showall():
+def users_showall():
     res = users_controller.show()
     print res
     return jsonify(results = res)
 
 @app.route('/users/<user_id>', methods=['GET'])
-def users_controller_show(user_id):
+def users_show(user_id):
     res = users_controller.show(user_id)
     print res
     return jsonify(results = res)
