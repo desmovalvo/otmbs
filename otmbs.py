@@ -41,13 +41,11 @@ users_controller = UsersController(settings)
 @app.route('/vehicles', methods=['GET'])
 def vehicles_controller_showall():
     res = vehicles_controller.show()
-    print res
     return jsonify(results = res)
 
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
 def vehicles_controller_show(vehicle_id):
     res = vehicles_controller.show(vehicle_id)
-    print res
     return jsonify(results = res)
 
 

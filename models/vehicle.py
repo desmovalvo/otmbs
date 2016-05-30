@@ -27,23 +27,26 @@ class Vehicle:
         self.model = None
         self.user_id = None
         self.vehicle_id = None
+        self.vehicle_uri = None
 
 
     # create vehicles
-    def create(self, brand, model, user_id):
+    def create(self, brand, model, vehicle_id, user_id = None):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
 
         # generating an UUID for the vehicle
-        self.vehicle_id = str(uuid.uuid4())
+        self.vehicle_uri = NS + str(uuid.uuid4())
         
         # creating the triples
         triples = []
-        triples.append(Triple(URI(NS + self.vehicle_id), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
-        triples.append(Triple(URI(NS + self.vehicle_id), URI(NS + "hasBrand"), Literal(brand)))
-        triples.append(Triple(URI(NS + self.vehicle_id), URI(NS + "hasModel"), Literal(model)))
-        triples.append(Triple(URI(NS + user_id), URI(NS + "hasVehicle"), URI(NS + self.vehicle_id)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(vehicle_id)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(brand)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(model)))
+        if user_id:
+            triples.append(Triple(URI(NS + user_id), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
         
         # putting triples
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
@@ -65,15 +68,16 @@ class Vehicle:
             PREFIX ns:<%s>
             SELECT ?brand ?model ?person_uri ?person_name ?person_uid
             WHERE {
-                ns:%s rdf:type <%s> .
-                ns:%s ns:hasManufacturer ?brand .
-                ns:%s ns:hasModel ?model .
-                ?person_uri ns:hasVehicle ns:%s .
+                ?vehicle_uri rdf:type <%s> .
+                ?vehicle_uri ns:hasManufacturer ?brand .
+                ?vehicle_uri ns:hasModel ?model .
+                ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+                ?person_uri ns:hasVehicle ?vehicle_uri .
                 ?person_uri ns:hasName ?person_name .
                 ?person_uri ns:hasUserIdentifier ?person_uid
             }"""
-            print query % (RDF, NS, vehicle_id, VEHICLE_CLASS, vehicle_id, vehicle_id, vehicle_id)
-            kp.load_query_sparql(query % (RDF, NS, vehicle_id, VEHICLE_CLASS, vehicle_id, vehicle_id, vehicle_id))
+            print query % (RDF, NS, VEHICLE_CLASS, vehicle_id)
+            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, vehicle_id))
             results = kp.result_sparql_query
             
         else:
@@ -81,9 +85,10 @@ class Vehicle:
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?vehicle ?brand ?model ?person_uri ?person_name ?person_uid
+            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid
             WHERE {
                 ?vehicle rdf:type <%s> .
+                ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
                 ?vehicle ns:hasManufacturer ?brand .
                 ?vehicle ns:hasModel ?model .
                 ?person_uri ns:hasVehicle ?vehicle .
