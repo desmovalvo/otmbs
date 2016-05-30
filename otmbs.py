@@ -8,6 +8,8 @@ import ConfigParser
 from libs.n3loader import *
 from models.user import *
 from models.vehicle import *
+from models.groundstation import *
+from controllers.GroundStationsController import *
 from controllers.VehiclesController import *
 from controllers.UsersController import *
 
@@ -29,8 +31,10 @@ loader.load_n3file(settings["kb_file"])
 app = Flask(__name__)
 
 # creating an instance of each controller
+gss_controller = GroundStationsController(settings)
 vehicles_controller = VehiclesController(settings)
 users_controller = UsersController(settings)
+
 
 ################################################
 #
@@ -100,6 +104,35 @@ def users_show(user_id):
     res = users_controller.show(user_id)
     print res
     return jsonify(results = res)
+
+################################################
+#
+# setting routes for the groundstation controller
+#
+################################################
+
+@app.route('/groundstations', methods=['GET'])
+def gs_showall():
+    
+    # get the list of the ground stations
+    gss_list = gss_controller.show()
+    print gss_list
+
+    # build the list for the map
+    markers = []
+    for gs in gss_list:
+        print "**************************** " + str(gs)
+        marker = {}
+        marker["lat"] = gs["latitude"]
+        marker["lng"] = gs["longitude"]
+        marker["name"] = gs["gsname"]
+        marker["url"] = ""
+        markers.append(marker)
+    print markers
+
+    # render the html view
+    return render_template("show_gss.html", gss = gss_list, markers = markers)
+
 
 # main
 if __name__ == '__main__':

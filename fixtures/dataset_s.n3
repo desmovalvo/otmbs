@@ -73,7 +73,7 @@ ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasName "EmiliaPonente115" .
 ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasGPSData ns:4baccc40-37a4-4e52-ad54-74778848d0ca .
 # GroundStation: UgoBassi1
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 rdf:type ns:GroundStation .
-ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGSIdenitfier "UgoBassi1_08e" .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGSIdentifier "UgoBassi1_08e" .
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasName "UgoBassi1" .
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGPSData ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 .
 # GPSData 1

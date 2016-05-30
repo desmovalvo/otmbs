@@ -12,3 +12,4 @@ RDF_TYPE = RDF + "type"
 # Common classes
 VEHICLE_CLASS = NS + "Vehicle"
 PERSON_CLASS = NS + "Person"
+GS_CLASS = NS + "GroundStation"
