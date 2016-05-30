@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # system-wide requirements
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import ConfigParser
 
 # importing models, controllers and views
@@ -40,9 +40,13 @@ users_controller = UsersController(settings)
 
 @app.route('/vehicles', methods=['GET'])
 def vehicles_controller_showall():
+    print request.args
     res = vehicles_controller.show()
-    # return jsonify(results = res)
-    return render_template("show_vehicles.html", entries=res)
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        return render_template("show_vehicles.html", entries=res)
 
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
 def vehicles_controller_show(vehicle_id):
@@ -67,7 +71,6 @@ def users_controller_show(user_id):
     res = users_controller.show(user_id)
     print res
     return jsonify(results = res)
-
 
 # main
 if __name__ == '__main__':
