@@ -37,6 +37,11 @@ class UsersController:
                 json_user[field[0]] = field[2]
             json_results.append(json_user)
 
+        # add the person uid if necessary
+        if user_id:
+            for json_result in json_results:
+                json_result["person_uid"] = user_id
+
         # return
         print json_results
         return json_results
