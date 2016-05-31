@@ -3,77 +3,77 @@
 @prefix ns:  <http://mml.arces.unibo.it/otmbs#> .
 # Vehicle: Fiat 500
 ns:accdba29-c9b6-4910-af8e-4f3563a8d263 rdf:type ns:Vehicle .
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasVehicleIdentifier "Fiat500_acc" .
+ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasVehicleIdentifier "Fiat500_accdba29" .
 ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasManufacturer "Fiat" .
 ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasModel "500" .
 # Vehicle: Fiat Daily
 ns:91552902-cf3a-430a-8ca4-61276268ef9d rdf:type ns:Vehicle .
-ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasVehicleIdentifier "FiatDaily_915" .
+ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasVehicleIdentifier "FiatDaily_91552902" .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasManufacturer "Fiat" .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasModel "Daily" .
 # Vehicle: Mission R
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 rdf:type ns:Vehicle .
-ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasVehicleIdentifier "MissionR_b0d" .
+ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasVehicleIdentifier "MissionR_b0d1d4b0" .
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasManufacturer "Mission" .
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasModel "R" .
 # Vehicle: Nissan Leaf
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 rdf:type ns:Vehicle .
-ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasVehicleIdentifier "NissanLeaf_afe" .
+ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasVehicleIdentifier "NissanLeaf_afe8692f" .
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasManufacturer "Nissan" .
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasModel "Leaf" .
 # Vehicle: Tesla Model S
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 rdf:type ns:Vehicle .
-ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasVehicleIdentifier "TeslaModelS_259" .
+ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasVehicleIdentifier "TeslaModelS_259a5076" .
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasManufacturer "Tesla" .
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasModel "Model S" .
 # Person: Tullio Salmon Cinotti
 ns:445195be-eca7-48ab-8ff1-8f45039548fb rdf:type ns:Person .
-ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasUserIdentifier "TullioS" .
+ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasUserIdentifier "TullioS_445195be" .
 ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasName "Tullio Salmon Cinotti" .
 ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasVehicle ns:accdba29-c9b6-4910-af8e-4f3563a8d263 .
 # Person: Luca Roffia
 ns:4e1acc06-d07f-4802-931c-b68b95a547d7 rdf:type ns:Person .
-ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasUserIdentifier "LucaR" .
+ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasUserIdentifier "LucaR_4e1acc06" .
 ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasName "Luca Roffia" .
 ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasVehicle ns:91552902-cf3a-430a-8ca4-61276268ef9d .
 # Person: Fabio Viola
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d rdf:type ns:Person .
-ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasUserIdentifier "FabioV" .
+ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasUserIdentifier "FabioV_ea19421a" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasName "Fabio Viola" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasVehicle ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 .
 # Person: Alfredo D'Elia
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 rdf:type ns:Person .
-ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasUserIdentifier "AlfredoD" .
+ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasUserIdentifier "AlfredoDE_e0d8201e" .
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasName "Alfredo D'Elia" .
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasVehicle ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 .
 # Person: Francesco Antoniazzi
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 rdf:type ns:Person .
-ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasUserIdentifier "FrancescoA" .
+ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasUserIdentifier "FrancescoA_3d16d7aa" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasName "Francesco Antoniazzi" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasVehicle ns:259a5076-0df8-4192-b22f-ba6566c74da4 .
 # GroundStation: Toffano2
 ns:e93cadad-a310-4cf2-a007-559ca7b889a2 rdf:type ns:GroundStation .
-ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasGSIdentifier "Toffano2_e93" .
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasGSIdentifier "Toffano2_e93cadad" .
 ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasName "Toffano2" .
 ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasGPSData ns:a1bd1837-b0d1-4373-8711-aa0bb31b9607 .
 # GroundStation: Mazzini55
 ns:235d86f8-b5d5-4829-b0cc-388bba526551 rdf:type ns:GroundStation .
-ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasGSIdentifier "Mazzini55_235" .
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasGSIdentifier "Mazzini55_235d86f8" .
 ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasName "Mazzini55" .
 ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasGPSData ns:6e431238-f4c2-4308-bfa9-9fc269878160 .
 # GroundStation: EmiliaLevante250
 ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 rdf:type ns:GroundStation .
-ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasGSIdentifier "EmiliaLevante250_df6" .
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasGSIdentifier "EmiliaLevante250_df6f2cd4" .
 ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasName "EmiliaLevante250" .
 ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasGPSData ns:993574d7-34d0-4e18-a0d3-02c4e1cb9674 .
 # GroundStation: EmiliaPonente115
 ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a rdf:type ns:GroundStation .
-ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasGSIdentifier "EmiliaPonente115_1aa" .
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasGSIdentifier "EmiliaPonente115_1aac9406" .
 ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasName "EmiliaPonente115" .
 ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasGPSData ns:4baccc40-37a4-4e52-ad54-74778848d0ca .
 # GroundStation: UgoBassi1
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 rdf:type ns:GroundStation .
-ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGSIdentifier "UgoBassi1_08e" .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGSIdentifier "UgoBassi1_08ee4f13" .
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasName "UgoBassi1" .
 ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGPSData ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 .
 # GPSData 1
