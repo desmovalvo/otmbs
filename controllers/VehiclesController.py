@@ -71,3 +71,17 @@ class VehiclesController:
         
         # return
         return status
+
+
+    # delete vehicle
+    def delete_vehicle(self, vehicle_id):
+
+        """This method is used to delete a vehicle"""
+
+        # ask the model to delete the vehicle
+        vm = Vehicle()
+        v = vm.find_vehicle(vehicle_id)
+        status = v.delete()
+
+        # return
+        return status

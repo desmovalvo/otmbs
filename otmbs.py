@@ -92,6 +92,16 @@ def vehicles_create():
     return redirect("/vehicles")
 
 
+@app.route('/vehicles/<vehicle_id>', methods=['DELETE'])
+def vehicles_delete(vehicle_id):
+    
+    # invoke the controller
+    res = vehicles_controller.delete_vehicle(vehicle_id)
+    
+    # redirect to the index
+    return redirect("/vehicles")
+
+
 ################################################
 #
 # setting routes for the user controller

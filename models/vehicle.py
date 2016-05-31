@@ -157,6 +157,25 @@ class Vehicle:
         return results
         
 
+    # delete vehicle
+    def delete(self):
+
+        # creating the triples
+        triples = []
+        triples.append(Triple(URI(self.vehicle_uri), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(self.vehicle_id)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
+        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
+        triples.append(Triple(URI(self.user_uri), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
+        
+        # putting triples
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_rdf_remove(triples)
+            return True
+        except Exception as e:
+            return False
+        
 
 if __name__ == "__main__":
     print path.dirname(path.abspath(__file__))

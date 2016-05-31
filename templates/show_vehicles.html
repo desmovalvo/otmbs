@@ -37,6 +37,7 @@
       <tr>
 	<th>Car</th>
 	<th>Owner</th>
+	<th>Actions</th>
       </tr>
       </thead>
 
@@ -46,7 +47,10 @@
 	<td><a href="{{ url_for('vehicles_show', vehicle_id=entry['vehicle_id']) }}">{{ entry['brand'] + entry['model'] }}</a></td>
 	{% if entry["person_uid"] %}
 	<td><a href="{{ url_for('users_show', user_id=entry['person_uid']) }}">{{ entry["person_name"] }}</a></td>
+	{% else %}
+	<td></td>
 	{% endif %}
+	<td><a href="{{ url_for('vehicles_delete', vehicle_id=entry['vehicle_id']) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a></td>
       </tr>
 	{% endfor %}
       </tbody>
