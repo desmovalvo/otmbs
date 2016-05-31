@@ -37,7 +37,6 @@
       <tr>
 	<th>Name</th>
 	<th>UID</th>
-	<th>Vehicles</th>
       </tr>
       </thead>
 
@@ -46,7 +45,6 @@
       <tr>
 	<td><a href="{{ url_for('users_show', user_id=entry['person_uid']) }}">{{ entry['person_name'] }}</a></td>
 	<td><a href="{{ url_for('users_show', user_id=entry['person_uid']) }}">{{ entry['person_uid'] }}</a></td>
-	<td><a href="{{ url_for('vehicles_show', vehicle_id=entry['vehicle_id']) }}">{{ entry['manufacturer'] }} {{ entry['model'] }}</a></td>
       </tr>
 	{% endfor %}
       </tbody>

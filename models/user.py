@@ -51,51 +51,24 @@ class User:
 
     
     # find
-    def find(self, user_id = None):
+    def find_users(self):
         
         """Method used to retrieve users from the SIB"""
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
-        # query
-        if user_id:
-
-            # perform a SPARQL query
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?person_name ?person_uid ?vehicle_id ?manufacturer ?model
-            WHERE {
-                ?person_uri rdf:type ns:Person .
-                ?person_uri ns:hasUserIdentifier "%s" .
-                ?person_uri ns:hasName ?person_name .
-                OPTIONAL { ?person_uri ns:hasVehicle ?vehicle_id .
-                    ?vehicle_id ns:hasManufacturer ?manufacturer .
-                    ?vehicle_id ns:hasModel ?model
-                }
-            }"""
-            print query % (RDF, NS, user_id)
-            kp.load_query_sparql(query % (RDF, NS, user_id))
-            results = kp.result_sparql_query           
-            
-        else:
-
-            # perform a SPARQL query
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?person_uri ?person_name ?person_uid ?vehicle_id ?manufacturer ?model
-            WHERE {
-                ?person_uri rdf:type ns:Person .
-                ?person_uri ns:hasUserIdentifier ?person_uid .
-                ?person_uri ns:hasName ?person_name .
-                OPTIONAL { 
-                    ?person_uri ns:hasVehicle ?vehicle_id .
-                    ?vehicle_id ns:hasManufacturer ?manufacturer .
-                    ?vehicle_id ns:hasModel ?model
-                }
-            }"""
-            kp.load_query_sparql(query % (RDF, NS))
-            results = kp.result_sparql_query           
+        # perform a SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?person_uri ?person_name ?person_uid 
+        WHERE {
+            ?person_uri rdf:type ns:Person .
+            ?person_uri ns:hasUserIdentifier ?person_uid .
+            ?person_uri ns:hasName ?person_name .
+        }"""
+        kp.load_query_sparql(query % (RDF, NS))
+        results = kp.result_sparql_query           
 
         # return
         return results
