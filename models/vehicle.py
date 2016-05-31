@@ -65,54 +65,62 @@ class Vehicle:
             return False
             
     
-    # find
-    def find(self, vehicle_id = None):
+    # show vehicles
+    def find_vehicles(self):
         
         """Method used to retrieve vehicles from the SIB"""
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
-        # query
-        if vehicle_id:
-            
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?brand ?model ?person_uri ?person_name ?person_uid
-            WHERE {
-                ?vehicle_uri rdf:type <%s> .
-                ?vehicle_uri ns:hasManufacturer ?brand .
-                ?vehicle_uri ns:hasModel ?model .
-                ?vehicle_uri ns:hasVehicleIdentifier "%s" .
-                OPTIONAL {
-                    ?person_uri ns:hasVehicle ?vehicle_uri .
-                    ?person_uri ns:hasName ?person_name .
-                    ?person_uri ns:hasUserIdentifier ?person_uid
-                }
-            }"""
-            print query % (RDF, NS, VEHICLE_CLASS, vehicle_id)
-            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, vehicle_id))
-            results = kp.result_sparql_query
-            
-        else:
+        # perform a SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid
+        WHERE {
+            ?vehicle rdf:type <%s> .
+            ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
+            ?vehicle ns:hasManufacturer ?brand .
+            ?vehicle ns:hasModel ?model .
+            OPTIONAL {
+                ?person_uri ns:hasVehicle ?vehicle .
+                ?person_uri ns:hasName ?person_name .
+                ?person_uri ns:hasUserIdentifier ?person_uid
+            }
+        }"""
+        kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
+        results = kp.result_sparql_query           
 
-            # perform a SPARQL query
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid
-            WHERE {
-                ?vehicle rdf:type <%s> .
-                ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
-                ?vehicle ns:hasManufacturer ?brand .
-                ?vehicle ns:hasModel ?model .
-                OPTIONAL {
-                    ?person_uri ns:hasVehicle ?vehicle .
-                    ?person_uri ns:hasName ?person_name .
-                    ?person_uri ns:hasUserIdentifier ?person_uid
-                }
-            }"""
-            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
-            results = kp.result_sparql_query           
+        # return
+        return results
+
+
+    # show vehicle
+    def find_vehicle(self, vehicle_id):
+        
+        """Method used to retrieve a vehicle from the SIB"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?brand ?model ?person_uri ?person_name ?person_uid
+        WHERE {
+            ?vehicle_uri rdf:type <%s> .
+            ?vehicle_uri ns:hasManufacturer ?brand .
+            ?vehicle_uri ns:hasModel ?model .
+            ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+            OPTIONAL {
+                ?person_uri ns:hasVehicle ?vehicle_uri .
+                ?person_uri ns:hasName ?person_name .
+                ?person_uri ns:hasUserIdentifier ?person_uid
+            }
+        }"""
+        print query % (RDF, NS, VEHICLE_CLASS, vehicle_id)
+        kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, vehicle_id))
+        results = kp.result_sparql_query
 
         # return
         return results

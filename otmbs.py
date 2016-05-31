@@ -46,7 +46,7 @@ users_controller = UsersController(settings)
 def vehicles_showall():
 
     # invoke the controller
-    res = vehicles_controller.show()
+    res = vehicles_controller.show_vehicles()
 
     # select the proper output form
     if request.args.has_key('format'):
@@ -61,10 +61,15 @@ def vehicles_showall():
 def vehicles_show(vehicle_id):
 
     # invoke the controller
-    res = vehicles_controller.show(vehicle_id)
+    res = vehicles_controller.show_vehicle(vehicle_id)
 
-    # return
-    return jsonify(results = res)
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        print res
+        return render_template("show_vehicle.html", entry=res)
 
 
 @app.route('/vehicles/new', methods=['GET'])

@@ -18,15 +18,12 @@ class VehiclesController:
 
 
     # show all
-    def show(self, vehicle_id = None):
+    def show_vehicles(self):
         
         """This method is used to retrieve all the Vehicles"""
 
         v = Vehicle(self.settings)
-        if vehicle_id:
-            vehicles_list = v.find(vehicle_id)
-        else:
-            vehicles_list = v.find()
+        vehicles_list = v.find_vehicles()
 
         # transform the results in a "jsonifiable"-form
         json_results = []
@@ -39,6 +36,28 @@ class VehiclesController:
         # return
         print json_results
         return json_results
+
+
+    # show one
+    def show_vehicle(self, vehicle_id):
+        
+        """This method is used to retrieve a single Vehicle"""
+
+        v = Vehicle(self.settings)
+        vehicles_list = v.find_vehicle(vehicle_id)
+
+        # transform the results in a "jsonifiable"-form
+        json_vehicle = {}
+        for vehicle in vehicles_list:
+            for field in vehicle:
+                json_vehicle[field[0]] = field[2]
+
+        # add the vehicle id
+        json_vehicle["vehicle_id"] = vehicle_id
+
+        # return
+        print json_vehicle
+        return json_vehicle
 
 
     # create vehicle
