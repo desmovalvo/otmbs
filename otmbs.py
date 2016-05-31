@@ -95,9 +95,19 @@ def vehicles_create():
 
 @app.route('/users', methods=['GET'])
 def users_showall():
+
+    # invoking the controller
     res = users_controller.show()
-    print res
-    return jsonify(results = res)
+
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        print res
+        return render_template("show_users.html", entries=res)
+
+
 
 @app.route('/users/<user_id>', methods=['GET'])
 def users_show(user_id):

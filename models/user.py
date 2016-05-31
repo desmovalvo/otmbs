@@ -64,12 +64,15 @@ class User:
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?person_name ?person_uid ?vehicle_id
+            SELECT ?person_name ?person_uid ?vehicle_id ?manufacturer ?model
             WHERE {
                 ?person_uri rdf:type ns:Person .
                 ?person_uri ns:hasUserIdentifier "%s" .
                 ?person_uri ns:hasName ?person_name .
-                OPTIONAL { ?person_uri ns:hasVehicle ?vehicle_id }
+                OPTIONAL { ?person_uri ns:hasVehicle ?vehicle_id .
+                    ?vehicle_id ns:hasManufacturer ?manufacturer .
+                    ?vehicle_id ns:hasModel ?model
+                }
             }"""
             print query % (RDF, NS, user_id)
             kp.load_query_sparql(query % (RDF, NS, user_id))
@@ -80,12 +83,16 @@ class User:
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?person_uri ?person_name ?person_uid ?vehicle_id
+            SELECT ?person_uri ?person_name ?person_uid ?vehicle_id ?manufacturer ?model
             WHERE {
                 ?person_uri rdf:type ns:Person .
                 ?person_uri ns:hasUserIdentifier ?person_uid .
                 ?person_uri ns:hasName ?person_name .
-                OPTIONAL { ?person_uri ns:hasVehicle ?vehicle_id }
+                OPTIONAL { 
+                    ?person_uri ns:hasVehicle ?vehicle_id .
+                    ?vehicle_id ns:hasManufacturer ?manufacturer .
+                    ?vehicle_id ns:hasModel ?model
+                }
             }"""
             kp.load_query_sparql(query % (RDF, NS))
             results = kp.result_sparql_query           
