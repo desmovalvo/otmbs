@@ -192,51 +192,61 @@ ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 rdf:type ns:GPSData .
 ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 ns:hasLatitude "44.49248" .
 ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 ns:hasLongitude "11.36622" .
 # Reservation 1
+ns:348050ff-a98b-407c-a9dd-5c33a94d907a rdf:type ns:Reservation .
 ns:348050ff-a98b-407c-a9dd-5c33a94d907a ns:reservedByVehicle ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 .
 ns:348050ff-a98b-407c-a9dd-5c33a94d907a ns:hasUser ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde .
 ns:348050ff-a98b-407c-a9dd-5c33a94d907a ns:hasGS ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf .
 ns:348050ff-a98b-407c-a9dd-5c33a94d907a ns:hasReservationIdentifier "Reserv_348050ff" .
 # Reservation 2
+ns:6fd1e79b-a5d6-42df-9883-7d50c341dec5 rdf:type ns:Reservation .
 ns:6fd1e79b-a5d6-42df-9883-7d50c341dec5 ns:reservedByVehicle ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 .
 ns:6fd1e79b-a5d6-42df-9883-7d50c341dec5 ns:hasUser ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde .
 ns:6fd1e79b-a5d6-42df-9883-7d50c341dec5 ns:hasGS ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a .
 ns:6fd1e79b-a5d6-42df-9883-7d50c341dec5 ns:hasReservationIdentifier "Reserv_6fd1e79b" .
 # Reservation 3
+ns:4c176824-aca9-440e-adf3-5c9c6175674a rdf:type ns:Reservation .
 ns:4c176824-aca9-440e-adf3-5c9c6175674a ns:reservedByVehicle ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 ns:4c176824-aca9-440e-adf3-5c9c6175674a ns:hasUser ns:df3281eb-be4f-41c8-859e-e4470dd3c47f .
 ns:4c176824-aca9-440e-adf3-5c9c6175674a ns:hasGS ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a .
 ns:4c176824-aca9-440e-adf3-5c9c6175674a ns:hasReservationIdentifier "Reserv_4c176824" .
 # Reservation 4
+ns:cbb9e300-46a4-4bbc-84b4-1403afe62a40 rdf:type ns:Reservation .
 ns:cbb9e300-46a4-4bbc-84b4-1403afe62a40 ns:reservedByVehicle ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 ns:cbb9e300-46a4-4bbc-84b4-1403afe62a40 ns:hasUser ns:df3281eb-be4f-41c8-859e-e4470dd3c47f .
 ns:cbb9e300-46a4-4bbc-84b4-1403afe62a40 ns:hasGS ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c .
 ns:cbb9e300-46a4-4bbc-84b4-1403afe62a40 ns:hasReservationIdentifier "Reserv_cbb9e300" .
 # Reservation 5
+ns:e2913ef2-ecac-4338-8885-aa1611090ef1 rdf:type ns:Reservation .
 ns:e2913ef2-ecac-4338-8885-aa1611090ef1 ns:reservedByVehicle ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 ns:e2913ef2-ecac-4338-8885-aa1611090ef1 ns:hasUser ns:df3281eb-be4f-41c8-859e-e4470dd3c47f .
 ns:e2913ef2-ecac-4338-8885-aa1611090ef1 ns:hasGS ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 ns:e2913ef2-ecac-4338-8885-aa1611090ef1 ns:hasReservationIdentifier "Reserv_e2913ef2" .
 # Reservation 6
+ns:22dfce4d-6972-4f79-9f03-91bb16d29c18 rdf:type ns:Reservation .
 ns:22dfce4d-6972-4f79-9f03-91bb16d29c18 ns:reservedByVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ns:22dfce4d-6972-4f79-9f03-91bb16d29c18 ns:hasUser ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 .
 ns:22dfce4d-6972-4f79-9f03-91bb16d29c18 ns:hasGS ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf .
 ns:22dfce4d-6972-4f79-9f03-91bb16d29c18 ns:hasReservationIdentifier "Reserv_22dfce4d" .
 # Reservation 7
+ns:177a943f-c66c-4a87-8a34-5c2721917810 rdf:type ns:Reservation .
 ns:177a943f-c66c-4a87-8a34-5c2721917810 ns:reservedByVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ns:177a943f-c66c-4a87-8a34-5c2721917810 ns:hasUser ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 .
 ns:177a943f-c66c-4a87-8a34-5c2721917810 ns:hasGS ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c .
 ns:177a943f-c66c-4a87-8a34-5c2721917810 ns:hasReservationIdentifier "Reserv_177a943f" .
 # Reservation 8
+ns:09a2a804-3249-41a1-a980-0fc22ba8d516 rdf:type ns:Reservation .
 ns:09a2a804-3249-41a1-a980-0fc22ba8d516 ns:reservedByVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ns:09a2a804-3249-41a1-a980-0fc22ba8d516 ns:hasUser ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 .
 ns:09a2a804-3249-41a1-a980-0fc22ba8d516 ns:hasGS ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef .
 ns:09a2a804-3249-41a1-a980-0fc22ba8d516 ns:hasReservationIdentifier "Reserv_09a2a804" .
 # Reservation 9
+ns:0e91e757-01a2-4c98-809a-41922fc5db89 rdf:type ns:Reservation .
 ns:0e91e757-01a2-4c98-809a-41922fc5db89 ns:reservedByVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ns:0e91e757-01a2-4c98-809a-41922fc5db89 ns:hasUser ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 .
 ns:0e91e757-01a2-4c98-809a-41922fc5db89 ns:hasGS ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 .
 ns:0e91e757-01a2-4c98-809a-41922fc5db89 ns:hasReservationIdentifier "Reserv_0e91e757" .
 # Reservation 10
+ns:517c0c35-c721-4cae-a4e0-42b4fb822d0f rdf:type ns:Reservation .
 ns:517c0c35-c721-4cae-a4e0-42b4fb822d0f ns:reservedByVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ns:517c0c35-c721-4cae-a4e0-42b4fb822d0f ns:hasUser ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 .
 ns:517c0c35-c721-4cae-a4e0-42b4fb822d0f ns:hasGS ns:2da444d4-4a24-4f21-b406-b037adff4a79 .
