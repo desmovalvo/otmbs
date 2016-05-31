@@ -24,7 +24,7 @@ class UsersController:
         """This method is used to retrieve all the Users"""
 
         u = User(self.settings)
-        user = u.find()
+        users_list = u.find()
 
         # transform the results in a "jsonifiable"-form
         json_results = []
