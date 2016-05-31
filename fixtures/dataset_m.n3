@@ -3,152 +3,152 @@
 @prefix ns:  <http://mml.arces.unibo.it/otmbs#> .
 # Vehicle: Nissan Leaf
 ns:96a591ef-b1d8-4210-b924-52244af68750 rdf:type ns:Vehicle .
-ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasVehicleIdentifier "NissanLeaf_96a" .
+ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasVehicleIdentifier "NissanLeaf_96a591ef" .
 ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasManufacturer "Nissan" .
 ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasModel "Leaf" .
 # Vehicle: Nissan Leaf
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda rdf:type ns:Vehicle .
-ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasVehicleIdentifier "NissanLeaf_fcc" .
+ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasVehicleIdentifier "NissanLeaf_fcc19b03" .
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasManufacturer "Nissan" .
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasModel "Leaf" .
 # Vehicle: Toyota Prius
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 rdf:type ns:Vehicle .
-ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasVehicleIdentifier "ToyotaPrius_5cf" .
+ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasVehicleIdentifier "ToyotaPrius_5cfa73d6" .
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasManufacturer "Toyota" .
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasModel "Prius" .
 # Vehicle: Toyota Prius
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a rdf:type ns:Vehicle .
-ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasVehicleIdentifier "ToyotaPrius_bbd" .
+ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasVehicleIdentifier "ToyotaPrius_bbd7cb27" .
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasManufacturer "Toyota" .
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasModel "Prius" .
 # Vehicle: Toyota Prius
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 rdf:type ns:Vehicle .
-ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasVehicleIdentifier "ToyotaPrius_01f" .
+ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasVehicleIdentifier "ToyotaPrius_01f128dd" .
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasManufacturer "Toyota" .
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasModel "Prius" .
 # Vehicle: Fiat 500
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c rdf:type ns:Vehicle .
-ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasVehicleIdentifier "Fiat500_b97" .
+ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasVehicleIdentifier "Fiat500_b9735872" .
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasManufacturer "Fiat" .
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasModel "500" .
 # Vehicle: Fiat Daily
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea rdf:type ns:Vehicle .
-ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasVehicleIdentifier "FiatDaily_c5d" .
+ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasVehicleIdentifier "FiatDaily_c5d6124b" .
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasManufacturer "Fiat" .
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasModel "Daily" .
 # Vehicle: Mission R
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 rdf:type ns:Vehicle .
-ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasVehicleIdentifier "MissionR_2cf" .
+ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasVehicleIdentifier "MissionR_2cf6da50" .
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasManufacturer "Mission" .
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasModel "R" .
 # Vehicle: Nissan Leaf
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 rdf:type ns:Vehicle .
-ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasVehicleIdentifier "NissanLeaf_4b1" .
+ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasVehicleIdentifier "NissanLeaf_4b11ef6b" .
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasManufacturer "Nissan" .
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasModel "Leaf" .
 # Vehicle: Tesla Model S
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 rdf:type ns:Vehicle .
-ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasVehicleIdentifier "TeslaModelS_1ac" .
+ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasVehicleIdentifier "TeslaModelS_1ac14b0c" .
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasManufacturer "Tesla" .
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasModel "Model S" .
 # Person: Simone Rondelli
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "SimoneR" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Simone Rondelli" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:96a591ef-b1d8-4210-b924-52244af68750 .
+ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 rdf:type ns:Person .
+ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasUserIdentifier "SimoneR_207fdbad" .
+ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasName "Simone Rondelli" .
+ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasVehicle ns:96a591ef-b1d8-4210-b924-52244af68750 .
 # Person: Luciano Bononi
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "LucianoB" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Luciano Bononi" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda .
+ns:5b9eb900-d507-4a77-a63c-637e80c41a17 rdf:type ns:Person .
+ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasUserIdentifier "LucianoB_5b9eb900" .
+ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasName "Luciano Bononi" .
+ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasVehicle ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda .
 # Person: Alberto Borghetti
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "AlbertoB" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Alberto Borghetti" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
+ns:33ab29eb-003a-435c-b141-4db9c5d45bae rdf:type ns:Person .
+ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasUserIdentifier "AlbertoB_33ab29eb" .
+ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasName "Alberto Borghetti" .
+ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 # Person: Riccardo Venanzi
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "RiccardoV" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Riccardo Venanzi" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a .
+ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 rdf:type ns:Person .
+ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasUserIdentifier "RiccardoV_33e46bc2" .
+ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasName "Riccardo Venanzi" .
+ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasVehicle ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a .
 # Person: Daniele Tarchi
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "DanieleT" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Daniele Tarchi" .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:01f128dd-1fca-4b5b-b422-ff92116be365 .
+ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 rdf:type ns:Person .
+ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasUserIdentifier "DanieleT_1afa5bd0" .
+ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasName "Daniele Tarchi" .
+ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasVehicle ns:01f128dd-1fca-4b5b-b422-ff92116be365 .
 # Person: Federico Montori
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f rdf:type ns:Person .
-ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasUserIdentifier "FedericoM" .
+ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasUserIdentifier "FedericoM_df3281eb" .
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasName "Federico Montori" .
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasVehicle ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 # Person: Luca Bedogni
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
-ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "LucaB" .
+ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "LucaB_94043639" .
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Luca Bedogni" .
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea .
 # Person: Marco Di Felice
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 rdf:type ns:Person .
-ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasUserIdentifier "MarcoDF" .
+ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasUserIdentifier "MarcoDF_4c341c0d" .
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasName "Marco Di Felice" .
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasVehicle ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 .
 # Person: Paolo Azzoni
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde rdf:type ns:Person .
-ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasUserIdentifier "PaoloA" .
+ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasUserIdentifier "PaoloA_0ec53f33" .
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasName "Paolo Azzoni" .
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasVehicle ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 .
 # Person: Michele Ornato
 ns:e4a0be27-20e1-4350-be13-1cb496381727 rdf:type ns:Person .
-ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasUserIdentifier "MicheleO" .
+ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasUserIdentifier "MicheleO_e4a0be27" .
 ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasName "Michele Ornato" .
 ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasVehicle ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 .
 # GroundStation: Murri13
 ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf rdf:type ns:GroundStation .
-ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasGSIdentifier "Murri13_901" .
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasGSIdentifier "Murri13_901070bd" .
 ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasName "Murri13" .
 ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasGPSData ns:eec1eef0-e1ed-489c-885e-a4d96abc4cf7 .
 # GroundStation: Saragozza135
 ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c rdf:type ns:GroundStation .
-ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasGSIdentifier "Saragozza135_c62" .
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasGSIdentifier "Saragozza135_c625f1a3" .
 ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasName "Saragozza135" .
 ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasGPSData ns:678d2144-bff5-4433-842e-48d1a7f1dd1d .
 # GroundStation: AndreaCosta24
 ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef rdf:type ns:GroundStation .
-ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasGSIdentifier "AndreaCosta24_06e" .
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasGSIdentifier "AndreaCosta24_06ecce32" .
 ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasName "AndreaCosta24" .
 ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef	ns:hasGPSData ns:d5b38bac-c380-42ae-b963-9b0355897623 .
 # GroundStation: Stalingrado14
 ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 rdf:type ns:GroundStation .
-ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasGSIdentifier "Stalingrado14_bda" .
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasGSIdentifier "Stalingrado14_bda8a77c" .
 ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasName "Stalingrado14" .
 ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasGPSData ns:ac092fd6-9eeb-473c-8551-5096a83b059c .
 # GroundStation: SanFelice81
 ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a rdf:type ns:GroundStation .
-ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasGSIdentifier "SanFelice81_08e" .
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasGSIdentifier "SanFelice81_e12369a9" .
 ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasName "SanFelice81" .
 ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasGPSData ns:0c09bf24-6573-4c50-b00e-7ba8210779c6 .
 # GroundStation: Indipendenza30
 ns:2da444d4-4a24-4f21-b406-b037adff4a79 rdf:type ns:GroundStation .
-ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasGSIdentifier "Indipendenza30_08e" .
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasGSIdentifier "Indipendenza30_2da444d4" .
 ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasName "Indipendenza30" .
 ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasGPSData ns:208eb67b-b57c-44bf-95e2-4facb7ac658e .
 # GroundStation: Irnerio115
 ns:c627d663-3a8f-40db-9e5d-89d55a083263 rdf:type ns:GroundStation .
-ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasGSIdentifier "Irnerio115_c62" .
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasGSIdentifier "Irnerio115_c627d663" .
 ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasName "Irnerio115" .
 ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasGPSData ns:95f02bee-c206-4d57-a6b5-c192afd1eb9f .
 # GroundStation: DAzeglio59
 ns:5a85d32e-f4c4-4123-891b-42182268756d rdf:type ns:GroundStation .
-ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasGSIdentifier "DAzeglio59_5a8" .
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasGSIdentifier "DAzeglio59_5a85d32e" .
 ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasName "DAzeglio59" .
 ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasGPSData ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 .
 # GroundStation: Alberti1
 ns:bce09a70-15ec-49fd-93c9-0111733a56b8 rdf:type ns:GroundStation .
-ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasGSIdentifier "Alberti1_bce" .
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasGSIdentifier "Alberti1_bce09a70" .
 ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasName "Alberti1" .
 ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasGPSData ns:3905da09-b596-42eb-976f-d75856c41f4c .
 # GroundStation: Massarenti25
 ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 rdf:type ns:GroundStation .
-ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasGSIdentifier "Massarenti25_0eb" .
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasGSIdentifier "Massarenti25_0ebdcdf0" .
 ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasName "Massarenti25" .
 ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasGPSData ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 .
 # GPSData 1
