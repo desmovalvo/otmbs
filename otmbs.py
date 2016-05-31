@@ -112,7 +112,7 @@ def users_show(user_id):
 ################################################
 
 @app.route('/groundstations', methods=['GET'])
-def gs_showall():
+def gss_showall():
     
     # get the list of the ground stations
     gss_list = gss_controller.show()
