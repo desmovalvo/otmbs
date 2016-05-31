@@ -117,6 +117,38 @@ class Vehicle:
         # return
         return results
 
+        
+    # find user's vehicles
+    def find_by_user_id(self, user_id):
+
+        """This method is used to retrieve all the vehicles
+        of a user, given its user_id"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?vehicle_uri ?brand ?model ?vehicle_id
+        WHERE {
+            ?vehicle_uri rdf:type <%s> .
+            ?vehicle_uri ns:hasManufacturer ?brand .
+            ?vehicle_uri ns:hasModel ?model .
+            ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+            ?user_uri ns:hasUserIdentifier "%s" .
+            ?user_uri ns:hasVehicle ?vehicle_uri
+        
+        }"""
+        
+        print query % (RDF, NS, VEHICLE_CLASS, user_id)
+        kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, user_id))
+        results = kp.result_sparql_query
+
+        # return
+        return results
+        
+
 
 if __name__ == "__main__":
     print path.dirname(path.abspath(__file__))

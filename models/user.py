@@ -101,5 +101,31 @@ class User:
         return results
 
 
+    # find
+    def find_user(self, user_id):
+        
+        """Method used to retrieve a single user from the SIB"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # perform a SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?person_name ?person_uid
+        WHERE {
+           ?person_uri rdf:type ns:Person .
+           ?person_uri ns:hasUserIdentifier "%s" .
+           ?person_uri ns:hasName ?person_name .
+        }"""
+        print query % (RDF, NS, user_id)
+        kp.load_query_sparql(query % (RDF, NS, user_id))
+        result = kp.result_sparql_query           
+            
+        # return
+        return result
+
+
+
 if __name__ == "__main__":
     print path.dirname(path.abspath(__file__))
