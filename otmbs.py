@@ -20,12 +20,15 @@ settingsParser.readfp(open("otmbs.conf"))
 settings["sib_host"] = settingsParser.get("sib", "host")
 settings["sib_port"] = settingsParser.getint("sib", "port")
 settings["flask_port"] = settingsParser.getint("flask", "port")
-settings["kb_file"] = settingsParser.get("kb", "kb_file")
 settings["block_size"] = settingsParser.getint("kb", "block_size")
+settings["kb_files"] = []
+for filename in settingsParser.get("kb", "kb_file").split("%"):
+    settings["kb_files"].append(filename)
 
 # loading the KB
 loader = N3KBLoader(settings)
-loader.load_n3file(settings["kb_file"])
+for filename in settings["kb_files"]:
+    loader.load_n3file(filename)
 
 # creating an instance of Flask
 app = Flask(__name__)
