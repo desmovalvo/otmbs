@@ -140,23 +140,34 @@ def users_show(user_id):
 def gss_showall():
     
     # get the list of the ground stations
-    gss_list = gss_controller.show()
-    print gss_list
+    gss_list = gss_controller.show_gss()
 
     # build the list for the map
     markers = []
     for gs in gss_list:
-        print "**************************** " + str(gs)
         marker = {}
         marker["lat"] = gs["latitude"]
         marker["lng"] = gs["longitude"]
         marker["name"] = gs["gsname"]
+        marker["gsidentifier"] = gs["gsidentifier"]
         marker["url"] = ""
         markers.append(marker)
+    print "MARKERS:"
     print markers
 
     # render the html view
     return render_template("show_gss.html", gss = gss_list, markers = markers)
+
+
+@app.route('/groundstations/<gsid>', methods=['GET'])
+def gss_show(gsid):
+    
+    # get the list of the ground stations
+    gs = gss_controller.show_gs(gsid)
+
+    # render the html view
+    return render_template("show_gs.html", entry = gs)
+
 
 
 # main

@@ -24,47 +24,57 @@ class GroundStation:
 
 
     # get the list of the ground stations
-    def find(self, gsid = None):
+    def find_gss(self):
         
         """Retrieves Ground Stations from the SIB"""
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
-        if gsid:
-            
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?gs ?gsname ?latitude ?longitude
-            WHERE {
-                ?gs rdf:type <%s> .
-                ?gs ns:hasGSIdentifier "%s" .
-                ?gs
-                ?gs ns:hasName ?gsname .
-                ?gs ns:hasGPSData ?gpsdata .
-                ?gpsdata ns:hasLatitude ?latitude .
-                ?gpsdata ns:hasLongitude ?longitude .
-            }"""
-            kp.load_query_sparql(query % (RDF, NS, GS_CLASS, gsid))
-            results = kp.result_sparql_query           
+        # perform a SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?gs ?gsidentifier ?gsname ?latitude ?longitude
+        WHERE {
+            ?gs rdf:type <%s> .
+            ?gs ns:hasGSIdentifier ?gsidentifier .
+            ?gs ns:hasName ?gsname .
+            ?gs ns:hasGPSData ?gpsdata .
+            ?gpsdata ns:hasLatitude ?latitude .
+            ?gpsdata ns:hasLongitude ?longitude .
+        }"""
+        print query % (RDF, NS, GS_CLASS)
+        kp.load_query_sparql(query % (RDF, NS, GS_CLASS))
+        results = kp.result_sparql_query           
 
-        else:
+        # return
+        return results
 
-            # perform a SPARQL query
-            query = """PREFIX rdf:<%s>
-            PREFIX ns:<%s>
-            SELECT ?gs ?gsidentifier ?gsname ?latitude ?longitude
-            WHERE {
-                ?gs rdf:type <%s> .
-                ?gs ns:hasGSIdentifier ?gsidentifier .
-                ?gs ns:hasName ?gsname .
-                ?gs ns:hasGPSData ?gpsdata .
-                ?gpsdata ns:hasLatitude ?latitude .
-                ?gpsdata ns:hasLongitude ?longitude .
-            }"""
-            print query % (RDF, NS, GS_CLASS)
-            kp.load_query_sparql(query % (RDF, NS, GS_CLASS))
-            results = kp.result_sparql_query           
+
+    # get the list of the ground stations
+    def find_gs(self, gsid):
+        
+        """Retrieves a single Ground Station from the SIB"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # perform the SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?gs ?gsname ?latitude ?longitude
+        WHERE {
+            ?gs rdf:type <%s> .
+            ?gs ns:hasGSIdentifier "%s" .
+            ?gs ns:hasName ?gsname .
+            ?gs ns:hasGPSData ?gpsdata .
+            ?gpsdata ns:hasLatitude ?latitude .
+            ?gpsdata ns:hasLongitude ?longitude .
+        }"""
+        print query % (RDF, NS, GS_CLASS, gsid)
+        kp.load_query_sparql(query % (RDF, NS, GS_CLASS, gsid))
+        results = kp.result_sparql_query       
+        print results    
 
         # return
         return results
