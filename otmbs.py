@@ -8,8 +8,10 @@ import ConfigParser
 from libs.n3loader import *
 from models.user import *
 from models.vehicle import *
+from models.reservation import *
 from models.groundstation import *
 from controllers.GroundStationsController import *
+from controllers.ReservationsController import *
 from controllers.VehiclesController import *
 from controllers.UsersController import *
 
@@ -34,6 +36,7 @@ for filename in settings["kb_files"]:
 app = Flask(__name__)
 
 # creating an instance of each controller
+reservations_controller = ReservationsController(settings)
 gss_controller = GroundStationsController(settings)
 vehicles_controller = VehiclesController(settings)
 users_controller = UsersController(settings)
@@ -180,6 +183,37 @@ def gss_show(gsid):
 
     # render the html view
     return render_template("show_gs.html", entry = gs)
+
+
+################################################
+#
+# setting routes for the reservation controller
+#
+################################################
+
+@app.route('/reservations', methods=['GET'])
+def reservations_showall():
+
+    # invoking the controller
+    res = reservations_controller.show_reservations()
+
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        print res
+        return render_template("show_reservations.html", entries=res)
+    
+
+@app.route('/reservations/<reservation_id>', methods=['GET'])
+def reservations_show(reservation_id):
+    
+    # invoking the controller
+    res = reservations_controller.show_reservation(reservation_id)
+
+    # render the html view
+    return render_template("show_reservation.html", entry = res)
 
 
 
