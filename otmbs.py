@@ -147,6 +147,16 @@ def users_show(user_id):
         return render_template("show_user.html", entry=res)
 
 
+@app.route('/users/delete/<user_id>', methods=['GET'])
+@app.route('/users/<user_id>', methods=['DELETE'])
+def users_delete(user_id):
+    
+    # invoke the controller
+    res = users_controller.delete_user(user_id)
+    
+    # redirect to the index
+    return redirect(url_for("users_showall"))
+
 
 ################################################
 #

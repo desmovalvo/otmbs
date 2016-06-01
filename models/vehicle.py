@@ -186,7 +186,3 @@ class Vehicle:
             return True
         except Exception as e:
             return False
-        
-
-if __name__ == "__main__":
-    print path.dirname(path.abspath(__file__))

@@ -71,3 +71,17 @@ class UsersController:
         # return
         print json_user
         return json_user
+
+
+    # delete user
+    def delete_user(self, user_id):
+
+        """This method is used to delete a person"""
+
+        # ask the model to delete the user
+        um = User(self.settings)
+        status = um.delete(user_id)
+
+        # return
+        return status
+
