@@ -38,7 +38,7 @@
 	    
 	    <!-- ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id -->
 	    <thead>
-	      <tr><th>Reservation ID</th><th>Vehicle ID</th><th>User ID</th><th>GS ID</th></tr>
+	      <tr><th>Reservation ID</th><th>Vehicle ID</th><th>User ID</th><th>GS ID</th><th>Actions</th></tr>
 	    </thead>
 
 
@@ -49,6 +49,13 @@
 		<td><a href="{{ url_for('vehicles_show', vehicle_id=reservation['vehicle_id']) }}">{{ reservation["vehicle_id"] }}</td>
 		<td><a href="{{ url_for('users_show', user_id=reservation['user_id']) }}">{{ reservation["user_id"] }}</td>
 		<td><a href="{{ url_for('gss_show', gsid=reservation['gs_id'] ) }}">{{ reservation["gs_id"] }}</td>
+
+		<td>
+		  <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details</a>&nbsp;
+		  <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>&nbsp;
+		  <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}" method><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+		</td>
+
 	      </tr>
 	      {% endfor %}
 	    </tbody>
