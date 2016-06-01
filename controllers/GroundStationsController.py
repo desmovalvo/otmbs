@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # import models
+from models.gpsdata import *
 from models.groundstation import *
 
 class GroundStationsController:
@@ -67,3 +68,31 @@ class GroundStationsController:
         return json_gs
 
             
+    # create gs
+    def create_gs(self, name, latitude, longitude):
+
+        """Method to create a new GroundStation"""
+
+        print "HERE I AM"
+
+        # create the GPS Data
+        gpsdata = GPSData(self.settings)
+        gpsdata.latitude = latitude
+        gpsdata.longitude = longitude
+        status = gpsdata.create()
+        print status
+        print gpsdata.gpsdata_uri
+
+        # create the gs
+        if status:
+            gs = GroundStation(self.settings, name, gpsdata)
+            status = gs.create()            
+
+        print gs
+        print status
+
+        print "DONE"
+
+        # return
+        if status:
+            return True

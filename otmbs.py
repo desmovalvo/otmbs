@@ -7,6 +7,7 @@ import ConfigParser
 # importing models, controllers and views
 from libs.n3loader import *
 from models.user import *
+from models.gpsdata import *
 from models.vehicle import *
 from models.reservation import *
 from models.groundstation import *
@@ -183,6 +184,23 @@ def gss_show(gsid):
 
     # render the html view
     return render_template("show_gs.html", entry = gs)
+
+
+@app.route('/groundstations/new', methods=['GET'])
+def gss_new():
+
+    # render the html form
+    return render_template("new_gs.html")
+
+
+@app.route('/groundstations', methods=['POST'])
+def gss_create():
+    
+    # invoke the controller
+    res = gss_controller.create_gs(request.form["name"], request.form["latitude"], request.form["longitude"])
+
+    # redirect to the index
+    return redirect("/groundstations")
 
 
 ################################################

@@ -10,7 +10,8 @@ NS = "http://mml.arces.unibo.it/otmbs#"
 RDF_TYPE = RDF + "type"
 
 # Common classes
-VEHICLE_CLASS = NS + "Vehicle"
 PERSON_CLASS = NS + "Person"
+VEHICLE_CLASS = NS + "Vehicle"
+GPSDATA_CLASS = NS + "GPSData"
 GS_CLASS = NS + "GroundStation"
 RESERVATION_CLASS = NS + "Reservation"
