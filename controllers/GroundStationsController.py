@@ -96,3 +96,19 @@ class GroundStationsController:
         # return
         if status:
             return True
+
+
+    # delete groundstation
+    def delete_gs(self, gs_id):
+
+        """This method is used to delete a groundstation.
+        All the reservations to the groundstation are also deleted"""
+
+        # retrieve the groundstation
+        gm = GroundStation(self.settings)
+
+        # delete!
+        status = gm.delete(gs_id)
+
+        # return
+        return status

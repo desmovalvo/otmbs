@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # system-wide requirements
-from flask import Flask, jsonify, render_template, request, redirect
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 import ConfigParser
 
 # importing models, controllers and views
@@ -99,6 +99,7 @@ def vehicles_create():
     return redirect("/vehicles")
 
 
+@app.route('/vehicles/delete/<vehicle_id>', methods=['GET'])
 @app.route('/vehicles/<vehicle_id>', methods=['DELETE'])
 def vehicles_delete(vehicle_id):
     
@@ -201,6 +202,22 @@ def gss_create():
 
     # redirect to the index
     return redirect("/groundstations")
+
+
+@app.route('/groundstations/delete/<gsid>', methods=['GET'])
+@app.route('/groundstations/<gsid>', methods=['DELETE'])
+def gss_delete(gsid):
+    
+    print 'DELETE'
+
+    # invoke the controller
+    res = gss_controller.delete_gs(gsid)
+    
+    print 'ETELED'
+
+    # redirect to the index
+    # return redirect("/groundstations", methods=['GET'])
+    return redirect(url_for("gss_showall"))
 
 
 ################################################

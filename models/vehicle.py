@@ -158,7 +158,7 @@ class Vehicle:
         
 
     # delete vehicle
-    def delete(self):
+    def delete(self, vehicle_id):
 
         # creating the triples
         triples = []
@@ -167,7 +167,7 @@ class Vehicle:
         triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
         triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
         triples.append(Triple(URI(self.user_uri), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
-        
+
         # putting triples
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])

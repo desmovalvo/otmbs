@@ -113,3 +113,64 @@ class GroundStation:
 
         # return
         return results
+
+
+    # get the list of reservations
+    def find_gs_reservations(self, gsid):
+
+        """Retrieves the list of reservations for the given ground station"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])        
+
+        # perform the SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        SELECT ?reservation_uri
+        WHERE {
+            ?reservation_uri rdf:type <%s> .
+            ?reservation_uri ns:hasGS ?gs_uri .
+            ?gs_uri ns:hasGSIdentifier "%s"
+        }"""
+        print query % (RDF, NS, RESERVATION_CLASS, gsid)
+        kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS, gsid))
+        results = kp.result_sparql_query       
+        print results    
+
+        # return
+        return results
+
+        
+    # delete gs
+    def delete(self, gsid):
+
+        """Delete the ground station"""
+
+        # build the triple list
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        DELETE {
+            ?gs_uri rdf:type ns:GroundStation .
+            ?gs_uri ns:hasGSIdentifier "%s" .
+            ?gs_uri ns:hasName ?gsname .
+            ?gs_uri ns:hasGPSData ?gpsdata .
+            ?gpsdata ns:hasLatitude ?latitude .
+            ?gpsdata ns:hasLongitude ?longitude .
+            ?reserv_uri rdf:type ns:Reservation .
+            ?reserv_uri ns:reservedByVehicle ?vehicle_uri .
+            ?reserv_uri ns:hasUser ?user_uri .
+            ?reserv_uri ns:hasGS ?gs_uri .     
+            ?reserv_uri ns:hasReservationIdentifier ?reserv_id
+        }
+        WHERE {
+            ?gs_uri ns:hasGSIdentifier "%s" .
+        }"""
+
+
+        # remove the triples
+        try:
+            # connect to the SIB and remove the triples
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])        
+            kp.load_query_sparql(query % (RDF, NS, gsid, gsid))
+        except:
+            return False
