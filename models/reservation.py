@@ -88,3 +88,31 @@ class Reservation:
         # return
         return results
 
+
+    # delete reservation
+    def delete(self, reservation_id):
+
+        """Method used to delete a reservation"""
+
+        # sparql query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        DELETE {
+            ?reservation_uri rdf:type ns:Reservation .
+            ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+            ?reservation_uri ns:hasUser ?user_uri .
+            ?reservation_uri ns:hasGS ?gs_uri .
+            ?reservation_uri ns:hasReservationIdentifier "%s"
+        }
+        WHERE {
+            ?reservation_uri ns:hasReservationIdentifier "%s" .
+        }"""
+
+        # putting triples
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_query_sparql(query % (RDF, NS, reservation_id, reservation_id))
+            return True
+        except Exception as e:
+            return False
+

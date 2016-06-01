@@ -218,13 +218,9 @@ def gss_create():
 @app.route('/groundstations/<gsid>', methods=['DELETE'])
 def gss_delete(gsid):
     
-    print 'DELETE'
-
     # invoke the controller
     res = gss_controller.delete_gs(gsid)
     
-    print 'ETELED'
-
     # redirect to the index
     # return redirect("/groundstations", methods=['GET'])
     return redirect(url_for("gss_showall"))
@@ -259,6 +255,17 @@ def reservations_show(reservation_id):
 
     # render the html view
     return render_template("show_reservation.html", entry = res)
+
+
+@app.route('/reservations/delete/<reservation_id>', methods=['GET'])
+@app.route('/reservations/<reservation_id>', methods=['DELETE'])
+def reservations_delete(reservation_id):
+    
+    # invoke the controller
+    res = reservations_controller.delete_reservation(reservation_id)
+    
+    # redirect to the index
+    return redirect(url_for("reservations_showall"))
 
 
 

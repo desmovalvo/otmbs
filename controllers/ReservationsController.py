@@ -65,3 +65,16 @@ class ReservationsController:
         # return
         print json_reservation
         return json_reservation
+
+
+    # delete
+    def delete_reservation(self, res_id):
+        
+        # create an instance of the model
+        rm = Reservation(self.settings)
+        
+        # delete
+        status = rm.delete(res_id)
+
+        # return
+        return status
