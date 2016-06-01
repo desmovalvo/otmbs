@@ -160,18 +160,29 @@ class Vehicle:
     # delete vehicle
     def delete(self, vehicle_id):
 
-        # creating the triples
-        triples = []
-        triples.append(Triple(URI(self.vehicle_uri), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(self.vehicle_id)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
-        triples.append(Triple(URI(self.user_uri), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
+        # sparql query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        DELETE {
+            ?vehicle_uri rdf:type ns:Vehicle .
+            ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+            ?vehicle_uri ns:hasManufacturer ?manufacturer .
+            ?vehicle_uri ns:hasModel ?model .
+            ?user_uri ns:hasVehicle ?vehicle_uri .
+            ?reservation_uri rdf:type ns:Reservation .
+            ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+            ?reservation_uri ns:hasUser ?user_uri .
+            ?reservation_uri ns:hasGS ?gs_uri .
+            ?reservation_uri ns:hasReservationIdentifier ?reservation_id
+        }
+        WHERE {
+            ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+        }"""
 
         # putting triples
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-            kp.load_rdf_remove(triples)
+            kp.load_query_sparql(query % (RDF, NS, vehicle_id, vehicle_id))
             return True
         except Exception as e:
             return False
