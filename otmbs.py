@@ -83,7 +83,7 @@ def vehicles_show(vehicle_id):
 def vehicles_new():
 
     # get all the available users to fill a combo in the view
-    users_list = users_controller.show()
+    users_list = users_controller.show_users()
 
     # render the html form
     return render_template("new_vehicle.html", users=users_list)
