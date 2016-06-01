@@ -124,18 +124,22 @@ class User:
         }
         WHERE {
             ?user_uri rdf:type ns:Person .
-            ?user_uri ns:hasVehicle ?vehicle_uri .
             ?user_uri ns:hasName ?name .
             ?user_uri ns:hasUserIdentifier "%s" .
-            ?vehicle_uri rdf:type ns:Vehicle .
-            ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
-            ?vehicle_uri ns:hasManufacturer ?manufacturer .
-            ?vehicle_uri ns:hasModel ?model .
-            ?reservation_uri rdf:type ns:Reservation .
-            ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
-            ?reservation_uri ns:hasUser ?user_uri .
-            ?reservation_uri ns:hasGS ?gs_uri .
-            ?reservation_uri ns:hasReservationIdentifier ?reservation_id
+            OPTIONAL {
+                ?user_uri ns:hasVehicle ?vehicle_uri .
+                ?vehicle_uri rdf:type ns:Vehicle .
+                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                ?vehicle_uri ns:hasManufacturer ?manufacturer .
+                ?vehicle_uri ns:hasModel ?model .           
+                OPTIONAL {
+                    ?reservation_uri rdf:type ns:Reservation .
+                    ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+                    ?reservation_uri ns:hasUser ?user_uri .
+                    ?reservation_uri ns:hasGS ?gs_uri .
+                    ?reservation_uri ns:hasReservationIdentifier ?reservation_id
+                }
+            }
         }"""
 
         # deleting triples
