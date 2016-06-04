@@ -171,21 +171,8 @@ def gss_showall():
     # get the list of the ground stations
     gss_list = gss_controller.show_gss()
 
-    # build the list for the map
-    markers = []
-    for gs in gss_list:
-        marker = {}
-        marker["lat"] = gs["latitude"]
-        marker["lng"] = gs["longitude"]
-        marker["name"] = gs["gsname"]
-        marker["gsidentifier"] = gs["gsidentifier"]
-        marker["url"] = ""
-        markers.append(marker)
-    print "MARKERS:"
-    print markers
-
     # render the html view
-    return render_template("show_gss.html", gss = gss_list, markers = markers)
+    return render_template("show_gss.html", gss = gss_list)
 
 
 @app.route('/groundstations/<gsid>', methods=['GET'])
@@ -193,6 +180,7 @@ def gss_show(gsid):
     
     # get the list of the ground stations
     gs = gss_controller.show_gs(gsid)
+    print gs
 
     # render the html view
     return render_template("show_gs.html", entry = gs)
@@ -272,11 +260,25 @@ def reservations_delete(reservation_id):
 @app.route('/reservations/new', methods=['GET'])
 def reservations_new():
 
-    # get all the available users to fill a combo in the view
+    # get all the available ground stations
+    gss_list = gss_controller.show_gss()
+
+    # get all the available vehicles
     vehicles_list = vehicles_controller.show_vehicles()
 
     # render the html form
-    return render_template("new_reservation.html", users=users_list)
+    return render_template("new_reservation.html", gss=gss_list, vehicles=vehicles_list)
+
+
+@app.route('/reservations', methods=['POST'])
+def reservations_create():
+    
+    # invoke the controller
+    # res = reservations_controller.create_reservation(request.form["name"], request.form["latitude"], request.form["longitude"])
+
+    # redirect to the index
+    return redirect("/reservations")
+
 
 
 # main

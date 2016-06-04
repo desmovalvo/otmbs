@@ -36,14 +36,15 @@
        <label for="ground station">Ground Station:</label>
        <input type="text" name="ground station" /><br />
      </div>
+
      <div class="form-group">
        User: <select name="user_car">
-	 {% for user in users %}
-	 <option value={{ user.person_uri }}>{{ user.person_uid }}</option>
+	 {% for vehicle in vehicles %}
+	 <option value={{ vehicle["vehicle_uid"] }}>{{ "%s %s (%s)" % (vehicle["vehicle_manufacturer"], vehicle["vehicle_model"], vehicle["vehicle_user_name"]) }}</option>
 	 {% endfor %}
        </select><br/>
      </div>
-     <input type="submit" />    
+     <input type="submit" value="Reserve" />    
    </form>
 
   </body>

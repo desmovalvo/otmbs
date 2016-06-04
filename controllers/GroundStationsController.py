@@ -32,13 +32,9 @@ class GroundStationsController:
         # return the result in a json-ifiable form
         json_results = []
         for station in results:
-            json_station = {}
-            for field in station:
-                json_station[field[0]] = field[2]
-            json_results.append(json_station)
+            json_results.append(station.to_json())
 
         # return
-        print json_results
         return json_results
 
             
@@ -55,13 +51,7 @@ class GroundStationsController:
         results = gs.find_gs(gsid)
 
         # transform the result in a json-ifiable form
-        json_gs = {}
-        for station in results:
-            for field in station:
-                json_gs[field[0]] = field[2]
-
-        # add the id
-        json_gs["gs_identifier"] = gsid
+        json_gs = results.to_json()
 
         # return
         print json_gs

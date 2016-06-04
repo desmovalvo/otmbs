@@ -15,14 +15,16 @@ class GroundStation:
     service and the SIB content for the Ground Stations"""
 
     # constructor
-    def __init__(self, settings, name = None, gpsdata = None):
+    def __init__(self, settings, name = None, latitude = None, longitude = None):
         
         """Constructor for the GroundStation model"""
 
         # setting initial attributes
+        self.gs_id = None
         self.gs_uri = None
-        self.name = name
-        self.gpsdata = gpsdata
+        self.gs_name = name
+        self.latitude = latitude
+        self.longitude = longitude
 
         # store settings
         self.settings = settings
@@ -82,8 +84,16 @@ class GroundStation:
         kp.load_query_sparql(query % (RDF, NS, GS_CLASS))
         results = kp.result_sparql_query           
 
+        # build the models to return
+        return_models = []
+        for result in results:
+            gs_model = GroundStation(self.settings, result[2][2], result[3][2], result[4][2])
+            gs_model.gs_uri = result[0][2]
+            gs_model.gs_id = result[1][2]
+            return_models.append(gs_model)
+
         # return
-        return results
+        return return_models
 
 
     # get the list of the ground stations
@@ -110,6 +120,19 @@ class GroundStation:
         kp.load_query_sparql(query % (RDF, NS, GS_CLASS, gsid))
         results = kp.result_sparql_query       
         print results    
+
+        # build the models to return
+        gs_model = GroundStation(self.settings)
+        for result in results:
+            gs_model.gs_uri = result[0][2]
+            gs_model.gs_name = result[1][2]
+            gs_model.latitude = result[2][2]
+            gs_model.longitude = result[3][2]
+            gs_model.gs_id = gsid
+
+        # return
+        return gs_model
+
 
         # return
         return results
@@ -174,3 +197,17 @@ class GroundStation:
             kp.load_query_sparql(query % (RDF, NS, gsid, gsid))
         except:
             return False
+
+        
+    # to json
+    def to_json(self):
+
+        """This method returns a JSON representation of the model"""
+        
+        gdict = {}        
+        gdict["gs_uri"] = self.gs_uri
+        gdict["gs_id"] = self.gs_id
+        gdict["gs_name"] = self.gs_name
+        gdict["gs_lat"] = self.latitude
+        gdict["gs_long"] = self.longitude
+        return gdict
