@@ -93,7 +93,7 @@ class ReservationsController:
 
         # create the reservation
         reservation = Reservation(self.settings, gs_id, vehicle_uid, user_uid)
-        status = reservation.create()            
+        status = reservation.create()
 
         print "CREATED" 
 

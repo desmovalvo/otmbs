@@ -1,75 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Reservations</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+{% extends "base.html" %}
+{% block content %}
 
-  <body>
+  <!-- BODY -->
+  <div class="col-md-10">
 
-    <div class="container-fluid">
-
-    <div class="page-header">
-    <h1>Reservations</h1>
-    </div>
-
-      <div class="row-fluid">
-
-	<!-- SIDE -->
-	<div class="col-md-2">
-	  <ul>
-	    <li><a href="{{ url_for('users_showall') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users</a></li>
-	    <li><a href="{{ url_for('vehicles_showall') }}"><span class="glyphicon glyphicon-bed" aria-hidden="true"></span> Vehicles</a></li>
-	    <li><a href="{{ url_for('gss_showall') }}"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Ground Stations</a></li>
-	    <li><a href="{{ url_for('reservations_showall') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reservations</a></li>
-	  </ul>
-	</div>
+      <table class="table table-striped table-hover">
 	
-	<!-- BODY -->
-	<div class="col-md-10">
-
-	  <div class="row-fluid">
-	  <h3>Reservation</h3>
-
-	  <table class="table table-striped table-hover">
-	    
-	    <!-- ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id -->
-	    <thead>
-	      <tr><th>Reservation ID</th><th>Vehicle ID</th><th>User ID</th><th>GS ID</th><th>Actions</th></tr>
-	    </thead>
+	<!-- ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id -->
+	<thead>
+	  <tr><th>Reservation ID</th><th>Vehicle ID</th><th>User ID</th><th>GS ID</th><th>Actions</th></tr>
+	</thead>
 
 
-	    <tbody>
-	      {% for reservation in entries %}
-	      <tr>
-		<td><a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id'] ) }}">{{ reservation["reservation_id"] }}</a></td>
-		<td><a href="{{ url_for('vehicles_show', vehicle_id=reservation['vehicle_id']) }}">{{ reservation["vehicle_id"] }}</td>
-		<td><a href="{{ url_for('users_show', user_id=reservation['user_id']) }}">{{ reservation["user_id"] }}</td>
-		<td><a href="{{ url_for('gss_show', gsid=reservation['gs_id'] ) }}">{{ reservation["gs_id"] }}</td>
+	<tbody>
+	  {% for reservation in entries %}
+	  <tr>
+	    <td><a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id'] ) }}">{{ reservation["reservation_id"] }}</a></td>
+	    <td><a href="{{ url_for('vehicles_show', vehicle_id=reservation['vehicle_id']) }}">{{ reservation["vehicle_id"] }}</td>
+	    <td><a href="{{ url_for('users_show', user_id=reservation['user_id']) }}">{{ reservation["user_id"] }}</td>
+	    <td><a href="{{ url_for('gss_show', gsid=reservation['gs_id'] ) }}">{{ reservation["gs_id"] }}</td>
 
-		<td>
-		  <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details</a>&nbsp;
-		  <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>&nbsp;
-		  <a href="{{ url_for('reservations_delete', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
-		</td>
+	    <td>
+	      <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details</a>&nbsp;
+	      <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>&nbsp;
+	      <a href="{{ url_for('reservations_delete', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+	    </td>
 
-	      </tr>
-	      {% endfor %}
-	    </tbody>
+	  </tr>
+	  {% endfor %}
+	</tbody>
 
-	  </table>
-	  </div>
-	  <hr>
-	  <div class="row-fluid">
-	    <a href="{{ url_for('reservations_new') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp; New Reservation</a>
-	  </div>
+      </table>
 
-	</div>
-      </div>
+    <hr>
+    <div class="row-fluid">
+      <a href="{{ url_for('reservations_new') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp; New Reservation</a>
     </div>
 
-  </body>
-</html>
+  </div>
+</div>
+
+{% endblock %}

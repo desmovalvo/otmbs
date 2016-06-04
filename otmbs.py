@@ -62,7 +62,7 @@ def vehicles_showall():
             return jsonify(results = res)
     else:
         print res
-        return render_template("show_vehicles.html", entries=res)
+        return render_template("show_vehicles.html", title="Vehicles", entries=res)
 
 
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
@@ -129,7 +129,7 @@ def users_showall():
             return jsonify(results = res)
     else:
         print res
-        return render_template("show_users.html", entries=res)
+        return render_template("show_users.html", entries=res, title="Users")
 
 
 
@@ -190,7 +190,7 @@ def gss_showall():
     gss_list = gss_controller.show_gss()
 
     # render the html view
-    return render_template("show_gss.html", gss = gss_list)
+    return render_template("show_gss.html", gss = gss_list, title="GroundStations")
 
 
 @app.route('/groundstations/<gsid>', methods=['GET'])
@@ -251,7 +251,7 @@ def reservations_showall():
             return jsonify(results = res)
     else:
         print res
-        return render_template("show_reservations.html", entries=res)
+        return render_template("show_reservations.html", entries=res, title="Reservations")
     
 
 @app.route('/reservations/<reservation_id>', methods=['GET'])
