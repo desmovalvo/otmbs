@@ -1,37 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Vehicle {{ entry["vehicle_id"] }}</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+{% extends "base.html" %}
+{% block content %}
 
-  <body>
-
-    <div class="container-fluid">
-
-    <div class="page-header">
-    <h1>Vehicle {{ entry["vehicle_id"] }}</h1>
-    </div>
-        
-      <div class="row-fluid">
-
-	<!-- SIDE -->
-	<div class="col-md-2">
-	  <ul>
-	    <li><a href="{{ url_for('users_showall') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users</a></li>
-	    <li><a href="{{ url_for('vehicles_showall') }}"><span class="glyphicon glyphicon-bed" aria-hidden="true"></span> Vehicles</a></li>
-	    <li><a href="{{ url_for('gss_showall') }}"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Ground Stations</a></li>
-	    <li><a href="{{ url_for('reservations_showall') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reservations</a></li>
-	  </ul>
-	</div>
-	
 	<!-- BODY -->
 	<div class="col-md-10">
 
-	  <h3>Vehicle details</h3>
+	  <h3>{{ entry["vehicle_manufacturer"] }}&nbsp;{{ entry["vehicle_model"] }}</h3>
 
 	  <ul>
 	    <li><b>Vehicle Manufacturer:</b>&nbsp;{{ entry["vehicle_manufacturer"] }}</li>	   
@@ -41,8 +14,5 @@
 	  </ul>
 
 	</div>
-      </div>
-    </div>
 
-  </body>
-</html>
+{% endblock %}
