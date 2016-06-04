@@ -159,6 +159,24 @@ def users_delete(user_id):
     return redirect(url_for("users_showall"))
 
 
+@app.route('/users/new', methods=['GET'])
+def users_new():
+
+    # render the html form
+    return render_template("new_user.html")
+
+
+@app.route('/users', methods=['POST'])
+def users_create():
+    
+    # invoke the controller
+    res = users_controller.create_user(request.form["name"])
+
+    # redirect to the index
+    return redirect("/users")
+
+
+
 ################################################
 #
 # setting routes for the groundstation controller

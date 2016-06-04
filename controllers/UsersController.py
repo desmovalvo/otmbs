@@ -85,3 +85,15 @@ class UsersController:
         # return
         return status
 
+
+    # create user
+    def create_user(self, name):
+
+        """Method to create a person"""
+
+        # create!
+        u = User(self.settings, name)
+        status = u.create()
+        
+        # return
+        return status

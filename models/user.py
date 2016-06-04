@@ -15,7 +15,7 @@ class User:
     service and the SIB content for the Person class"""
 
     # constructor
-    def __init__(self, settings):
+    def __init__(self, settings, name = None):
 
         """Constructor for the User class"""
 
@@ -25,31 +25,38 @@ class User:
         # initialization of class attributes
         self.user_uri = None
         self.user_id = None
-        self.name = None
+        self.name = name
         self.vehicles = []
         self.reservations = []
 
 
     # create vehicles
-    def create(self, user_id, name, vehicle_id = None):
+    def create(self):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
 
         # generating an UUID for the vehicle
-        self.user_uri = str(uuid.uuid4())
+        uid = str(uuid.uuid4())
+        try:
+            self.user_uid = self.name.split(" ")[0] + self.name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
+        except:
+            self.user_uid = self.name.replace(" ", "") + "_" + uid.split("-")[0]            
+        self.user_uri = NS + uid
         
         # creating the triples
         triples = []
         triples.append(Triple(URI(NS + self.user_uri), URI(RDF_TYPE), URI(PERSON_CLASS)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasUserIdentifier"), Literal(user_id)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(name)))
-        if vehicle_id:
-            triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasVehicle"), URI(vehicle_id)))
-        
+        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasUserIdentifier"), Literal(self.user_uid)))
+        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(self.name)))
+
         # putting triples
-        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-        kp.load_rdf_insert(triples)
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_rdf_insert(triples)
+            return True
+        except:
+            return False
 
     
     # find
