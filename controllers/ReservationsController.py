@@ -78,3 +78,25 @@ class ReservationsController:
 
         # return
         return status
+
+
+    # create reservation
+    def create_reservation(self, gs_id, vehicle_id):
+
+        """Method to create a new Reservation"""
+
+        print "CONTROLLER"
+
+        # get the vehicle_id and user_uid
+        vehicle_uid = vehicle_id.split("|")[0]
+        user_uid = vehicle_id.split("|")[1]
+
+        # create the reservation
+        reservation = Reservation(self.settings, gs_id, vehicle_uid, user_uid)
+        status = reservation.create()            
+
+        print "CREATED" 
+
+        # return
+        if status:
+            return True

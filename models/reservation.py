@@ -15,12 +15,20 @@ class Reservation:
     service and the SIB content for the reservations"""
 
     # constructor
-    def __init__(self, settings):
+    def __init__(self, settings, gs_id = None, vehicle_id = None, user_uid = None):
 
         """Constructor for the Reservation class"""
 
         # settings
         self.settings = settings
+
+        # init parameters
+        self.gs_id = gs_id
+        self.vehicle_id = vehicle_id
+        self.user_uid = user_uid
+        self.gs_uri = None
+        self.vehicle_uri = None
+        self.user_uri = None
 
     
     # find reservations
@@ -116,3 +124,39 @@ class Reservation:
         except Exception as e:
             return False
 
+
+    # create reservation
+    def create(self):
+
+        """Create a reservation"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # generate an uuid
+        res_uuid = str(uuid.uuid4())
+        res_id = "Reserv_%s" % (res_uuid.split("-")[0])
+        res_uri = NS + res_uuid
+
+        # UPDATE SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        INSERT {
+            <%s> rdf:type ns:Reservation .
+            <%s> ns:hasReservationIdentifier "%s" .
+            <%s> ns:reservedByVehicle ?vehicle_uri .
+            <%s> ns:hasUser ?user_uri .
+            <%s> ns:hasGS ?gs_uri
+        }
+        WHERE {
+            ?user_uri ns:hasUserIdentifier "%s" .
+            ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+            ?gs_uri ns:hasGSIdentifier "%s"
+        }"""
+
+        print query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_uid, self.vehicle_id, self.gs_id)
+        try:
+            kp.load_query_sparql(query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_uid, self.vehicle_id, self.gs_id))
+            return True
+        except:
+            return False

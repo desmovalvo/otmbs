@@ -272,13 +272,15 @@ def reservations_new():
 
 @app.route('/reservations', methods=['POST'])
 def reservations_create():
+
+    print "OTMBS"
     
     # invoke the controller
-    # res = reservations_controller.create_reservation(request.form["name"], request.form["latitude"], request.form["longitude"])
+    print request.form
+    res = reservations_controller.create_reservation(request.form["gs"], request.form["user_car"])
 
     # redirect to the index
     return redirect("/reservations")
-
 
 
 # main
