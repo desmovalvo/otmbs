@@ -26,6 +26,8 @@ class User:
         self.user_uri = None
         self.user_id = None
         self.name = None
+        self.vehicles = []
+        self.reservations = []
 
 
     # create vehicles

@@ -34,10 +34,10 @@
 	  <h3>Vehicle details</h3>
 
 	  <ul>
-	    <li><b>Vehicle Manufacturer:</b>&nbsp;{{ entry["brand"] }}</li>	   
-	    <li><b>Vehicle Model:</b>&nbsp;{{ entry["model"] }}</li>	   
+	    <li><b>Vehicle Manufacturer:</b>&nbsp;{{ entry["vehicle_manufacturer"] }}</li>	   
+	    <li><b>Vehicle Model:</b>&nbsp;{{ entry["vehicle_model"] }}</li>	   
 	    <li><b>Vehicle Identifier:</b>&nbsp;{{ entry["vehicle_id"] }}</li>	   
-	    <li><b>Vehicle Owner:</b>&nbsp;<a href="{{ url_for('users_show', user_id=entry['person_uid']) }}">{{ entry["person_name"] }}</a></li>	   
+	    <li><b>Vehicle Owner:</b>&nbsp;<a href="{{ url_for('users_show', user_id=entry['vehicle_user_uid']) }}">{{ entry["vehicle_user_name"] }}</a></li>	   
 	  </ul>
 
 	</div>

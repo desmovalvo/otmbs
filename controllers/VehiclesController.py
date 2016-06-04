@@ -28,13 +28,9 @@ class VehiclesController:
         # transform the results in a "jsonifiable"-form
         json_results = []
         for vehicle in vehicles_list:
-            json_vehicle = {}
-            for field in vehicle:
-                json_vehicle[field[0]] = field[2]
-            json_results.append(json_vehicle)
+            json_results.append(vehicle.to_json())
 
         # return
-        print json_results
         return json_results
 
 
@@ -44,19 +40,12 @@ class VehiclesController:
         """This method is used to retrieve a single Vehicle"""
 
         v = Vehicle(self.settings)
-        vehicles_list = v.find_vehicle(vehicle_id)
+        v = v.find_vehicle(vehicle_id)
 
         # transform the results in a "jsonifiable"-form
-        json_vehicle = {}
-        for vehicle in vehicles_list:
-            for field in vehicle:
-                json_vehicle[field[0]] = field[2]
-
-        # add the vehicle id
-        json_vehicle["vehicle_id"] = vehicle_id
+        json_vehicle = v.to_json()
 
         # return
-        print json_vehicle
         return json_vehicle
 
 

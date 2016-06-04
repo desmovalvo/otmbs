@@ -23,9 +23,10 @@ class Vehicle:
         self.settings = settings
 
         # initialization of class attributes
+        self.user = None
         self.brand = None
         self.model = None
-        self.user_uri = None
+        self.user_uri = None # TODO: delete it!
         self.vehicle_id = None
         self.vehicle_uri = None
 
@@ -91,8 +92,21 @@ class Vehicle:
         kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
         results = kp.result_sparql_query           
 
+        # build a list of vehicle models
+        model_results = []
+        for result in results:
+            new_model = Vehicle(self.settings)
+            new_model.vehicle_uri = result[0][2]
+            new_model.vehicle_id = result[1][2]
+            new_model.brand = result[2][2]
+            new_model.model = result[3][2]
+            new_model.user_uri = result[4][2]
+            new_model.user_name = result[5][2]
+            new_model.user_uid = result[6][2]
+            model_results.append(new_model)
+
         # return
-        return results
+        return model_results
 
 
     # show vehicle
@@ -106,7 +120,7 @@ class Vehicle:
         # query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?brand ?model ?person_uri ?person_name ?person_uid
+        SELECT ?vehicle_uri ?brand ?model ?person_uri ?person_name ?person_uid
         WHERE {
             ?vehicle_uri rdf:type <%s> .
             ?vehicle_uri ns:hasManufacturer ?brand .
@@ -122,8 +136,18 @@ class Vehicle:
         kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, vehicle_id))
         results = kp.result_sparql_query
 
+        # build the model to return
+        model_result = Vehicle(self.settings)
+        model_result.vehicle_uri = results[0][0][2]
+        model_result.brand = results[0][1][2]
+        model_result.model = results[0][2][2]
+        model_result.user_uri = results[0][3][2]
+        model_result.user_name = results[0][4][2]
+        model_result.user_uid = results[0][5][2]
+        model_result.vehicle_id = vehicle_id
+
         # return
-        return results
+        return model_result
 
         
     # find user's vehicles
@@ -186,3 +210,20 @@ class Vehicle:
             return True
         except Exception as e:
             return False
+
+
+    # to json
+    def to_json(self):
+
+        """This method return a JSON representation of the vehicle"""
+        
+        vdict = {} 
+        vdict["vehicle_uri"] = self.vehicle_uri
+        vdict["vehicle_id"] = self.vehicle_id
+        vdict["vehicle_manufacturer"] = self.brand
+        vdict["vehicle_model"] = self.model
+        vdict["vehicle_user_uid"] = self.user_uid
+        vdict["vehicle_user_uri"] = self.user_uri
+        vdict["vehicle_user_name"] = self.user_name
+
+        return vdict

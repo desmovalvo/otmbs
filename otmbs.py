@@ -23,6 +23,7 @@ settingsParser.readfp(open("otmbs.conf"))
 settings["sib_host"] = settingsParser.get("sib", "host")
 settings["sib_port"] = settingsParser.getint("sib", "port")
 settings["flask_port"] = settingsParser.getint("flask", "port")
+settings["flask_host"] = settingsParser.get("flask", "host")
 settings["block_size"] = settingsParser.getint("kb", "block_size")
 settings["kb_files"] = []
 for filename in settingsParser.get("kb", "kb_file").split("%"):
@@ -268,7 +269,16 @@ def reservations_delete(reservation_id):
     return redirect(url_for("reservations_showall"))
 
 
+@app.route('/reservations/new', methods=['GET'])
+def reservations_new():
+
+    # get all the available users to fill a combo in the view
+    vehicles_list = vehicles_controller.show_vehicles()
+
+    # render the html form
+    return render_template("new_reservation.html", users=users_list)
+
 
 # main
 if __name__ == '__main__':
-    app.run(debug = True, port = settings["flask_port"])
+    app.run(debug = True, host = settings["flask_host"], port = settings["flask_port"])
