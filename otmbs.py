@@ -187,10 +187,14 @@ def users_create():
 def gss_showall():
     
     # get the list of the ground stations
-    gss_list = gss_controller.show_gss()
+    res = gss_controller.show_gss()
 
-    # render the html view
-    return render_template("show_gss.html", gss = gss_list, title="GroundStations")
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        return render_template("show_gss.html", gss = res, title="GroundStations")
 
 
 @app.route('/groundstations/<gsid>', methods=['GET'])
