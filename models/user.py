@@ -39,16 +39,16 @@ class User:
         # generating an UUID for the vehicle
         uid = str(uuid.uuid4())
         try:
-            self.user_uid = self.name.split(" ")[0] + self.name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
+            self.user_uid = self.user_name.split(" ")[0] + self.user_name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
         except:
-            self.user_uid = self.name.replace(" ", "") + "_" + uid.split("-")[0]            
+            self.user_uid = self.user_name.replace(" ", "") + "_" + uid.split("-")[0]            
         self.user_uri = NS + uid
         
         # creating the triples
         triples = []
         triples.append(Triple(URI(NS + self.user_uri), URI(RDF_TYPE), URI(PERSON_CLASS)))
         triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasUserIdentifier"), Literal(self.user_uid)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(self.name)))
+        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
 
         # putting triples
         try:
