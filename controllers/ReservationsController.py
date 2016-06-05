@@ -74,8 +74,6 @@ class ReservationsController:
 
         """Method to create a new Reservation"""
 
-        print "CONTROLLER"
-
         # get the vehicle_id and user_uid
         vehicle_uid = vehicle_id.split("|")[0]
         user_uid = vehicle_id.split("|")[1]
@@ -84,8 +82,25 @@ class ReservationsController:
         reservation = Reservation(self.settings, gs_id, vehicle_uid, user_uid)
         status = reservation.create()
 
-        print "CREATED" 
-
         # return
         if status:
             return True
+
+
+    # edit reservation
+    def update_reservation(self, reservation_id, gs_id, usercar):
+
+        """Method to update a Reservation"""
+
+        print "RCONTRO?AEOUAEUART"
+
+        # split user and car
+        user_id = usercar.split("|")[1]
+        vehicle_id = usercar.split("|")[0]
+
+        # find the reservation
+        reserv_model = Reservation(self.settings)
+        r = reserv_model.find_reservation(reservation_id)
+
+        # update the reservation
+        r.update(gs_id, vehicle_id, user_id)

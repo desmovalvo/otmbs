@@ -344,8 +344,6 @@ def reservations_new():
 @app.route('/reservations', methods=['POST'])
 def reservations_create():
 
-    print "OTMBS"
-    
     # invoke the controller
     print request.form
     res = reservations_controller.create_reservation(request.form["gs"], request.form["user_car"])
@@ -369,6 +367,21 @@ def reservations_edit(reservation_id):
     # render the html form
     return render_template("edit_reservation.html", gss=gss_list, vehicles=vehicles_list, reservation = res, title="Edit reservation")
 
+
+@app.route('/reservations/update/<reservation_id>', methods=['POST'])
+# @app.route('/reservations/<reservation_id>', methods=['PUT'])
+def reservations_update(reservation_id):
+
+    print "OTMBS"
+
+    # invoke the controller
+    print request.form
+    res = reservations_controller.update_reservation(reservation_id, request.form["gs"], request.form["user_car"])
+
+    # redirect to the index
+    return redirect("/reservations")
+
+    request.form["gs"], request.form["user_car"]
 
 
 # main

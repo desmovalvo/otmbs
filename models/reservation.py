@@ -202,6 +202,45 @@ class Reservation:
         except:
             return False
 
+        
+    # update
+    def update(self, gs_id, vehicle_id, user_id):
+
+        """Update a reservation"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # define the SPARQL UPDATE
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        INSERT {
+            ?reservation_uri ns:reservedByVehicle ?new_vehicle_uri .
+            ?reservation_uri ns:hasUser ?new_user_uri .
+            ?reservation_uri ns:hasGS ?new_gs_uri .            
+        }
+        DELETE {
+            ?reservation_uri ns:reservedByVehicle ?old_vehicle_uri .
+            ?reservation_uri ns:hasUser ?old_user_uri .
+            ?reservation_uri ns:hasGS ?old_gs_uri .                    
+        }
+        WHERE {
+            ?reservation_uri ns:hasReservationIdentifier "%s" .
+            ?reservation_uri ns:reservedByVehicle ?old_vehicle_uri .
+            ?reservation_uri ns:hasUser ?old_user_uri .
+            ?reservation_uri ns:hasGS ?old_gs_uri .
+            ?new_user_uri ns:hasUserIdentifier "%s" .
+            ?new_gs_uri ns:hasGSIdentifier "%s" .
+            ?new_vehicle_uri ns:hasVehicleIdentifier "%s"
+        }"""
+
+        try:
+            print query % (RDF, NS, self.res_id, user_id, gs_id, vehicle_id)
+            kp.load_query_sparql(query % (RDF, NS, self.res_id, user_id, gs_id, vehicle_id))
+            return True
+        except:
+            return False
+
 
     # to json
     def to_json(self):
