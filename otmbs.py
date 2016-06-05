@@ -80,6 +80,19 @@ def vehicles_show(vehicle_id):
         return render_template("show_vehicle.html", entry=res, title="Vehicle details")
 
 
+@app.route('/vehicles/<vehicle_id>/edit', methods=['GET'])
+def vehicles_edit(vehicle_id):
+
+    # get all the available users to fill a combo in the view
+    users_list = users_controller.show_users()
+
+    # get the vehicle to modify
+    vehicle = vehicles_controller.show_vehicle(vehicle_id)
+
+    # render the html form
+    return render_template("edit_vehicle.html", users=users_list, vehicle=vehicle)
+
+
 @app.route('/vehicles/new', methods=['GET'])
 def vehicles_new():
 
@@ -132,7 +145,6 @@ def users_showall():
         return render_template("show_users.html", entries=res, title="Users")
 
 
-
 @app.route('/users/<user_id>', methods=['GET'])
 def users_show(user_id):
 
@@ -159,6 +171,16 @@ def users_delete(user_id):
     return redirect(url_for("users_showall"))
 
 
+@app.route('/users/<user_id>/edit', methods=['GET'])
+def users_edit(user_id):
+
+    # retrieve the user
+    user = users_controller.show_user(user_id)
+
+    # render the html form
+    return render_template("edit_user.html", user=user)
+
+
 @app.route('/users/new', methods=['GET'])
 def users_new():
 
@@ -174,7 +196,6 @@ def users_create():
 
     # redirect to the index
     return redirect("/users")
-
 
 
 ################################################
@@ -239,6 +260,18 @@ def gss_delete(gsid):
     # redirect to the index
     # return redirect("/groundstations", methods=['GET'])
     return redirect(url_for("gss_showall"))
+
+
+@app.route('/groundstations/<gsid>/edit', methods=['GET'])
+def gss_edit(gsid):
+
+    # invoke the controller in order to retrieve
+    # the gs that should be modified
+    res = gss_controller.show_gs(gsid)
+
+    # now render the edit template with the field
+    # filled with the previous results
+    return render_template("edit_gs.html", gs=res)
 
 
 ################################################
@@ -312,6 +345,23 @@ def reservations_create():
 
     # redirect to the index
     return redirect("/reservations")
+
+
+@app.route('/reservations/<reservation_id>/edit', methods=['GET'])
+def reservations_edit(reservation_id):
+
+    # get all the available ground stations
+    gss_list = gss_controller.show_gss()
+
+    # get all the available vehicles
+    vehicles_list = vehicles_controller.show_vehicles()
+
+    # get the current reservation
+    res = reservations_controller.show_reservation(reservation_id)    
+
+    # render the html form
+    return render_template("edit_reservation.html", gss=gss_list, vehicles=vehicles_list, reservation = res)
+
 
 
 # main
