@@ -24,8 +24,8 @@ class User:
 
         # initialization of class attributes
         self.user_uri = None
-        self.user_id = None
-        self.name = name
+        self.user_uid = None
+        self.user_name = name
         self.vehicles = []
         self.reservations = []
 
@@ -70,17 +70,96 @@ class User:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?person_uri ?person_name ?person_uid 
+        SELECT ?person_uri ?person_name ?person_uid ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id
         WHERE {
             ?person_uri rdf:type ns:Person .
             ?person_uri ns:hasUserIdentifier ?person_uid .
             ?person_uri ns:hasName ?person_name .
-        }"""
+            OPTIONAL {
+                ?vehicle_uri rdf:type ns:Vehicle .
+                ?person_uri ns:hasVehicle ?vehicle_uri .
+                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
+                ?vehicle_uri ns:hasModel ?vehicle_model .
+                OPTIONAL { 
+                    ?reservation_uri rdf:type ns:Reservation .
+                    ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
+                    ?reservation_uri ns:hasUser ?person_uri .
+                    ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+                    ?reservation_uri ns:hasGS ?gs_uri .
+                    ?gs_uri ns:hasGSIdentifier ?gs_id
+                }
+            }
+        }
+        ORDER BY ?user_uid"""
         kp.load_query_sparql(query % (RDF, NS))
         results = kp.result_sparql_query           
 
+        # build a dict for every user
+        user_dicts = {}
+        for res in results:
+            
+            person_uri = res[0][2]
+            person_name = res[1][2]
+            person_uid = res[2][2]
+            vehicle_uri = res[3][2]
+            vehicle_id = res[4][2]
+            vehicle_manu = res[5][2]
+            vehicle_model = res[6][2]
+            res_id = res[7][2]
+            gs_id = res[8][2]
+
+            if user_dicts.has_key(person_uri):
+
+                # the dictionary already exists,
+                # now we should add vehicles or reservations
+
+                # add vehicles
+                if vehicle_id:
+                    if not user_dicts[person_uri]["vehicles"].has_key(vehicle_id):
+                        user_dicts[person_uri]["vehicles"][vehicle_id] = { "vehicle_manu" : vehicle_manu, "vehicle_model" : vehicle_model }
+
+                # add reservations
+                if res_id:
+                    if not user_dicts[person_uri]["reservations"].has_key(res_id):
+                        user_dicts[person_uri]["reservations"][res_id] = { "reservation_id" : res_id, "gs_id" : gs_id, "vehicle_id" : vehicle_id}
+
+            else:
+
+                # creation of a dictionary
+                user_dicts[person_uri] = {
+                    "person_name" : person_name,
+                    "person_uid" : person_uid,
+                    "vehicles" : {},
+                    "reservations" : {}
+                }
+            
+                # add vehicles
+                if vehicle_id:
+                    if not user_dicts[person_uri]["vehicles"].has_key(vehicle_id):
+                        user_dicts[person_uri]["vehicles"][vehicle_id] = { "vehicle_manu" : vehicle_manu, "vehicle_model" : vehicle_model }
+
+                # add reservations
+                if res_id:
+                    if not user_dicts[person_uri]["reservations"].has_key(res_id):
+                        user_dicts[person_uri]["reservations"][res_id] = { "reservation_id" : res_id, "gs_id" : gs_id, "vehicle_id" : vehicle_id}
+
+
+        # build the models and return them
+        user_models = []
+        for el in user_dicts:
+            user_model = User(self.settings)
+            user_model.user_uri = el
+            user_model.user_uid = user_dicts[el]["person_uid"]
+            user_model.user_name = user_dicts[el]["person_name"]
+            for vehicle in user_dicts[el]["vehicles"]:
+                user_model.vehicles.append(vehicle)
+            for reservation in user_dicts[el]["reservations"]:
+                user_model.reservations.append(reservation)
+            user_models.append(user_model)
+            
         # return
-        return results
+        return user_models
 
 
     # find
@@ -159,3 +238,16 @@ class User:
             return True
         except Exception as e:
             return False
+
+
+    # to json
+    def to_json(self):
+
+        # return a json representation
+        udict = {}
+        udict["user_uid"] = self.user_uid
+        udict["user_name"] = self.user_name
+        udict["user_uri"] = self.user_uri
+        udict["user_vehicles"] = self.vehicles
+        udict["user_reservations"] = self.reservations
+        return udict

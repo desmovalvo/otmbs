@@ -141,6 +141,7 @@ def users_showall():
         if request.args['format'] == 'json':
             return jsonify(results = res)
     else:
+
         print res
         return render_template("show_users.html", entries=res, title="Users")
 

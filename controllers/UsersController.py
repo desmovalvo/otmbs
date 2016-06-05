@@ -29,10 +29,7 @@ class UsersController:
         # transform the results in a "jsonifiable"-form
         json_results = []
         for user in users_list:
-            json_user = {}
-            for field in user:
-                json_user[field[0]] = field[2]
-            json_results.append(json_user)
+            json_results.append(user.to_json())
 
         # return
         return json_results
