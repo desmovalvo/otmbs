@@ -202,10 +202,14 @@ def gss_show(gsid):
     
     # get the list of the ground stations
     gs = gss_controller.show_gs(gsid)
-    print gs
 
-    # render the html view
-    return render_template("show_gs.html", entry = gs, title="GroundStation details")
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = gs)
+    else:
+        # render the html view
+        return render_template("show_gs.html", entry = gs, title="GroundStation details")
 
 
 @app.route('/groundstations/new', methods=['GET'])
@@ -264,8 +268,13 @@ def reservations_show(reservation_id):
     # invoking the controller
     res = reservations_controller.show_reservation(reservation_id)
 
-    # render the html view
-    return render_template("show_reservation.html", entry = res, title="Reservation details")
+    # select the proper output form
+    if request.args.has_key('format'):
+        if request.args['format'] == 'json':
+            return jsonify(results = res)
+    else:
+        # render the html view
+        return render_template("show_reservation.html", entry = res, title="Reservation details")
 
 
 @app.route('/reservations/delete/<reservation_id>', methods=['GET'])
