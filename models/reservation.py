@@ -23,12 +23,18 @@ class Reservation:
         self.settings = settings
 
         # init parameters
-        self.gs_id = gs_id
-        self.vehicle_id = vehicle_id
-        self.user_uid = user_uid
-        self.gs_uri = None
+        self.res_id = None
+        self.res_uri = None
         self.vehicle_uri = None
+        self.vehicle_id = vehicle_id
+        self.vehicle_manufacturer = None
+        self.vehicle_model = None
         self.user_uri = None
+        self.user_uid = user_uid
+        self.user_name = None
+        self.gs_uri = None
+        self.gs_id = gs_id
+        self.gs_name = None
 
     
     # find reservations
@@ -42,7 +48,7 @@ class Reservation:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id
+        SELECT ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_uid ?user_name ?gs_uri ?gs_id
         WHERE {
             ?reservation_uri rdf:type <%s> .
             ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
@@ -51,7 +57,7 @@ class Reservation:
             ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
             ?vehicle_uri ns:hasModel ?vehicle_model .
             ?reservation_uri ns:hasUser ?user_uri .
-            ?user_uri ns:hasUserIdentifier ?user_id .
+            ?user_uri ns:hasUserIdentifier ?user_uid .
             ?user_uri ns:hasName ?user_name .
             ?reservation_uri ns:hasGS ?gs_uri .
             ?gs_uri ns:hasGSIdentifier ?gs_id
@@ -75,7 +81,7 @@ class Reservation:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id
+        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_uid ?user_name ?gs_uri ?gs_id ?gs_name
         WHERE {
             ?reservation_uri rdf:type <%s> .
             ?reservation_uri ns:hasReservationIdentifier "%s" .
@@ -84,17 +90,33 @@ class Reservation:
             ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
             ?vehicle_uri ns:hasModel ?vehicle_model .
             ?reservation_uri ns:hasUser ?user_uri .
-            ?user_uri ns:hasUserIdentifier ?user_id .
+            ?user_uri ns:hasUserIdentifier ?user_uid .
             ?user_uri ns:hasName ?user_name .
             ?reservation_uri ns:hasGS ?gs_uri .
-            ?gs_uri ns:hasGSIdentifier ?gs_id
+            ?gs_uri ns:hasGSIdentifier ?gs_id .
+            ?gs_uri ns:hasName ?gs_name
         }"""
         print query % (RDF, NS, RESERVATION_CLASS, reservation_id)
         kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS, reservation_id))
         results = kp.result_sparql_query           
 
+        # build a model
+        r = Reservation(self.settings)
+        r.res_id = reservation_id
+        r.res_uri = results[0][0][2]
+        r.vehicle_uri = results[0][1][2]
+        r.vehicle_id = results[0][2][2]
+        r.vehicle_manufacturer = results[0][3][2]
+        r.vehicle_model = results[0][4][2]
+        r.user_uri = results[0][5][2]
+        r.user_uid = results[0][6][2]
+        r.user_name = results[0][7][2]        
+        r.gs_uri = results[0][8][2]
+        r.gs_id = results[0][9][2]
+        r.gs_name = results[0][10][2]
+
         # return
-        return results
+        return r
 
 
     # delete reservation
@@ -160,3 +182,24 @@ class Reservation:
             return True
         except:
             return False
+
+
+    # to json
+    def to_json(self):
+
+        """This model provides a json representation of the object"""
+
+        rdict = {}
+        rdict["reservation_id"] = self.res_id
+        rdict["reservation_uri"] = self.res_uri
+        rdict["vehicle_uri"] = self.vehicle_uri
+        rdict["vehicle_id"] = self.vehicle_id
+        rdict["vehicle_manufacturer"] = self.vehicle_manufacturer
+        rdict["vehicle_model"] = self.vehicle_model
+        rdict["user_uri"] = self.user_uri
+        rdict["user_uid"] = self.user_uid
+        rdict["user_name"] = self.user_name
+        rdict["gs_uri"] = self.gs_uri
+        rdict["gs_id"] = self.gs_id
+        rdict["gs_name"] = self.gs_name
+        return rdict
