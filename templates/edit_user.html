@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  
+	<!-- BODY -->
+	<div class="col-md-10">
+
+   <form method="post" action="{{ url_for('users_create') }}">
+     <div class="form-group">
+       <label for="name">User name:</label>
+       <input type="text" name="name" value="{{ user.person_name }}"><br />
+     </div>
+     <input type="submit" value="Update" />    
+   </form>
+   </div>
+
+{% endblock %}

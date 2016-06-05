@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<!-- BODY -->
+	<div class="col-md-10">
+
+   <form method="post" action="{{ url_for('vehicles_create') }}">
+     <div class="form-group">
+       <label for="manufacturer">Manufacturer:</label>
+       <input type="text" name="manufacturer" value={{ vehicle["vehicle_manufacturer"] }}><br />
+     </div>
+     <div class="form-group">
+       <label for="model">Model:</label>
+       <input type="text" name="model" value={{ vehicle["vehicle_model"] }} /><br />
+     </div>
+     <div class="form-group">
+       User: <select name="user_uri">
+	 {% for user in users %}
+	 {% if user.person_uid == vehicle["vehicle_user_uid"] %}
+	 <option selected value={{ user.person_uri }}>{{ user.person_uid }}</option>
+	 {% else %}
+	 <option value={{ user.person_uri }}>{{ user.person_uid }}</option>
+	 {% endif %}
+	 {% endfor %}
+       </select><br/>
+     </div>
+     <input type="submit" value="Update" />    
+   </form>
+   </div>
+
+{% endblock %}

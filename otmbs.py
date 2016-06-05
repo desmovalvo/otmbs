@@ -90,7 +90,7 @@ def vehicles_edit(vehicle_id):
     vehicle = vehicles_controller.show_vehicle(vehicle_id)
 
     # render the html form
-    return render_template("edit_vehicle.html", users=users_list, vehicle=vehicle)
+    return render_template("edit_vehicle.html", users=users_list, vehicle=vehicle, title="Edit vehicle")
 
 
 @app.route('/vehicles/new', methods=['GET'])
@@ -179,7 +179,7 @@ def users_edit(user_id):
     user = users_controller.show_user(user_id)
 
     # render the html form
-    return render_template("edit_user.html", user=user)
+    return render_template("edit_user.html", user=user, title="Edit user")
 
 
 @app.route('/users/new', methods=['GET'])
@@ -272,7 +272,7 @@ def gss_edit(gsid):
 
     # now render the edit template with the field
     # filled with the previous results
-    return render_template("edit_gs.html", gs=res)
+    return render_template("edit_gs.html", gs=res, title="Edit GroundStation")
 
 
 ################################################
@@ -361,7 +361,7 @@ def reservations_edit(reservation_id):
     res = reservations_controller.show_reservation(reservation_id)    
 
     # render the html form
-    return render_template("edit_reservation.html", gss=gss_list, vehicles=vehicles_list, reservation = res)
+    return render_template("edit_reservation.html", gss=gss_list, vehicles=vehicles_list, reservation = res, title="Edit reservation")
 
 
 

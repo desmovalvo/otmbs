@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  
+	<!-- BODY -->
+	<div class="col-md-10">
+
+
+   <form method="post" action="{{ url_for('gss_create') }}">
+     <div class="form-group">
+       <label for="Name">Name:</label>
+       <input type="text" name="name" value={{ gs["gs_name"] }} /><br />
+     </div>
+     <div class="form-group">
+       <label for="latitude">Latitude:</label>
+       <input type="text" name="latitude" value={{ gs["gs_lat"] }} /><br />
+     </div>
+     <div class="form-group">
+       <label for="longitude">Longitude:</label>
+       <input type="text" name="longitude" value={{ gs["gs_long"] }} /><br />
+     </div>
+     <input type="submit" value="Update" />    
+   </form>
+
+   </div>
+
+{% endblock %}

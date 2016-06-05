@@ -9,7 +9,11 @@
      <div class="form-group">
        Ground Station: <select name="gs">
 	 {% for gs in gss %}
+	 {% if gs["gs_id"] == reservation["gs_id"] %}
+	 <option selected value={{ gs["gs_id"] }}>{{ "%s" % (gs["gs_name"]) }}</option>
+	 {% else %}
 	 <option value={{ gs["gs_id"] }}>{{ "%s" % (gs["gs_name"]) }}</option>
+	 {% endif %}
 	 {% endfor %}
        </select><br/>
      </div>
@@ -17,12 +21,16 @@
      <div class="form-group">
        Vehicle (User): <select name="user_car">
 	 {% for vehicle in vehicles %}
+	 {% if  vehicle["vehicle_id"] == reservation["vehicle_id"] %}
+	 <option selected value={{ "%s|%s" % (vehicle["vehicle_id"], vehicle["vehicle_user_uid"]) }}>{{ "%s %s (%s)" % (vehicle["vehicle_manufacturer"], vehicle["vehicle_model"], vehicle["vehicle_user_name"]) }}</option>
+	 {% else %}
 	 <option value={{ "%s|%s" % (vehicle["vehicle_id"], vehicle["vehicle_user_uid"]) }}>{{ "%s %s (%s)" % (vehicle["vehicle_manufacturer"], vehicle["vehicle_model"], vehicle["vehicle_user_name"]) }}</option>
+	 {% endif %}
 	 {% endfor %}
        </select><br/>
      </div>
-     <input type="submit" value="Reserve" />    
+     <input type="submit" value="Update" />    
    </form>
-   </div>
-
+</div>
+   
 {% endblock %}
