@@ -100,7 +100,7 @@ def vehicles_new():
     users_list = users_controller.show_users()
 
     # render the html form
-    return render_template("new_vehicle.html", users=users_list)
+    return render_template("new_vehicle.html", users=users_list, title="New Vehicle")
 
 
 @app.route('/vehicles', methods=['POST'])
@@ -186,7 +186,7 @@ def users_edit(user_id):
 def users_new():
 
     # render the html form
-    return render_template("new_user.html")
+    return render_template("new_user.html", title="New User")
 
 
 @app.route('/users', methods=['POST'])
@@ -238,7 +238,7 @@ def gss_show(gsid):
 def gss_new():
 
     # render the html form
-    return render_template("new_gs.html")
+    return render_template("new_gs.html", title="New GroundStation")
 
 
 @app.route('/groundstations', methods=['POST'])
@@ -332,7 +332,7 @@ def reservations_new():
     vehicles_list = vehicles_controller.show_vehicles()
 
     # render the html form
-    return render_template("new_reservation.html", gss=gss_list, vehicles=vehicles_list)
+    return render_template("new_reservation.html", gss=gss_list, vehicles=vehicles_list, title="New Reservation")
 
 
 @app.route('/reservations', methods=['POST'])
