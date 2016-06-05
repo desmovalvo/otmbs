@@ -211,6 +211,51 @@ class Vehicle:
         except Exception as e:
             return False
 
+    
+    # update
+    def update(self, manufacturer, model, user_id):
+
+        """Method used to update the model of a vehicle"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        INSERT {
+            ?vehicle_uri ns:hasModel "%s" .
+            ?vehicle_uri ns:hasManufacturer "%s" .
+            ?user_uri ns:hasVehicle ?vehicle_uri .
+            ?reservation_uri ns:hasUser ?user_uri
+        }
+        DELETE {
+            ?vehicle_uri ns:hasModel ?old_model .
+            ?vehicle_uri ns:hasManufacturer ?old_manufacturer .
+            ?old_user_uri ns:hasVehicle ?vehicle_uri .
+            ?reservation_uri ns:hasUser ?old_user_uri
+        }
+        WHERE {
+            ?vehicle_uri rdf:type ns:Vehicle .
+            ?vehicle_uri ns:hasModel ?old_model .
+            ?vehicle_uri ns:hasManufacturer ?old_manufacturer .
+            ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+            ?old_user_uri ns:hasVehicle ?vehicle_uri .
+            ?old_user_uri ns:hasUserIdentifier ?old_user_id .
+            ?user_uri ns:hasUserIdentifier "%s" .
+            OPTIONAL {
+                ?reservation_uri ns:hasUser ?old_user_uri
+            }
+        }"""
+
+        try:
+            print query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id)
+            kp.load_query_sparql(query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id))
+            results = kp.result_sparql_query
+            return True
+        except:
+            return False
+        
 
     # to json
     def to_json(self):

@@ -93,6 +93,22 @@ def vehicles_edit(vehicle_id):
     return render_template("edit_vehicle.html", users=users_list, vehicle=vehicle, title="Edit vehicle")
 
 
+@app.route('/vehicles/<vehicle_id>', methods=['PUT'])
+@app.route('/vehicles/update/<vehicle_id>', methods=['POST'])
+def vehicles_update(vehicle_id):
+
+    # read the form
+    vehicle_model = request.form["model"]
+    vehicle_user_id = request.form["user_uid"]
+    vehicle_manufacturer = request.form["manufacturer"]
+
+    # invoke the controller
+    res = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_user_id)
+
+    # redirect to the index
+    return redirect("/vehicles")
+
+
 @app.route('/vehicles/new', methods=['GET'])
 def vehicles_new():
 

@@ -62,6 +62,22 @@ class VehiclesController:
         return status
 
 
+    # create vehicle
+    def update_vehicle(self, vehicle_id, manufacturer, model, user_id):
+
+        """This method is used to update a vehicle"""
+
+        # find the vehicle
+        v = Vehicle(self.settings)
+        v = v.find_vehicle(vehicle_id)
+        
+        # update it
+        status = v.update(manufacturer, model, user_id)
+        
+        # return
+        return status
+
+
     # delete vehicle
     def delete_vehicle(self, vehicle_id):
 
