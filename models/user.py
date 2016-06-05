@@ -173,18 +173,68 @@ class User:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?person_name ?person_uid
+        SELECT ?person_uri ?person_name ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id
         WHERE {
-           ?person_uri rdf:type ns:Person .
-           ?person_uri ns:hasUserIdentifier "%s" .
-           ?person_uri ns:hasName ?person_name .
+            ?person_uri rdf:type ns:Person .
+            ?person_uri ns:hasUserIdentifier "%s" .
+            ?person_uri ns:hasName ?person_name .
+            OPTIONAL {
+                ?vehicle_uri rdf:type ns:Vehicle .
+                ?person_uri ns:hasVehicle ?vehicle_uri .
+                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
+                ?vehicle_uri ns:hasModel ?vehicle_model .
+                OPTIONAL { 
+                    ?reservation_uri rdf:type ns:Reservation .
+                    ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
+                    ?reservation_uri ns:hasUser ?person_uri .
+                    ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+                    ?reservation_uri ns:hasGS ?gs_uri .
+                    ?gs_uri ns:hasGSIdentifier ?gs_id
+                }
+            }
         }"""
         print query % (RDF, NS, user_id)
         kp.load_query_sparql(query % (RDF, NS, user_id))
-        result = kp.result_sparql_query           
+        results = kp.result_sparql_query           
+
+        # build the model for the user
+        user_model = User(self.settings)
+        user_model.user_uri = results[0][0][2]
+        user_model.user_name = results[0][1][2]
+        user_model.user_uid = user_id
+        user_model.vehicles = []
+        user_model.reservations = []
+
+        # add vehicles to the user
+        for res in results:
+
+            if res[2][2]:
+
+                v = {"vehicle_id": res[2][2],
+                     "vehicle_manufacturer": res[3][2],
+                     "vehicle_model": res[4][2],
+                }
+                
+                if not v in user_model.vehicles:
+                    user_model.vehicles.append(v)
+                    
+
+        # add reservations to the user
+        for res in results:
             
+            if res[6][2]:
+
+                r = {"reservation_id": res[6][2],
+                     "reservation_gs": res[8][2],
+                     "reservation_vehicle": res[2][2]
+                 }
+            
+                if not r in user_model.reservations:
+                    user_model.reservations.append(r)
+
         # return
-        return result
+        return user_model
 
 
     # delete
