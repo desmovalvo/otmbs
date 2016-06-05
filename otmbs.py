@@ -330,9 +330,15 @@ def reservations_new():
 
     # get all the available vehicles
     vehicles_list = vehicles_controller.show_vehicles()
+    
+    # check if a ground station was already selected
+    if request.args.has_key('gs_id'):
+        gs_id = request.args["gs_id"]
+    else:
+        gs_id = None
 
     # render the html form
-    return render_template("new_reservation.html", gss=gss_list, vehicles=vehicles_list, title="New Reservation")
+    return render_template("new_reservation.html", gss=gss_list, vehicles=vehicles_list, title="New Reservation", selected_gs = gs_id)
 
 
 @app.route('/reservations', methods=['POST'])

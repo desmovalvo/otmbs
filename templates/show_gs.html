@@ -30,7 +30,7 @@
 	    &nbsp;
 	    <a href="{{ url_for('gss_delete', gsid=entry['gs_id'])}}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
 	    &nbsp;
-	    <a href="{{ url_for('gss_delete', gsid=entry['gs_id'])}}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reserve</a>
+	    <a href="{{ url_for('reservations_new', gs_id=entry['gs_id'])}}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reserve</a>
 	  </div>
 
 	</div>

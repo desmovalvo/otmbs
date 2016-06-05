@@ -9,7 +9,15 @@
      <div class="form-group">
        Ground Station: <select name="gs">
 	 {% for gs in gss %}
+	 {% if selected_gs %}	 
+	 {% if selected_gs == gs["gs_id"] %}
+	 <option selected value={{ gs["gs_id"] }}>{{ "%s" % (gs["gs_name"]) }}</option>
+	 {% else %}
 	 <option value={{ gs["gs_id"] }}>{{ "%s" % (gs["gs_name"]) }}</option>
+	 {% endif %}
+	 {% else %}
+	 <option value={{ gs["gs_id"] }}>{{ "%s" % (gs["gs_name"]) }}</option>
+	 {% endif %}
 	 {% endfor %}
        </select><br/>
      </div>
