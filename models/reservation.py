@@ -15,7 +15,7 @@ class Reservation:
     service and the SIB content for the reservations"""
 
     # constructor
-    def __init__(self, settings, gs_id = None, vehicle_id = None, user_uid = None):
+    def __init__(self, settings, gs_id = None, vehicle_id = None, user_id = None):
 
         """Constructor for the Reservation class"""
 
@@ -30,7 +30,7 @@ class Reservation:
         self.vehicle_manufacturer = None
         self.vehicle_model = None
         self.user_uri = None
-        self.user_uid = user_uid
+        self.user_id = user_id
         self.user_name = None
         self.gs_uri = None
         self.gs_id = gs_id
@@ -48,7 +48,7 @@ class Reservation:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?reservation_uri ?reservation_id ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_uid ?user_name ?gs_uri ?gs_id
+        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id ?gs_name ?reservation_id
         WHERE {
             ?reservation_uri rdf:type <%s> .
             ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
@@ -57,17 +57,36 @@ class Reservation:
             ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
             ?vehicle_uri ns:hasModel ?vehicle_model .
             ?reservation_uri ns:hasUser ?user_uri .
-            ?user_uri ns:hasUserIdentifier ?user_uid .
+            ?user_uri ns:hasUserIdentifier ?user_id .
             ?user_uri ns:hasName ?user_name .
             ?reservation_uri ns:hasGS ?gs_uri .
-            ?gs_uri ns:hasGSIdentifier ?gs_id
+            ?gs_uri ns:hasGSIdentifier ?gs_id .
+            ?gs_uri ns:hasName ?gs_name
         }"""
         print query % (RDF, NS, RESERVATION_CLASS)
         kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS))
         results = kp.result_sparql_query           
 
+        # build models
+        r_models = []
+        for result in results:
+            r = Reservation(self.settings)
+            r.res_uri = result[0][2]
+            r.vehicle_uri = result[1][2]
+            r.vehicle_id = result[2][2]
+            r.vehicle_manufacturer = result[3][2]
+            r.vehicle_model = result[4][2]
+            r.user_uri = result[5][2]
+            r.user_id = result[6][2]
+            r.user_name = result[7][2]        
+            r.gs_uri = result[8][2]
+            r.gs_id = result[9][2]
+            r.gs_name = result[10][2]
+            r.res_id = result[11][2]
+            r_models.append(r)
+            
         # return
-        return results
+        return r_models
 
         
     # find reservation
@@ -81,7 +100,7 @@ class Reservation:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_uid ?user_name ?gs_uri ?gs_id ?gs_name
+        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id ?gs_name
         WHERE {
             ?reservation_uri rdf:type <%s> .
             ?reservation_uri ns:hasReservationIdentifier "%s" .
@@ -90,7 +109,7 @@ class Reservation:
             ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
             ?vehicle_uri ns:hasModel ?vehicle_model .
             ?reservation_uri ns:hasUser ?user_uri .
-            ?user_uri ns:hasUserIdentifier ?user_uid .
+            ?user_uri ns:hasUserIdentifier ?user_id .
             ?user_uri ns:hasName ?user_name .
             ?reservation_uri ns:hasGS ?gs_uri .
             ?gs_uri ns:hasGSIdentifier ?gs_id .
@@ -109,7 +128,7 @@ class Reservation:
         r.vehicle_manufacturer = results[0][3][2]
         r.vehicle_model = results[0][4][2]
         r.user_uri = results[0][5][2]
-        r.user_uid = results[0][6][2]
+        r.user_id = results[0][6][2]
         r.user_name = results[0][7][2]        
         r.gs_uri = results[0][8][2]
         r.gs_id = results[0][9][2]
@@ -176,9 +195,9 @@ class Reservation:
             ?gs_uri ns:hasGSIdentifier "%s"
         }"""
 
-        print query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_uid, self.vehicle_id, self.gs_id)
+        print query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_id, self.vehicle_id, self.gs_id)
         try:
-            kp.load_query_sparql(query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_uid, self.vehicle_id, self.gs_id))
+            kp.load_query_sparql(query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_id, self.vehicle_id, self.gs_id))
             return True
         except:
             return False
@@ -197,7 +216,7 @@ class Reservation:
         rdict["vehicle_manufacturer"] = self.vehicle_manufacturer
         rdict["vehicle_model"] = self.vehicle_model
         rdict["user_uri"] = self.user_uri
-        rdict["user_uid"] = self.user_uid
+        rdict["user_id"] = self.user_id
         rdict["user_name"] = self.user_name
         rdict["gs_uri"] = self.gs_uri
         rdict["gs_id"] = self.gs_id

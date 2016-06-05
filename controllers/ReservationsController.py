@@ -25,16 +25,12 @@ class ReservationsController:
         reserv_model = Reservation(self.settings)
 
         # query the model
-        results = []
         results = reserv_model.find_reservations()
 
         # return the result in a json-ifiable form
         json_results = []
         for reservation in results:
-            json_reservation = {}
-            for field in reservation:
-                json_reservation[field[0]] = field[2]
-            json_results.append(json_reservation)
+            json_results.append(reservation.to_json())
 
         # return
         print json_results
