@@ -368,11 +368,9 @@ def reservations_edit(reservation_id):
     return render_template("edit_reservation.html", gss=gss_list, vehicles=vehicles_list, reservation = res, title="Edit reservation")
 
 
+@app.route('/reservations/<reservation_id>', methods=['PUT'])
 @app.route('/reservations/update/<reservation_id>', methods=['POST'])
-# @app.route('/reservations/<reservation_id>', methods=['PUT'])
 def reservations_update(reservation_id):
-
-    print "OTMBS"
 
     # invoke the controller
     print request.form

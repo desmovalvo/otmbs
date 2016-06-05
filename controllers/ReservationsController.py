@@ -92,8 +92,6 @@ class ReservationsController:
 
         """Method to update a Reservation"""
 
-        print "RCONTRO?AEOUAEUART"
-
         # split user and car
         user_id = usercar.split("|")[1]
         vehicle_id = usercar.split("|")[0]
