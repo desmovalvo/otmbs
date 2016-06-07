@@ -59,29 +59,17 @@ class GroundStationsController:
 
             
     # create gs
-    def create_gs(self, name, latitude, longitude):
+    def create_gs(self, name, slatitude, slongitude, elatitude, elongitude):
 
         """Method to create a new GroundStation"""
 
-        print "HERE I AM"
-
         # create the GPS Data
         gpsdata = GPSData(self.settings)
-        gpsdata.latitude = latitude
-        gpsdata.longitude = longitude
+        gpsdata.slatitude = slatitude
+        gpsdata.slongitude = slongitude
+        gpsdata.elatitude = elatitude
+        gpsdata.elongitude = elongitude
         status = gpsdata.create()
-        print status
-        print gpsdata.gpsdata_uri
-
-        # create the gs
-        if status:
-            gs = GroundStation(self.settings, name, gpsdata)
-            status = gs.create()            
-
-        print gs
-        print status
-
-        print "DONE"
 
         # return
         if status:
@@ -98,7 +86,7 @@ class GroundStationsController:
         gm = GroundStation(self.settings)
 
         # delete!
-        status = gm.delete(gs_id)
+        status = gm.delete()
 
         # return
         return status

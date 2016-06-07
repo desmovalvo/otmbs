@@ -15,7 +15,7 @@ class GroundStation:
     service and the SIB content for the Ground Stations"""
 
     # constructor
-    def __init__(self, settings, name = None, latitude = None, longitude = None):
+    def __init__(self, settings, name = None, slatitude = None, slongitude = None, elatitude = None, elongitude = None):
         
         """Constructor for the GroundStation model"""
 
@@ -23,8 +23,12 @@ class GroundStation:
         self.gs_id = None
         self.gs_uri = None
         self.gs_name = name
-        self.latitude = latitude
-        self.longitude = longitude
+        self.slatitude = slatitude
+        self.slongitude = slongitude
+        self.elatitude = elatitude
+        self.elongitude = elongitude
+        self.sgpsdata_uri = None
+        self.egpsdata_uri = None
 
         # store settings
         self.settings = settings
@@ -42,14 +46,23 @@ class GroundStation:
         # generate an uuid
         self.uuid = str(uuid.uuid4())
         self.gs_uri = NS + self.uuid
-        self.gsid = self.uuid.split("-")[0]
+        self.gs_id = self.uuid.split("-")[0]
+
+        # generate URIs for GPSdatas
+        self.sgpsdata_uri = NS + str(uuid.uuid4())
+        self.egpsdata_uri = NS + str(uuid.uuid4())
 
         # create the triples
         triples = []
         triples.append(Triple(URI(self.gs_uri), URI(RDF_TYPE), URI(GS_CLASS)))
-        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasGSIdentifier"), Literal(self.gsid)))
+        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasGSIdentifier"), Literal(self.gs_id)))
         triples.append(Triple(URI(self.gs_uri), URI(NS + "hasName"), Literal(self.name)))
-        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasGPSData"), URI(self.gpsdata.gpsdata_uri)))
+        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasStartGPSData"), URI(self.sgpsdata_uri)))
+        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasEndGPSData"), URI(self.egpsdata_uri)))
+        triples.append(Triple(URI(self.sgpsdata_uri), URI(NS + "hasLatitude"), Literal(self.slatitude)))
+        triples.append(Triple(URI(self.sgpsdata_uri), URI(NS + "hasLongitude"), Literal(self.slongitude)))
+        triples.append(Triple(URI(self.egpsdata_uri), URI(NS + "hasLatitude"), Literal(self.elatitude)))
+        triples.append(Triple(URI(self.egpsdata_uri), URI(NS + "hasLongitude"), Literal(self.elongitude)))
 
         # putting triples
         try:
@@ -71,14 +84,17 @@ class GroundStation:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?gs ?gsidentifier ?gsname ?latitude ?longitude
+        SELECT ?gs ?gsidentifier ?gsname ?slatitude ?slongitude ?elatitude ?elongitude
         WHERE {
             ?gs rdf:type <%s> .
             ?gs ns:hasGSIdentifier ?gsidentifier .
             ?gs ns:hasName ?gsname .
-            ?gs ns:hasGPSData ?gpsdata .
-            ?gpsdata ns:hasLatitude ?latitude .
-            ?gpsdata ns:hasLongitude ?longitude .
+            ?gs ns:hasStartGPSData ?sgpsdata .
+            ?gs ns:hasEndGPSData ?egpsdata .
+            ?sgpsdata ns:hasLatitude ?slatitude .
+            ?sgpsdata ns:hasLongitude ?slongitude .
+            ?egpsdata ns:hasLatitude ?elatitude .
+            ?egpsdata ns:hasLongitude ?elongitude .
         }"""
         print query % (RDF, NS, GS_CLASS)
         kp.load_query_sparql(query % (RDF, NS, GS_CLASS))
@@ -87,7 +103,7 @@ class GroundStation:
         # build the models to return
         return_models = []
         for result in results:
-            gs_model = GroundStation(self.settings, result[2][2], result[3][2], result[4][2])
+            gs_model = GroundStation(self.settings, result[2][2], result[3][2], result[4][2], result[5][2], result[6][2])
             gs_model.gs_uri = result[0][2]
             gs_model.gs_id = result[1][2]
             return_models.append(gs_model)
@@ -112,9 +128,12 @@ class GroundStation:
             ?gs rdf:type <%s> .
             ?gs ns:hasGSIdentifier "%s" .
             ?gs ns:hasName ?gsname .
-            ?gs ns:hasGPSData ?gpsdata .
-            ?gpsdata ns:hasLatitude ?latitude .
-            ?gpsdata ns:hasLongitude ?longitude .
+            ?gs ns:hasStartGPSData ?sgpsdata .
+            ?gs ns:hasEndGPSData ?egpsdata .
+            ?sgpsdata ns:hasLatitude ?slatitude .
+            ?sgpsdata ns:hasLongitude ?slongitude .
+            ?egpsdata ns:hasLatitude ?elatitude .
+            ?egpsdata ns:hasLongitude ?elongitude .
         }"""
         print query % (RDF, NS, GS_CLASS, gsid)
         kp.load_query_sparql(query % (RDF, NS, GS_CLASS, gsid))
@@ -126,16 +145,14 @@ class GroundStation:
         for result in results:
             gs_model.gs_uri = result[0][2]
             gs_model.gs_name = result[1][2]
-            gs_model.latitude = result[2][2]
-            gs_model.longitude = result[3][2]
+            gs_model.slatitude = result[2][2]
+            gs_model.slongitude = result[3][2]
+            gs_model.elatitude = result[4][2]
+            gs_model.elongitude = result[5][2]
             gs_model.gs_id = gsid
 
         # return
         return gs_model
-
-
-        # return
-        return results
 
 
     # get the list of reservations
@@ -165,7 +182,7 @@ class GroundStation:
 
         
     # delete gs
-    def delete(self, gsid):
+    def delete(self):
 
         """Delete the ground station"""
 
@@ -176,9 +193,12 @@ class GroundStation:
             ?gs_uri rdf:type ns:GroundStation .
             ?gs_uri ns:hasGSIdentifier "%s" .
             ?gs_uri ns:hasName ?gsname .
-            ?gs_uri ns:hasGPSData ?gpsdata .
-            ?gpsdata ns:hasLatitude ?latitude .
-            ?gpsdata ns:hasLongitude ?longitude .
+            ?gs_uri ns:hasStartGPSData ?sgpsdata .
+            ?gs_uri ns:hasEndGPSData ?egpsdata .
+            ?sgpsdata ns:hasLatitude ?slatitude .
+            ?sgpsdata ns:hasLongitude ?slongitude .
+            ?egpsdata ns:hasLatitude ?elatitude .
+            ?egpsdata ns:hasLongitude ?elongitude .
             ?reserv_uri rdf:type ns:Reservation .
             ?reserv_uri ns:reservedByVehicle ?vehicle_uri .
             ?reserv_uri ns:hasUser ?user_uri .
@@ -189,12 +209,12 @@ class GroundStation:
             ?gs_uri ns:hasGSIdentifier "%s" .
         }"""
 
-
         # remove the triples
         try:
             # connect to the SIB and remove the triples
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])        
-            kp.load_query_sparql(query % (RDF, NS, gsid, gsid))
+            kp.load_query_sparql(query % (RDF, NS, self.gs_id, self.gs_id))
+            return True
         except:
             return False
 
@@ -208,6 +228,8 @@ class GroundStation:
         gdict["gs_uri"] = self.gs_uri
         gdict["gs_id"] = self.gs_id
         gdict["gs_name"] = self.gs_name
-        gdict["gs_lat"] = self.latitude
-        gdict["gs_long"] = self.longitude
+        gdict["start_gs_lat"] = self.slatitude
+        gdict["start_gs_long"] = self.slongitude
+        gdict["end_gs_lat"] = self.elatitude
+        gdict["end_gs_long"] = self.elongitude
         return gdict
