@@ -229,7 +229,7 @@ ns:5a85d32e-f4c4-4123-891b-42182268756d rdf:type ns:GroundStation .
 ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasGSIdentifier "EmiliaLevante_5a85d32e" .
 ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasName "EmiliaLevante" .
 ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasStartGPSData ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 .
-ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasEndGPSData ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasEndGPSData ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da .
 # GPSData 13 
 ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 rdf:type ns:GPSData .
 ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 ns:hasLatitude "44.48403" .
