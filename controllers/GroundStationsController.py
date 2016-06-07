@@ -84,6 +84,7 @@ class GroundStationsController:
 
         # retrieve the groundstation
         gm = GroundStation(self.settings)
+        gm = gm.find_gs(gs_id)
 
         # delete!
         status = gm.delete()

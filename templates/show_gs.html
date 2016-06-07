@@ -2,17 +2,60 @@
 {% block content %}
 
 	<!-- BODY -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<div class="col-md-10">
 
 	  <div class="row-fluid">
 	  <h3>{{ entry["gs_name"] }}</h3>
 
+    <div id="map" style="height: 440px; border: 1px solid #AAA; width: 640px"></div>
+    <script language="javascript">
+      document.write();
+      var map = L.map( 'map', {
+          center: [44.495, 11.34],
+          minZoom: 2,
+          zoom: 14
+      });
+      var smarker = L.icon({
+      iconUrl: "{{ url_for('static', filename='smarker.png') }}",
+      iconSize:     [38, 58], // size of the icon
+      iconAnchor:   [22, 62], // point of the icon which will correspond to marker's location
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+      var emarker = L.icon({
+      iconUrl: "{{ url_for('static', filename='emarker.png') }}",
+      iconSize:     [38, 58], // size of the icon
+      iconAnchor:   [22, 62], // point of the icon which will correspond to marker's location
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+      L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
+          subdomains: ['otile1','otile2','otile3','otile4']
+      }).addTo( map );
+
+      var polyline_options = {
+      color: '#000'
+      };
+
+      L.marker( [{{ entry["start_gs_lat"]}}, {{entry["start_gs_long"]}} ], {icon: smarker}).bindPopup("<a href='{{ url_for('gss_show', gsid = entry["gs_id"]) }}'>{{ entry["gs_name"] }}<a>").addTo( map );
+      L.marker( [{{ entry["end_gs_lat"]}}, {{entry["end_gs_long"]}} ], {icon: emarker}).bindPopup("<a href='{{ url_for('gss_show', gsid = entry["gs_id"]) }}'>{{ entry["gs_name"] }}<a>").addTo( map );
+      L.polyline([[{{ entry["start_gs_lat"] }}, {{ entry["start_gs_long"] }}], [ {{entry["end_gs_lat"]}}, {{entry["end_gs_long"]}} ]], polyline_options).addTo(map);
+</script>
+
 	  <table class="table table-striped table-hover">
 	    
 	    <tbody>
 	    <tr><td><b>Gs name:</b></td><td>{{ entry["gs_name"] }}</td></tr>	   
-	    <tr><td><b>Gs Latitude:</b></td><td>{{ entry["gs_lat"] }}</td></tr>	   
-	    <tr><td><b>Gs Longitude:</b></td><td>{{ entry["gs_long"] }}</td></tr>	   
+	    <tr><td><b>Gs Start Latitude:</b></td><td>{{ entry["start_gs_lat"] }}</td></tr>	   
+	    <tr><td><b>Gs Start Longitude:</b></td><td>{{ entry["start_gs_long"] }}</td></tr>	   
+	    <tr><td><b>Gs End Latitude:</b></td><td>{{ entry["end_gs_lat"] }}</td></tr>	   
+	    <tr><td><b>Gs End Longitude:</b></td><td>{{ entry["end_gs_long"] }}</td></tr>	   
 	    <tr><td><b>Gs Identifier:</b></td><td>{{ entry["gs_id"] }}</td></tr>	   
 	    </tbody>
 

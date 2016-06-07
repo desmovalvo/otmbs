@@ -123,7 +123,7 @@ class GroundStation:
         # perform the SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?gs ?gsname ?latitude ?longitude
+        SELECT ?gs ?gsname ?slatitude ?slongitude ?elatitude ?elongitude
         WHERE {
             ?gs rdf:type <%s> .
             ?gs ns:hasGSIdentifier "%s" .
@@ -213,6 +213,7 @@ class GroundStation:
         try:
             # connect to the SIB and remove the triples
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])        
+            print query % (RDF, NS, self.gs_id, self.gs_id)
             kp.load_query_sparql(query % (RDF, NS, self.gs_id, self.gs_id))
             return True
         except:
