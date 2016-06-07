@@ -11,12 +11,20 @@
        <input type="text" name="name" value={{ gs["gs_name"] }} /><br />
      </div>
      <div class="form-group">
-       <label for="latitude">Latitude:</label>
-       <input type="text" name="latitude" value={{ gs["gs_lat"] }} /><br />
+       <label for="slatitude">Start Latitude:</label>
+       <input type="text" name="slatitude" value={{ gs["start_gs_lat"] }} /><br />
      </div>
      <div class="form-group">
-       <label for="longitude">Longitude:</label>
-       <input type="text" name="longitude" value={{ gs["gs_long"] }} /><br />
+       <label for="slongitude">Start Longitude:</label>
+       <input type="text" name="slongitude" value={{ gs["start_gs_long"] }} /><br />
+     </div>
+     <div class="form-group">
+       <label for="elatitude">End Latitude:</label>
+       <input type="text" name="elatitude" value={{ gs["end_gs_lat"] }} /><br />
+     </div>
+     <div class="form-group">
+       <label for="elongitude">End Longitude:</label>
+       <input type="text" name="elongitude" value={{ gs["end_gs_long"] }} /><br />
      </div>
      <input type="submit" value="Update" />    
    </form>
