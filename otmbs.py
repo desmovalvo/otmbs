@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 import ConfigParser
 import requests
+import json
 
 # importing models, controllers and views
 from models.user import *
@@ -151,11 +152,30 @@ def vehicles_new():
 @app.route('/vehicles', methods=['POST'])
 def vehicles_create():
     
+
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            model = data["model"]
+            manufacturer = data["manufacturer"]
+            user_uid = data["user_uid"]
+            
+            # invoke the controller
+            status, vehicle = vehicles_controller.create_vehicle(manufacturer, model, user_uid)
+
+            # redirect to the index
+            return jsonify(results = vehicle)
+
+    except Exception as e:
+        print e
+        pass
+
     # invoke the controller
-    res = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["user_uri"])
+    status, vehicle = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["user_uid"])
 
     # redirect to the index
-    return redirect("/vehicles")
+    return redirect("/vehicles/%s" % vehicle["vehicle_id"])
 
 
 @app.route('/vehicles/delete/<vehicle_id>', methods=['GET'])

@@ -14,9 +14,9 @@
        <input type="text" name="model" /><br />
      </div>
      <div class="form-group">
-       User: <select name="user_uri">
+       User: <select name="user_uid">
 	 {% for user in users %}
-	 <option value={{ user.user_uri }}>{{ user.user_uid }}</option>
+	 <option value={{ user.user_uid }}>{{ user.user_uid }}</option>
 	 {% endfor %}
        </select><br/>
      </div>

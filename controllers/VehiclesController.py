@@ -50,16 +50,21 @@ class VehiclesController:
 
 
     # create vehicle
-    def create_vehicle(self, manufacturer, model, user_uri):
+    def create_vehicle(self, manufacturer, model, user_uid):
 
         """This method is used to create a new vehicle"""
 
         # create the vehicle
         v = Vehicle(self.settings)
-        status = v.create(manufacturer, model, user_uri)
-        
+        status, vehicle = v.create(manufacturer, model, user_uid)
+        print vehicle
+        print type(vehicle)
+        print vehicle.to_json()
+        json_vehicle = vehicle.to_json()
+        print "FINE"
+
         # return
-        return status
+        return status, json_vehicle
 
 
     # create vehicle

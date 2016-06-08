@@ -26,13 +26,13 @@ class Vehicle:
         self.user = None
         self.brand = None
         self.model = None
-        self.user_uri = None # TODO: delete it!
+        self.user_uid = None 
         self.vehicle_id = None
         self.vehicle_uri = None
 
 
     # create vehicles
-    def create(self, brand, model, user_uri):
+    def create(self, brand, model, user_uid):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
@@ -40,7 +40,7 @@ class Vehicle:
         # read attributes
         self.brand = brand
         self.model = model
-        self.user_uri = user_uri
+        self.user_uid = user_uid
 
         # generating an UUID for the vehicle
         vehicle_uuid = str(uuid.uuid4())
@@ -49,21 +49,45 @@ class Vehicle:
         # generate the vehicle id
         self.vehicle_id = self.brand.replace(" ", "") + self.model.replace(" ", "") + "_" + vehicle_uuid[0:3]
         
-        # creating the triples
-        triples = []
-        triples.append(Triple(URI(self.vehicle_uri), URI(RDF_TYPE), URI(VEHICLE_CLASS)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasVehicleIdentifier"), Literal(self.vehicle_id)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasManufacturer"), Literal(self.brand)))
-        triples.append(Triple(URI(self.vehicle_uri), URI(NS + "hasModel"), Literal(self.model)))
-        triples.append(Triple(URI(self.user_uri), URI(NS + "hasVehicle"), URI(self.vehicle_uri)))
-        
+        # SPARQL query
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        INSERT {
+            ?user_uri ns:hasVehicle <%s> .
+            <%s> rdf:type ns:Vehicle .
+            <%s> ns:hasVehicleIdentifier "%s" .
+            <%s> ns:hasManufacturer "%s" .
+            <%s> ns:hasModel "%s" .
+        }
+        WHERE {
+            ?user_uri rdf:type ns:Person .
+            ?user_uri ns:hasUserIdentifier "%s" .
+        }"""
+
         # putting triples
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-            kp.load_rdf_insert(triples)
-            return True
+            kp.load_query_sparql(query % (RDF, NS, self.vehicle_uri,
+                                          self.vehicle_uri, self.vehicle_uri, self.vehicle_id, 
+                                          self.vehicle_uri, self.brand, self.vehicle_uri, 
+                                          self.model, self.user_uid))
+
+            # retrieve the user name in order to complete the model
+            query = """PREFIX rdf:<%s>
+            PREFIX ns:<%s>
+            SELECT ?username
+            WHERE { 
+                ?useruri ns:hasUserIdentifier "%s" .
+                ?useruri ns:hasName ?username
+            }"""
+            kp.load_query_sparql(query % (RDF, NS, self.user_uid))
+            results = kp.result_sparql_query
+            self.user_name = results[0][0][2]
+
+            return True, self
         except Exception as e:
-            return False
+            print e
+            return False, None
             
     
     # show vehicles
@@ -268,7 +292,6 @@ class Vehicle:
         vdict["vehicle_manufacturer"] = self.brand
         vdict["vehicle_model"] = self.model
         vdict["vehicle_user_uid"] = self.user_uid
-        vdict["vehicle_user_uri"] = self.user_uri
         vdict["vehicle_user_name"] = self.user_name
 
         return vdict
