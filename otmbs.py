@@ -94,12 +94,19 @@ def vehicles_show(vehicle_id):
     res = vehicles_controller.show_vehicle(vehicle_id)
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
-        print res
-        return render_template("show_vehicle.html", entry=res, title="Vehicle details")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_vehicle.html", entry=res, title="Vehicle details")
 
 
 @app.route('/vehicles/<vehicle_id>/edit', methods=['GET'])
