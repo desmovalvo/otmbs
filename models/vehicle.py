@@ -161,15 +161,16 @@ class Vehicle:
         results = kp.result_sparql_query
 
         # build the model to return
+        print "POST WUERY"
         model_result = Vehicle(self.settings)
         model_result.vehicle_uri = results[0][0][2]
+        print "POST WUERY"
         model_result.brand = results[0][1][2]
         model_result.model = results[0][2][2]
         model_result.user_uri = results[0][3][2]
         model_result.user_name = results[0][4][2]
         model_result.user_uid = results[0][5][2]
         model_result.vehicle_id = vehicle_id
-
         # return
         return model_result
 
@@ -275,10 +276,12 @@ class Vehicle:
         try:
             print query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id)
             kp.load_query_sparql(query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id))
-            results = kp.result_sparql_query
-            return True
+            results = kp.result_sparql_query    
+            model = self.find_vehicle(self.vehicle_id)
+
+            return True, model
         except:
-            return False
+            return False, None
         
 
     # to json

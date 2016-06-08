@@ -57,11 +57,7 @@ class VehiclesController:
         # create the vehicle
         v = Vehicle(self.settings)
         status, vehicle = v.create(manufacturer, model, user_uid)
-        print vehicle
-        print type(vehicle)
-        print vehicle.to_json()
         json_vehicle = vehicle.to_json()
-        print "FINE"
 
         # return
         return status, json_vehicle
@@ -76,11 +72,16 @@ class VehiclesController:
         v = Vehicle(self.settings)
         v = v.find_vehicle(vehicle_id)
         
+        print "POST FIND"
+
         # update it
-        status = v.update(manufacturer, model, user_id)
+        status, newmodel = v.update(manufacturer, model, user_id)
+        jsonmodel = newmodel.to_json()
+
+        print "POST UPDATE"
         
         # return
-        return status
+        return status, jsonmodel
 
 
     # delete vehicle

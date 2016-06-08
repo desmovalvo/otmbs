@@ -127,16 +127,36 @@ def vehicles_edit(vehicle_id):
 @app.route('/vehicles/update/<vehicle_id>', methods=['POST'])
 def vehicles_update(vehicle_id):
 
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            model = data["model"]
+            manufacturer = data["manufacturer"]
+            user_uid = data["user_uid"]
+            
+            print "INVOKING CONTROLLER"
+
+            # invoke the controller
+            status, vehicle = vehicles_controller.update_vehicle(vehicle_id, manufacturer, model, user_uid)
+
+            # redirect to the index
+            return jsonify(results = vehicle)
+
+    except Exception as e:
+        print e
+        pass
+
     # read the form
     vehicle_model = request.form["model"]
     vehicle_user_id = request.form["user_uid"]
     vehicle_manufacturer = request.form["manufacturer"]
 
     # invoke the controller
-    res = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_user_id)
+    res, newmodel = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_user_id)
 
     # redirect to the index
-    return redirect("/vehicles")
+    return redirect("/vehicles/%s" % newmodel["vehicle_id"])
 
 
 @app.route('/vehicles/new', methods=['GET'])
