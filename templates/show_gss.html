@@ -43,7 +43,7 @@
 
       {% for gs in gss %}
       L.marker( [{{ gs["start_gs_lat"]}}, {{gs["start_gs_long"]}} ], {icon: smarker}).bindPopup("<a href='{{ url_for('gss_show', gsid = gs["gs_id"]) }}'>{{ gs["gs_name"] }}<a>").addTo( map );
-      L.marker( [{{ gs["end_gs_lat"]}}, {{gs["end_gs_long"]}} ], {icon: emarker}).bindPopup("<a href='{{ url_for('gss_show', gsid = gs["gs_id"]) }}'>{{ gs["gs_name"] }}<a>").addTo( map );
+<!--      L.marker( [{{ gs["end_gs_lat"]}}, {{gs["end_gs_long"]}} ], {icon: emarker}).bindPopup("<a href='{{ url_for('gss_show', gsid = gs["gs_id"]) }}'>{{ gs["gs_name"] }}<a>").addTo( map ); -->
       L.polyline([[{{ gs["start_gs_lat"] }}, {{ gs["start_gs_long"] }}], [ {{gs["end_gs_lat"]}}, {{gs["end_gs_long"]}} ]], polyline_options).addTo(map);
       {% endfor %}
     </script>

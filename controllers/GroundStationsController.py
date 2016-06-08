@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # import models
-from models.gpsdata import *
 from models.groundstation import *
 
 class GroundStationsController:

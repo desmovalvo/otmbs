@@ -3,11 +3,10 @@
 # system-wide requirements
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 import ConfigParser
+import requests
 
 # importing models, controllers and views
-from libs.n3loader import *
 from models.user import *
-from models.gpsdata import *
 from models.vehicle import *
 from models.reservation import *
 from models.groundstation import *
@@ -15,6 +14,10 @@ from controllers.GroundStationsController import *
 from controllers.ReservationsController import *
 from controllers.VehiclesController import *
 from controllers.UsersController import *
+
+# importing other local libraries
+from libs.n3loader import *
+from libs.alfrest import *
 
 # reading configuration
 settings = {}
@@ -42,6 +45,18 @@ reservations_controller = ReservationsController(settings)
 gss_controller = GroundStationsController(settings)
 vehicles_controller = VehiclesController(settings)
 users_controller = UsersController(settings)
+
+
+################################################
+#
+# setting routes for static pages
+#
+################################################
+
+@app.route('/', methods=['GET'])
+def mainpage():
+
+    return render_template("main.html", title="OTM Booking Service")
 
 
 ################################################
@@ -207,6 +222,12 @@ def users_new():
 
 @app.route('/users', methods=['POST'])
 def users_create():
+
+    print "***********************************************************"
+    print request.args
+    print "***********************************************************"
+    print request.form
+    print "***********************************************************"
     
     # invoke the controller
     res = users_controller.create_user(request.form["name"])
@@ -396,6 +417,48 @@ def reservations_update(reservation_id):
     return redirect("/reservations")
 
     request.form["gs"], request.form["user_car"]
+
+
+################################################
+#
+# alfred non-rest interface
+#
+################################################
+@app.route('/alfred', methods=['GET', 'POST'])
+def alfred_routes():
+
+    print "***********************************************************"
+    print request.args
+    print "***********************************************************"
+    print request.form
+    print "***********************************************************"
+
+    # variables
+    action = None
+    data_format = None
+    resource_id = None
+    form_parameters = None
+
+    # retrieve the desired action, if present
+    if request.args.has_key('action'):    
+        action = request.args["action"]
+
+    # retrieve the desired data format, if present
+    if request.args.has_key('format'):
+        data_format = request.args["format"]
+
+    # retrieve the id, if present
+    if request.args.has_key('id'):
+        resource_id = request.args["id"]
+
+    # then call the proper action
+    # TODO: this is not complete
+    # TODO: optional arguments must be considered
+    if ALF_ACTIONS[action]["method"] == "GET":
+        return redirect(url_for(ALF_ACTIONS[action]["name"], user_id = resource_id))
+    else:
+        # implement post!
+        pass
 
 
 # main
