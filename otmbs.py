@@ -528,9 +528,6 @@ def reservations_create():
             user_id = data["user_id"]    
 
             # invoke the controller
-            print gs_id
-            print vehicle_id
-            print user_id
             status, reservation = reservations_controller.create_reservation(gs_id, vehicle_id,  user_id)
 
             # redirect to the index
@@ -543,10 +540,10 @@ def reservations_create():
     # invoke the controller
     vehicle_id = request.form["user_car"].split("|")[0]
     user_id = request.form["user_car"].split("|")[1] 
-    res = reservations_controller.create_reservation(request.form["gs"], vehicle_id, user_id)
+    status, res = reservations_controller.create_reservation(request.form["gs"], vehicle_id, user_id)
 
     # redirect to the index
-    return redirect("/reservations")
+    return redirect("/reservations/%s" % res["reservation_id"])
 
 
 @app.route('/reservations/<reservation_id>/edit', methods=['GET'])
@@ -569,14 +566,31 @@ def reservations_edit(reservation_id):
 @app.route('/reservations/update/<reservation_id>', methods=['POST'])
 def reservations_update(reservation_id):
 
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            gs_id = data["gs_id"]
+            vehicle_id = data["vehicle_id"]
+            user_id = data["user_id"]    
+
+            # invoke the controller
+            status, reservation = reservations_controller.update_reservation(reservation_id, gs_id, vehicle_id,  user_id)
+
+            # redirect to the index
+            return jsonify(results = reservation)
+
+    except Exception as e:
+        print e
+        pass
+
     # invoke the controller
-    print request.form
-    res = reservations_controller.update_reservation(reservation_id, request.form["gs"], request.form["user_car"])
+    vehicle_id = request.form["user_car"].split("|")[0]
+    user_id = request.form["user_car"].split("|")[1] 
+    status, res = reservations_controller.update_reservation(reservation_id, request.form["gs"], vehicle_id, user_id)
 
     # redirect to the index
-    return redirect("/reservations")
-
-    request.form["gs"], request.form["user_car"]
+    return redirect("/reservations/%s" % res["reservation_id"])
 
 
 ################################################

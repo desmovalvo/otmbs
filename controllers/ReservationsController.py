@@ -87,17 +87,20 @@ class ReservationsController:
 
 
     # edit reservation
-    def update_reservation(self, reservation_id, gs_id, usercar):
+    def update_reservation(self, reservation_id, gs_id, vehicle_id, user_id):
 
         """Method to update a Reservation"""
-
-        # split user and car
-        user_id = usercar.split("|")[1]
-        vehicle_id = usercar.split("|")[0]
 
         # find the reservation
         reserv_model = Reservation(self.settings)
         r = reserv_model.find_reservation(reservation_id)
 
         # update the reservation
-        r.update(gs_id, vehicle_id, user_id)
+        status = r.update(gs_id, vehicle_id, user_id)
+
+        # find the updated reservation
+        r = reserv_model.find_reservation(reservation_id)
+        
+        # return the model
+        json_model = r.to_json()
+        return status, json_model
