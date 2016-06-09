@@ -38,7 +38,7 @@ class Reservation:
 
     
     # find reservations
-    def find_reservations(self):
+    def find_reservations(self, user_id = None):
 
         """Method used to retrieve all the reservations"""
 
@@ -46,45 +46,88 @@ class Reservation:
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
         # perform a SPARQL query
-        query = """PREFIX rdf:<%s>
-        PREFIX ns:<%s>
-        SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id ?gs_name ?reservation_id
-        WHERE {
-            ?reservation_uri rdf:type <%s> .
-            ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
-            ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
-            ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
-            ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
-            ?vehicle_uri ns:hasModel ?vehicle_model .
-            ?reservation_uri ns:hasUser ?user_uri .
-            ?user_uri ns:hasUserIdentifier ?user_id .
-            ?user_uri ns:hasName ?user_name .
-            ?reservation_uri ns:hasGS ?gs_uri .
-            ?gs_uri ns:hasGSIdentifier ?gs_id .
-            ?gs_uri ns:hasName ?gs_name
-        }"""
-        print query % (RDF, NS, RESERVATION_CLASS)
-        kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS))
-        results = kp.result_sparql_query           
+        if user_id:
+            query = """PREFIX rdf:<%s>
+            PREFIX ns:<%s>
+            SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_name ?gs_uri ?gs_id ?gs_name ?reservation_id
+            WHERE {
+                ?reservation_uri rdf:type <%s> .
+                ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
+                ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
+                ?vehicle_uri ns:hasModel ?vehicle_model .
+                ?reservation_uri ns:hasUser ?user_uri .
+                ?user_uri ns:hasUserIdentifier "%s" .
+                ?user_uri ns:hasName ?user_name .
+                ?reservation_uri ns:hasGS ?gs_uri .
+                ?gs_uri ns:hasGSIdentifier ?gs_id .
+                ?gs_uri ns:hasName ?gs_name
+            }"""
 
-        # build models
-        r_models = []
-        for result in results:
-            r = Reservation(self.settings)
-            r.res_uri = result[0][2]
-            r.vehicle_uri = result[1][2]
-            r.vehicle_id = result[2][2]
-            r.vehicle_manufacturer = result[3][2]
-            r.vehicle_model = result[4][2]
-            r.user_uri = result[5][2]
-            r.user_id = result[6][2]
-            r.user_name = result[7][2]        
-            r.gs_uri = result[8][2]
-            r.gs_id = result[9][2]
-            r.gs_name = result[10][2]
-            r.res_id = result[11][2]
-            r_models.append(r)
-            
+            print query % (RDF, NS, RESERVATION_CLASS, user_id)
+            kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS, user_id))
+            results = kp.result_sparql_query           
+    
+            # build models
+            r_models = []
+            for result in results:
+                r = Reservation(self.settings)
+                r.res_uri = result[0][2]
+                r.vehicle_uri = result[1][2]
+                r.vehicle_id = result[2][2]
+                r.vehicle_manufacturer = result[3][2]
+                r.vehicle_model = result[4][2]
+                r.user_uri = result[5][2]
+                r.user_id = user_id
+                r.user_name = result[6][2]        
+                r.gs_uri = result[7][2]
+                r.gs_id = result[8][2]
+                r.gs_name = result[9][2]
+                r.res_id = result[10][2]
+                r_models.append(r)
+    
+        else:
+            query = """PREFIX rdf:<%s>
+            PREFIX ns:<%s>
+            SELECT ?reservation_uri ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?user_uri ?user_id ?user_name ?gs_uri ?gs_id ?gs_name ?reservation_id
+            WHERE {
+                ?reservation_uri rdf:type <%s> .
+                ?reservation_uri ns:hasReservationIdentifier ?reservation_id .
+                ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
+                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
+                ?vehicle_uri ns:hasModel ?vehicle_model .
+                ?reservation_uri ns:hasUser ?user_uri .
+                ?user_uri ns:hasUserIdentifier ?user_id .
+                ?user_uri ns:hasName ?user_name .
+                ?reservation_uri ns:hasGS ?gs_uri .
+                ?gs_uri ns:hasGSIdentifier ?gs_id .
+                ?gs_uri ns:hasName ?gs_name
+            }"""
+
+            print query % (RDF, NS, RESERVATION_CLASS)
+            kp.load_query_sparql(query % (RDF, NS, RESERVATION_CLASS))
+            results = kp.result_sparql_query           
+    
+            # build models
+            r_models = []
+            for result in results:
+                r = Reservation(self.settings)
+                r.res_uri = result[0][2]
+                r.vehicle_uri = result[1][2]
+                r.vehicle_id = result[2][2]
+                r.vehicle_manufacturer = result[3][2]
+                r.vehicle_model = result[4][2]
+                r.user_uri = result[5][2]
+                r.user_id = result[6][2]
+                r.user_name = result[7][2]        
+                r.gs_uri = result[8][2]
+                r.gs_id = result[9][2]
+                r.gs_name = result[10][2]
+                r.res_id = result[11][2]
+                r_models.append(r)
+                
         # return
         return r_models
 

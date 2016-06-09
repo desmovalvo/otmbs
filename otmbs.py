@@ -510,8 +510,13 @@ def gss_update(gs_id):
 @app.route('/reservations', methods=['GET'])
 def reservations_showall():
 
+    # check if the user_id was given
+    user_id = None
+    if request.args.has_key('user_id'):
+        user_id = request.args['user_id']
+
     # invoking the controller
-    res = reservations_controller.show_reservations()
+    res = reservations_controller.show_reservations(user_id)
 
     # select the proper output form
     try:

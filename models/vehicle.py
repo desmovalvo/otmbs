@@ -99,8 +99,8 @@ class Vehicle:
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
         # if the user_id is given
+        query = None
         if user_id:
-
 
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
@@ -119,21 +119,6 @@ class Vehicle:
                     ?person_uri ns:hasUserIdentifier ?person_uid
                 }
             }"""
-            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, user_id))
-            results = kp.result_sparql_query           
-    
-            # build a list of vehicle models
-            model_results = []
-            for result in results:
-                new_model = Vehicle(self.settings)
-                new_model.vehicle_uri = result[0][2]
-                new_model.vehicle_id = result[1][2]
-                new_model.brand = result[2][2]
-                new_model.model = result[3][2]
-                new_model.user_uri = result[4][2]
-                new_model.user_name = result[5][2]
-                new_model.user_uid = result[6][2]
-                model_results.append(new_model)
 
         else:
 
@@ -152,22 +137,23 @@ class Vehicle:
                     ?person_uri ns:hasUserIdentifier ?person_uid
                 }
             }"""
-            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
-            results = kp.result_sparql_query           
-    
-            # build a list of vehicle models
-            model_results = []
-            for result in results:
-                new_model = Vehicle(self.settings)
-                new_model.vehicle_uri = result[0][2]
-                new_model.vehicle_id = result[1][2]
-                new_model.brand = result[2][2]
-                new_model.model = result[3][2]
-                new_model.user_uri = result[4][2]
-                new_model.user_name = result[5][2]
-                new_model.user_uid = result[6][2]
-                model_results.append(new_model)
-    
+
+        kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
+        results = kp.result_sparql_query           
+        
+        # build a list of vehicle models
+        model_results = []
+        for result in results:
+            new_model = Vehicle(self.settings)
+            new_model.vehicle_uri = result[0][2]
+            new_model.vehicle_id = result[1][2]
+            new_model.brand = result[2][2]
+            new_model.model = result[3][2]
+            new_model.user_uri = result[4][2]
+            new_model.user_name = result[5][2]
+            new_model.user_uid = result[6][2]
+            model_results.append(new_model)
+                
         # return
         return model_results
 

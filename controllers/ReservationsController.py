@@ -17,7 +17,7 @@ class ReservationsController:
 
 
     # show reservations
-    def show_reservations(self):
+    def show_reservations(self, user_id = None):
 
         """Show all the Reservations"""
 
@@ -25,7 +25,7 @@ class ReservationsController:
         reserv_model = Reservation(self.settings)
 
         # query the model
-        results = reserv_model.find_reservations()
+        results = reserv_model.find_reservations(user_id)
 
         # return the result in a json-ifiable form
         json_results = []
