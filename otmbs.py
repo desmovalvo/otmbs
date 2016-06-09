@@ -288,6 +288,9 @@ def users_new():
 @app.route('/users', methods=['POST'])
 def users_create():
         
+
+    print "CREAZIONEEEEEEEEEEEEEEEEEEEEEEEEE"
+
     # verify if the payload is json
     try:
         if request.content_type == "application/json":
@@ -705,7 +708,13 @@ def alfred_routes():
             return redirect(url_for(ALF_ACTIONS[action]["name"], reservation_id = resource_id, format = data_format))
 
     else:
-        # implement post!
+
+        # JSON form
+        json_data = {}
+        for k in request.args.keys():
+            json_data[k] = request.args[k]
+
+        # TODO: implement post!
         pass
 
 

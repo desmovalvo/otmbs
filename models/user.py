@@ -54,9 +54,6 @@ class User:
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             kp.load_rdf_insert(triples)
-            print self.user_uri
-            print self.user_uid
-            print self.user_name
             return True, self
         except:
             return False, None
@@ -73,8 +70,6 @@ class User:
         rtriples = []
         rtriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
         atriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(name)))
-        print rtriples
-        print atriples
         
         # putting triples
         try:
@@ -221,7 +216,6 @@ class User:
                 }
             }
         }"""
-        print query % (RDF, NS, user_id)
         kp.load_query_sparql(query % (RDF, NS, user_id))
         results = kp.result_sparql_query           
 
@@ -309,7 +303,6 @@ class User:
 
         # deleting triples
         try:
-            print query % (RDF, NS, user_id, user_id)
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             kp.load_query_sparql(query % (RDF, NS, user_id, user_id))
             return True

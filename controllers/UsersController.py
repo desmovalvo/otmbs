@@ -48,7 +48,6 @@ class UsersController:
         json_user = u.to_json()
 
         # return
-        print json_user
         return json_user
 
 
