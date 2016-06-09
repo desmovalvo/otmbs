@@ -30,13 +30,13 @@ class User:
         self.reservations = []
 
 
-    # create vehicles
+    # create users
     def create(self):
 
-        """Method used to create a NEW vehicle. Returns True for
+        """Method used to create a NEW user. Returns True for
         a successful creation, False otherwise"""
 
-        # generating an UUID for the vehicle
+        # generating an UUID for the user
         uid = str(uuid.uuid4())
         try:
             self.user_uid = self.user_name.split(" ")[0] + self.user_name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
@@ -57,6 +57,30 @@ class User:
             print self.user_uri
             print self.user_uid
             print self.user_name
+            return True, self
+        except:
+            return False, None
+
+
+    # update user
+    def update(self, name):
+
+        """Method used to update a User. Returns True for
+        a successful creation, False otherwise"""
+        
+        # creating the triples to remove and to update
+        atriples = []
+        rtriples = []
+        rtriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
+        atriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(name)))
+        print rtriples
+        print atriples
+        
+        # putting triples
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_rdf_update(atriples, rtriples)
+            self.user_name = name
             return True, self
         except:
             return False, None

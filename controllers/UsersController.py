@@ -79,3 +79,22 @@ class UsersController:
         
         # return
         return status, json_user
+
+
+    # update user
+    def update_user(self, user_id, name):
+
+        """Method to update a person"""
+
+        # find the user
+        um = User(self.settings)
+        user = um.find_user(user_id)
+
+        # update it
+        status, user = user.update(name)
+
+        # json representation
+        json_user = user.to_json()
+        
+        # return
+        return status, json_user

@@ -311,6 +311,33 @@ def users_create():
     return redirect("/users/%s" % user["user_uid"])
 
 
+@app.route('/users/<user_id>', methods=['PUT'])
+@app.route('/users/update/<user_id>', methods=['POST'])
+def users_update(user_id):
+        
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            name = data["name"]
+            
+            # invoke the controller
+            status, user = users_controller.update_user(user_id, name)
+
+            # redirect to the index
+            return jsonify(results = user)
+
+    except Exception as e:
+        print e
+        pass
+
+    # invoke the controller
+    status, user = users_controller.update_user(user_id, request.form["name"])
+
+    # redirect to the index
+    return redirect("/users/%s" % user["user_uid"])
+
+
 ################################################
 #
 # setting routes for the groundstation controller
