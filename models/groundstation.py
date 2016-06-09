@@ -180,6 +180,62 @@ class GroundStation:
         # return
         return results
 
+    
+    # update gs
+    def update(self, name, slat, slong, elat, elong):
+
+        """Update a ground station"""
+
+        # query sparql
+        query = """PREFIX rdf:<%s>
+        PREFIX ns:<%s>
+        INSERT {
+           ?gs_uri ns:hasName "%s" .
+           ?sgpsdata ns:hasLatitude "%s" .
+           ?sgpsdata ns:hasLongitude "%s" .
+           ?egpsdata ns:hasLatitude "%s" .
+           ?egpsdata ns:hasLongitude "%s" .
+        }
+        DELETE {
+           ?gs_uri ns:hasName ?old_name .
+           ?sgpsdata ns:hasLatitude ?old_slat .
+           ?sgpsdata ns:hasLongitude ?old_slong .
+           ?egpsdata ns:hasLatitude ?old_elat .
+           ?egpsdata ns:hasLongitude ?old_elong .
+        }
+        WHERE {
+           ?gs_uri rdf:type ns:GroundStation .
+           ?gs_uri ns:hasGSIdentifier "%s" .
+           ?gs_uri ns:hasName ?old_name .
+        ?gs_uri ns:hasStartGPSData ?sgpsdata .
+           ?gs_uri ns:hasEndGPSData ?egpsdata .
+           ?sgpsdata ns:hasLatitude ?old_slat .
+           ?sgpsdata ns:hasLongitude ?old_slong .
+           ?egpsdata ns:hasLatitude ?old_elat .
+           ?egpsdata ns:hasLongitude ?old_elong .
+        }"""
+
+        # remove the triples
+        try:
+            # connect to the SIB and remove the triples
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])        
+            print query % (RDF, NS, name, slat, slong, elat, elong, self.gs_id)
+            kp.load_query_sparql(query % (RDF, NS, name, slat, slong, elat, elong, self.gs_id))
+            
+            # update self data
+            self.gs_name = name
+            self.slatitude = slat
+            self.slongitude = slong
+            self.elatitude = elat
+            self.elongitude = elong
+
+            # return
+            return True
+
+        except Exception as e:
+            print e
+            return False
+
         
     # delete gs
     def delete(self):

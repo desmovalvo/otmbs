@@ -72,6 +72,27 @@ class GroundStationsController:
         return status, json_gs
 
 
+    # update a gs
+    def update_gs(self, gs_id, name, slatitude, slongitude, elatitude, elongitude):
+
+        """Method to update a GroundStation"""
+
+        # instantiate the GS model
+        gs_model = GroundStation(self.settings)
+
+        # find the GS
+        gs_model = gs_model.find_gs(gs_id)
+
+        # update it
+        status = gs_model.update(name, slatitude, slongitude, elatitude, elongitude)
+
+        # json form
+        json_gs = gs_model.to_json()
+
+        # return
+        return status, json_gs
+
+
     # delete groundstation
     def delete_gs(self, gs_id):
 

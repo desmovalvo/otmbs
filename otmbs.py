@@ -405,6 +405,50 @@ def gss_edit(gs_id):
     return render_template("edit_gs.html", gs=res, title="Edit GroundStation")
 
 
+@app.route('/groundstations/<gs_id>', methods=['PUT'])
+@app.route('/groundstations/update/<gs_id>', methods=['POST'])
+def gss_update(gs_id):
+    
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+
+            # extract data
+            data = json.loads(request.data)
+            slat = data["slatitude"]
+            slong = data["slongitude"]
+            elat = data["elatitude"]
+            elong = data["elongitude"]
+            name = data["name"]
+
+            # invoke the controller
+            status, gs = gss_controller.update_gs(gs_id, name, slat, slong, elat, elong)
+
+            # redirect to the index
+            return jsonify(results = gs)
+
+    except Exception as e:
+        print e
+        pass
+
+    # read the form
+    gs_name = request.form["name"]
+    gs_slat = request.form["slatitude"]
+    gs_elat = request.form["elatitude"]
+    gs_slong = request.form["slongitude"]
+    gs_elong = request.form["elongitude"]
+
+    # invoke the controller
+    res, newmodel = gss_controller.update_gs(gs_id, gs_name, gs_slat, gs_slong, gs_elat, gs_elong)
+
+    # redirect to the index
+    return redirect("/groundstations/%s" % newmodel["gs_id"])
+
+
+
+
+
+
 ################################################
 #
 # setting routes for the reservation controller
