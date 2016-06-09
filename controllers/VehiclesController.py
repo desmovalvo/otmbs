@@ -18,12 +18,12 @@ class VehiclesController:
 
 
     # show all
-    def show_vehicles(self):
+    def show_vehicles(self, user_id = None):
         
         """This method is used to retrieve all the Vehicles"""
 
         v = Vehicle(self.settings)
-        vehicles_list = v.find_vehicles()
+        vehicles_list = v.find_vehicles(user_id)
 
         # transform the results in a "jsonifiable"-form
         json_results = []

@@ -69,8 +69,13 @@ def mainpage():
 @app.route('/vehicles', methods=['GET'])
 def vehicles_showall():
 
+    # check if the user_id is given
+    user_id = None
+    if request.args.has_key('user_id'):
+        user_id = request.args['user_id']
+
     # invoke the controller
-    res = vehicles_controller.show_vehicles()
+    res = vehicles_controller.show_vehicles(user_id)
 
     # select the proper output form
     try:
