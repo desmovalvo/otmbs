@@ -135,8 +135,6 @@ def vehicles_update(vehicle_id):
             manufacturer = data["manufacturer"]
             user_uid = data["user_uid"]
             
-            print "INVOKING CONTROLLER"
-
             # invoke the controller
             status, vehicle = vehicles_controller.update_vehicle(vehicle_id, manufacturer, model, user_uid)
 
@@ -172,7 +170,6 @@ def vehicles_new():
 @app.route('/vehicles', methods=['POST'])
 def vehicles_create():
     
-
     # verify if the payload is json
     try:
         if request.content_type == "application/json":
@@ -276,12 +273,6 @@ def users_new():
 
 @app.route('/users', methods=['POST'])
 def users_create():
-
-    print "***********************************************************"
-    print request.args
-    print "***********************************************************"
-    print request.form
-    print "***********************************************************"
     
     # invoke the controller
     res = users_controller.create_user(request.form["name"])
@@ -445,10 +436,6 @@ def gss_update(gs_id):
     return redirect("/groundstations/%s" % newmodel["gs_id"])
 
 
-
-
-
-
 ################################################
 #
 # setting routes for the reservation controller
@@ -462,12 +449,19 @@ def reservations_showall():
     res = reservations_controller.show_reservations()
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
-        print res
-        return render_template("show_reservations.html", entries=res, title="Reservations")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_reservations.html", entries=res, title="Reservations")
     
 
 @app.route('/reservations/<reservation_id>', methods=['GET'])
@@ -477,12 +471,19 @@ def reservations_show(reservation_id):
     res = reservations_controller.show_reservation(reservation_id)
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
-        # render the html view
-        return render_template("show_reservation.html", entry = res, title="Reservation details")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_reservation.html", entry = res, title="Reservation details")
 
 
 @app.route('/reservations/delete/<reservation_id>', methods=['GET'])
@@ -518,9 +519,31 @@ def reservations_new():
 @app.route('/reservations', methods=['POST'])
 def reservations_create():
 
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            gs_id = data["gs_id"]
+            vehicle_id = data["vehicle_id"]
+            user_id = data["user_id"]    
+
+            # invoke the controller
+            print gs_id
+            print vehicle_id
+            print user_id
+            status, reservation = reservations_controller.create_reservation(gs_id, vehicle_id,  user_id)
+
+            # redirect to the index
+            return jsonify(results = reservation)
+
+    except Exception as e:
+        print e
+        pass
+
     # invoke the controller
-    print request.form
-    res = reservations_controller.create_reservation(request.form["gs"], request.form["user_car"])
+    vehicle_id = request.form["user_car"].split("|")[0]
+    user_id = request.form["user_car"].split("|")[1] 
+    res = reservations_controller.create_reservation(request.form["gs"], vehicle_id, user_id)
 
     # redirect to the index
     return redirect("/reservations")

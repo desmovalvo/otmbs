@@ -70,21 +70,20 @@ class ReservationsController:
 
 
     # create reservation
-    def create_reservation(self, gs_id, vehicle_id):
+    def create_reservation(self, gs_id, vehicle_id, user_id):
 
         """Method to create a new Reservation"""
 
-        # get the vehicle_id and user_uid
-        vehicle_uid = vehicle_id.split("|")[0]
-        user_uid = vehicle_id.split("|")[1]
-
         # create the reservation
-        reservation = Reservation(self.settings, gs_id, vehicle_uid, user_uid)
-        status = reservation.create()
+        reservation = Reservation(self.settings, gs_id, vehicle_id, user_id)
+        status, model = reservation.create()
 
-        # return
+        # return status
         if status:
-            return True
+            json_res = model.to_json()
+            return True, json_res
+        else:
+            return False, None
 
 
     # edit reservation

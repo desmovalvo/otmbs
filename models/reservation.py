@@ -178,7 +178,7 @@ class Reservation:
         res_uuid = str(uuid.uuid4())
         res_id = "Reserv_%s" % (res_uuid.split("-")[0])
         res_uri = NS + res_uuid
-
+        
         # UPDATE SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
@@ -195,12 +195,12 @@ class Reservation:
             ?gs_uri ns:hasGSIdentifier "%s"
         }"""
 
-        print query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_id, self.vehicle_id, self.gs_id)
         try:
-            kp.load_query_sparql(query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_id, self.vehicle_id, self.gs_id))
-            return True
+            kp.load_query_sparql(query % (RDF, NS, res_uri, res_uri, res_id, res_uri, res_uri, res_uri, self.user_id, self.vehicle_id, self.gs_id))            
+            ret_model = self.find_reservation(res_id)
+            return True, ret_model
         except:
-            return False
+            return False, None
 
         
     # update
