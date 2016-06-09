@@ -215,32 +215,46 @@ def vehicles_delete(vehicle_id):
 @app.route('/users', methods=['GET'])
 def users_showall():
 
-    # invoking the controller
+    # invoke the controller
     res = users_controller.show_users()
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
 
-        print res
-        return render_template("show_users.html", entries=res, title="Users")
+    return render_template("show_users.html", entries=res, title="Users")
 
 
 @app.route('/users/<user_id>', methods=['GET'])
 def users_show(user_id):
 
-    # invoking the controller
+
+    # invoke the controller
     res = users_controller.show_user(user_id)
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
-        print res
-        return render_template("show_user.html", entry=res, title="User details")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_user.html", entry=res, title="User details")
 
 
 @app.route('/users/delete/<user_id>', methods=['GET'])
@@ -273,12 +287,28 @@ def users_new():
 
 @app.route('/users', methods=['POST'])
 def users_create():
-    
+        
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            name = data["name"]
+            
+            # invoke the controller
+            status, user = users_controller.create_user(name)
+
+            # redirect to the index
+            return jsonify(results = user)
+
+    except Exception as e:
+        print e
+        pass
+
     # invoke the controller
-    res = users_controller.create_user(request.form["name"])
+    status, user = users_controller.create_user(request.form["name"])
 
     # redirect to the index
-    return redirect("/users")
+    return redirect("/users/%s" % user["user_uid"])
 
 
 ################################################

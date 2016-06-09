@@ -72,7 +72,10 @@ class UsersController:
 
         # create!
         u = User(self.settings, name)
-        status = u.create()
+        status, user = u.create()
+
+        # json representation
+        json_user = user.to_json()
         
         # return
-        return status
+        return status, json_user

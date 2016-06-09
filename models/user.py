@@ -42,7 +42,7 @@ class User:
             self.user_uid = self.user_name.split(" ")[0] + self.user_name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
         except:
             self.user_uid = self.user_name.replace(" ", "") + "_" + uid.split("-")[0]            
-        self.user_uri = NS + uid
+        self.user_uri = NS + uid        
         
         # creating the triples
         triples = []
@@ -54,9 +54,12 @@ class User:
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             kp.load_rdf_insert(triples)
-            return True
+            print self.user_uri
+            print self.user_uid
+            print self.user_name
+            return True, self
         except:
-            return False
+            return False, None
 
     
     # find
