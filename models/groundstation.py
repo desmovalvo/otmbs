@@ -56,7 +56,7 @@ class GroundStation:
         triples = []
         triples.append(Triple(URI(self.gs_uri), URI(RDF_TYPE), URI(GS_CLASS)))
         triples.append(Triple(URI(self.gs_uri), URI(NS + "hasGSIdentifier"), Literal(self.gs_id)))
-        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasName"), Literal(self.name)))
+        triples.append(Triple(URI(self.gs_uri), URI(NS + "hasName"), Literal(self.gs_name)))
         triples.append(Triple(URI(self.gs_uri), URI(NS + "hasStartGPSData"), URI(self.sgpsdata_uri)))
         triples.append(Triple(URI(self.gs_uri), URI(NS + "hasEndGPSData"), URI(self.egpsdata_uri)))
         triples.append(Triple(URI(self.sgpsdata_uri), URI(NS + "hasLatitude"), Literal(self.slatitude)))
@@ -68,9 +68,9 @@ class GroundStation:
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             kp.load_rdf_insert(triples)
-            return True
+            return True, self
         except Exception as e:
-            return False
+            return False, None
 
 
     # get the list of the ground stations

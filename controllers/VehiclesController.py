@@ -72,13 +72,9 @@ class VehiclesController:
         v = Vehicle(self.settings)
         v = v.find_vehicle(vehicle_id)
         
-        print "POST FIND"
-
         # update it
         status, newmodel = v.update(manufacturer, model, user_id)
         jsonmodel = newmodel.to_json()
-
-        print "POST UPDATE"
         
         # return
         return status, jsonmodel

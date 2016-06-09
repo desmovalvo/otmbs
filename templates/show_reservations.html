@@ -18,7 +18,7 @@
 	    <td><a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id'] ) }}">{{ reservation["reservation_id"] }}</a></td>
 	    <td><a href="{{ url_for('vehicles_show', vehicle_id=reservation['vehicle_id']) }}">{{ reservation["vehicle_id"] }}</td>
 	    <td><a href="{{ url_for('users_show', user_id=reservation['user_id']) }}">{{ reservation["user_id"] }}</td>
-	    <td><a href="{{ url_for('gss_show', gsid=reservation['gs_id'] ) }}">{{ reservation["gs_id"] }}</td>
+	    <td><a href="{{ url_for('gss_show', gs_id=reservation['gs_id'] ) }}">{{ reservation["gs_id"] }}</td>
 
 	    <td>
 	      <a href="{{ url_for('reservations_show', reservation_id=reservation['reservation_id']) }}"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details</a>&nbsp;

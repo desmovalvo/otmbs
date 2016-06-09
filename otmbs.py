@@ -303,26 +303,41 @@ def gss_showall():
     res = gss_controller.show_gss()
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = res)
-    else:
-        return render_template("show_gss.html", gss = res, title="GroundStations")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_gss.html", gss = res, title="GroundStations")
 
 
-@app.route('/groundstations/<gsid>', methods=['GET'])
-def gss_show(gsid):
-    
+@app.route('/groundstations/<gs_id>', methods=['GET'])
+def gss_show(gs_id):
+ 
     # get the list of the ground stations
-    gs = gss_controller.show_gs(gsid)
+    gs = gss_controller.show_gs(gs_id)
 
     # select the proper output form
-    if request.args.has_key('format'):
-        if request.args['format'] == 'json':
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
             return jsonify(results = gs)
-    else:
-        # render the html view
-        return render_template("show_gs.html", entry = gs, title="GroundStation details")
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = gs)
+    except:
+        pass
+    
+    return render_template("show_gs.html", entry = gs, title="GroundStation details")
 
 
 @app.route('/groundstations/new', methods=['GET'])
@@ -335,31 +350,55 @@ def gss_new():
 @app.route('/groundstations', methods=['POST'])
 def gss_create():
     
+    # verify if the payload is json
+    try:
+        if request.content_type == "application/json":
+
+            # extract data
+            data = json.loads(request.data)
+            slat = data["slatitude"]
+            slong = data["slongitude"]
+            elat = data["elatitude"]
+            elong = data["elongitude"]
+            name = data["name"]
+
+            # invoke the controller
+            status, gs = gss_controller.create_gs(name, slat, slong, elat, elong)
+
+            # redirect to the index
+            return jsonify(results = gs)
+
+    except Exception as e:
+        print e
+        pass
+
     # invoke the controller
-    res = gss_controller.create_gs(request.form["name"], request.form["latitude"], request.form["longitude"])
+    status, gs = gss_controller.create_gs(request.form["name"], 
+                                          request.form["slatitude"], request.form["slongitude"], 
+                                          request.form["elatitude"], request.form["elongitude"])
 
     # redirect to the index
     return redirect("/groundstations")
 
 
-@app.route('/groundstations/delete/<gsid>', methods=['GET'])
-@app.route('/groundstations/<gsid>', methods=['DELETE'])
-def gss_delete(gsid):
+@app.route('/groundstations/delete/<gs_id>', methods=['GET'])
+@app.route('/groundstations/<gs_id>', methods=['DELETE'])
+def gss_delete(gs_id):
     
     # invoke the controller
-    res = gss_controller.delete_gs(gsid)
+    res = gss_controller.delete_gs(gs_id)
     
     # redirect to the index
     # return redirect("/groundstations", methods=['GET'])
     return redirect(url_for("gss_showall"))
 
 
-@app.route('/groundstations/<gsid>/edit', methods=['GET'])
-def gss_edit(gsid):
+@app.route('/groundstations/<gs_id>/edit', methods=['GET'])
+def gss_edit(gs_id):
 
     # invoke the controller in order to retrieve
     # the gs that should be modified
-    res = gss_controller.show_gs(gsid)
+    res = gss_controller.show_gs(gs_id)
 
     # now render the edit template with the field
     # filled with the previous results
@@ -508,8 +547,25 @@ def alfred_routes():
     # then call the proper action
     # TODO: this is not complete
     # TODO: optional arguments must be considered
+    # TODO: only GET are ok
     if ALF_ACTIONS[action]["method"] == "GET":
-        return redirect(url_for(ALF_ACTIONS[action]["name"], user_id = resource_id))
+
+        # vehicle related request 
+        if action in ["showvehicles", "showvehicle", "deletevehicle"]:
+            return redirect(url_for(ALF_ACTIONS[action]["name"], vehicle_id = resource_id, format = data_format))
+
+        # user related request
+        if action in ["showusers", "showuser", "deleteuser"]:
+            return redirect(url_for(ALF_ACTIONS[action]["name"], user_id = resource_id, format = data_format))
+
+        # gss related request
+        if action in ["showgss", "showgs", "deletegs"]:
+            return redirect(url_for(ALF_ACTIONS[action]["name"], gs_id = resource_id, format = data_format))
+
+        # reservations related request
+        if action in ["showreservations", "showreservation", "deletereservation"]:
+            return redirect(url_for(ALF_ACTIONS[action]["name"], reservation_id = resource_id, format = data_format))
+
     else:
         # implement post!
         pass

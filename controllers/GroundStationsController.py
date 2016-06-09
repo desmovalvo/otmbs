@@ -62,17 +62,14 @@ class GroundStationsController:
 
         """Method to create a new GroundStation"""
 
-        # create the GPS Data
-        gpsdata = GPSData(self.settings)
-        gpsdata.slatitude = slatitude
-        gpsdata.slongitude = slongitude
-        gpsdata.elatitude = elatitude
-        gpsdata.elongitude = elongitude
-        status = gpsdata.create()
+        # Instantiate the GS model
+        gs_model = GroundStation(self.settings, name, slatitude, slongitude,
+                                 elatitude, elongitude)
+        status, gs = gs_model.create()
 
-        # return
-        if status:
-            return True
+        # return the gs
+        json_gs = gs.to_json()
+        return status, json_gs
 
 
     # delete groundstation
