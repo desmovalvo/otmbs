@@ -70,6 +70,7 @@ ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasModel "Model S" .
 ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 rdf:type ns:Person .
 ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasUserIdentifier "SimoneR_207fdbad" .
 ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasName "Simone Rondelli" .
+ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasPasswd "SimoneRondelli" .
 ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasVehicle ns:96a591ef-b1d8-4210-b924-52244af68750 .
 ##############################################################
 #
@@ -80,54 +81,63 @@ ns:207fdbad-1bc6-4d56-9bdc-5a2d29c35b75 ns:hasVehicle ns:96a591ef-b1d8-4210-b924
 ns:5b9eb900-d507-4a77-a63c-637e80c41a17 rdf:type ns:Person .
 ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasUserIdentifier "LucianoB_5b9eb900" .
 ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasName "Luciano Bononi" .
+ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasPasswd "LucianoBononi" .
 ns:5b9eb900-d507-4a77-a63c-637e80c41a17 ns:hasVehicle ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda .
 ##############################################################
 # Person: Alberto Borghetti
 ns:33ab29eb-003a-435c-b141-4db9c5d45bae rdf:type ns:Person .
 ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasUserIdentifier "AlbertoB_33ab29eb" .
 ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasName "Alberto Borghetti" .
+ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasPasswd "AlbertoBorghetti" .
 ns:33ab29eb-003a-435c-b141-4db9c5d45bae ns:hasVehicle ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 .
 ##############################################################
 # Person: Riccardo Venanzi
 ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 rdf:type ns:Person .
 ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasUserIdentifier "RiccardoV_33e46bc2" .
 ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasName "Riccardo Venanzi" .
+ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasPasswd "RiccardoVenanzi" .
 ns:33e46bc2-9785-449e-8916-2a122f3d4ca4 ns:hasVehicle ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a .
 ##############################################################
 # Person: Daniele Tarchi
 ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 rdf:type ns:Person .
 ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasUserIdentifier "DanieleT_1afa5bd0" .
 ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasName "Daniele Tarchi" .
+ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasPasswd "DanieleTarchi" .
 ns:1afa5bd0-55dd-463c-8d8f-f4e708d5fc10 ns:hasVehicle ns:01f128dd-1fca-4b5b-b422-ff92116be365 .
 ##############################################################
 # Person: Federico Montori
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f rdf:type ns:Person .
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasUserIdentifier "FedericoM_df3281eb" .
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasName "Federico Montori" .
+ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasPasswd "FedericoMontori" .
 ns:df3281eb-be4f-41c8-859e-e4470dd3c47f ns:hasVehicle ns:b9735872-b59c-43fc-bac0-6adef92f2a8c .
 ##############################################################
 # Person: Luca Bedogni
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 rdf:type ns:Person .
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasUserIdentifier "LucaB_94043639" .
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasName "Luca Bedogni" .
+ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasPasswd "LucaBedogni" .
 ns:94043639-a5cd-4f6c-8afa-546cff83b7c0 ns:hasVehicle ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea .
 ##############################################################
 # Person: Marco Di Felice
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 rdf:type ns:Person .
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasUserIdentifier "MarcoDF_4c341c0d" .
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasName "Marco Di Felice" .
+ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasPasswd "MarcoDiFelice" .
 ns:4c341c0d-dc69-4b5c-9c46-07682da68051 ns:hasVehicle ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 .
 ##############################################################
 # Person: Paolo Azzoni
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde rdf:type ns:Person .
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasUserIdentifier "PaoloA_0ec53f33" .
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasName "Paolo Azzoni" .
+ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasPasswd "PaoloAzzoni" .
 ns:0ec53f33-ca22-421f-a871-ef2f1c6c4bde ns:hasVehicle ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 .
 ##############################################################
 # Person: Michele Ornato
 ns:e4a0be27-20e1-4350-be13-1cb496381727 rdf:type ns:Person .
 ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasUserIdentifier "MicheleO_e4a0be27" .
 ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasName "Michele Ornato" .
+ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasPasswd "MicheleOrnato" .
 ns:e4a0be27-20e1-4350-be13-1cb496381727 ns:hasVehicle ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 .
 ##############################################################
 #
