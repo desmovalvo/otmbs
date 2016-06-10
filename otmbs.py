@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 # system-wide requirements
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for, make_response
+from flask.ext.httpauth import HTTPBasicAuth
 import ConfigParser
 import requests
 import json
@@ -15,6 +16,7 @@ from controllers.GroundStationsController import *
 from controllers.ReservationsController import *
 from controllers.VehiclesController import *
 from controllers.UsersController import *
+from controllers.AuthController import *
 
 # importing other local libraries
 from libs.n3loader import *
@@ -39,13 +41,41 @@ for filename in settings["kb_files"]:
     loader.load_n3file(filename)
 
 # creating an instance of Flask
+# and one of the authenticator
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 # creating an instance of each controller
 reservations_controller = ReservationsController(settings)
 gss_controller = GroundStationsController(settings)
 vehicles_controller = VehiclesController(settings)
 users_controller = UsersController(settings)
+auth_controller = AuthController(settings)
+
+
+################################################
+#
+# login methods
+#
+################################################
+
+@auth.get_password
+def get_password(username):
+
+    """This is a callback used by the server to retrieve
+    the password for a given username"""
+
+    # invoke the auth controller
+    res = auth_controller.get_password(username)
+    print res
+
+    # return
+    return res
+
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 
 ################################################
@@ -240,6 +270,7 @@ def users_showall():
 
 
 @app.route('/users/<user_id>', methods=['GET'])
+@auth.login_required
 def users_show(user_id):
 
 
