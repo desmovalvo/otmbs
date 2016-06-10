@@ -293,17 +293,15 @@ def users_new():
 @app.route('/users', methods=['POST'])
 def users_create():
         
-
-    print "CREAZIONEEEEEEEEEEEEEEEEEEEEEEEEE"
-
     # verify if the payload is json
     try:
         if request.content_type == "application/json":
             data = json.loads(request.data)
             name = data["name"]
+            passwd = data["password"]
             
             # invoke the controller
-            status, user = users_controller.create_user(name)
+            status, user = users_controller.create_user(name, passwd)
 
             # redirect to the index
             return jsonify(results = user)
@@ -313,7 +311,7 @@ def users_create():
         pass
 
     # invoke the controller
-    status, user = users_controller.create_user(request.form["name"])
+    status, user = users_controller.create_user(request.form["name"], request.form["password"])
 
     # redirect to the index
     return redirect("/users/%s" % user["user_uid"])
@@ -328,9 +326,10 @@ def users_update(user_id):
         if request.content_type == "application/json":
             data = json.loads(request.data)
             name = data["name"]
+            passwd = data["password"]
             
             # invoke the controller
-            status, user = users_controller.update_user(user_id, name)
+            status, user = users_controller.update_user(user_id, name, passwd)
 
             # redirect to the index
             return jsonify(results = user)
@@ -340,7 +339,7 @@ def users_update(user_id):
         pass
 
     # invoke the controller
-    status, user = users_controller.update_user(user_id, request.form["name"])
+    status, user = users_controller.update_user(user_id, request.form["name"], request.form["password"])
 
     # redirect to the index
     return redirect("/users/%s" % user["user_uid"])

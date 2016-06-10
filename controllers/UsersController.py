@@ -65,12 +65,12 @@ class UsersController:
 
 
     # create user
-    def create_user(self, name):
+    def create_user(self, name, passwd):
 
         """Method to create a person"""
 
         # create!
-        u = User(self.settings, name)
+        u = User(self.settings, name, passwd)
         status, user = u.create()
 
         # json representation
@@ -81,7 +81,7 @@ class UsersController:
 
 
     # update user
-    def update_user(self, user_id, name):
+    def update_user(self, user_id, name, passwd):
 
         """Method to update a person"""
 
@@ -90,7 +90,7 @@ class UsersController:
         user = um.find_user(user_id)
 
         # update it
-        status, user = user.update(name)
+        status, user = user.update(name, passwd)
 
         # json representation
         json_user = user.to_json()

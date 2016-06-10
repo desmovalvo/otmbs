@@ -15,7 +15,7 @@ class User:
     service and the SIB content for the Person class"""
 
     # constructor
-    def __init__(self, settings, name = None):
+    def __init__(self, settings, name = None, password = None):
 
         """Constructor for the User class"""
 
@@ -26,6 +26,7 @@ class User:
         self.user_uri = None
         self.user_uid = None
         self.user_name = name
+        self.user_password = password
         self.vehicles = []
         self.reservations = []
 
@@ -49,6 +50,7 @@ class User:
         triples.append(Triple(URI(NS + self.user_uri), URI(RDF_TYPE), URI(PERSON_CLASS)))
         triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasUserIdentifier"), Literal(self.user_uid)))
         triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
+        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasPassword"), Literal(self.user_password)))
 
         # putting triples
         try:
@@ -60,7 +62,7 @@ class User:
 
 
     # update user
-    def update(self, name):
+    def update(self, name, password):
 
         """Method used to update a User. Returns True for
         a successful creation, False otherwise"""
@@ -69,7 +71,9 @@ class User:
         atriples = []
         rtriples = []
         rtriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
+        rtriples.append(Triple(URI(self.user_uri), URI(NS + "hasPassword"), Literal(self.user_password)))
         atriples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(name)))
+        atriples.append(Triple(URI(self.user_uri), URI(NS + "hasPassword"), Literal(password)))
         
         # putting triples
         try:
@@ -92,11 +96,12 @@ class User:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?person_uri ?person_name ?person_uid ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id
+        SELECT ?person_uri ?person_name ?person_uid ?vehicle_uri ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id ?person_password
         WHERE {
             ?person_uri rdf:type ns:Person .
             ?person_uri ns:hasUserIdentifier ?person_uid .
             ?person_uri ns:hasName ?person_name .
+            ?person_uri ns:hasName ?person_password .
             OPTIONAL {
                 ?vehicle_uri rdf:type ns:Vehicle .
                 ?person_uri ns:hasVehicle ?vehicle_uri .
@@ -130,6 +135,7 @@ class User:
             vehicle_model = res[6][2]
             res_id = res[7][2]
             gs_id = res[8][2]
+            person_password = res[9][2]
 
             if user_dicts.has_key(person_uri):
 
@@ -151,6 +157,7 @@ class User:
                 # creation of a dictionary
                 user_dicts[person_uri] = {
                     "person_name" : person_name,
+                    "person_password" : person_password,
                     "person_uid" : person_uid,
                     "vehicles" : {},
                     "reservations" : {}
@@ -174,6 +181,7 @@ class User:
             user_model.user_uri = el
             user_model.user_uid = user_dicts[el]["person_uid"]
             user_model.user_name = user_dicts[el]["person_name"]
+            user_model.user_password = user_dicts[el]["person_password"]
             for vehicle in user_dicts[el]["vehicles"]:
                 user_model.vehicles.append(vehicle)
             for reservation in user_dicts[el]["reservations"]:
@@ -195,11 +203,12 @@ class User:
         # perform a SPARQL query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?person_uri ?person_name ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id
+        SELECT ?person_uri ?person_name ?vehicle_id ?vehicle_manufacturer ?vehicle_model ?reservation_uri ?reservation_id ?gs_uri ?gs_id ?person_password
         WHERE {
             ?person_uri rdf:type ns:Person .
             ?person_uri ns:hasUserIdentifier "%s" .
             ?person_uri ns:hasName ?person_name .
+            ?person_uri ns:hasPassword ?person_password .
             OPTIONAL {
                 ?vehicle_uri rdf:type ns:Vehicle .
                 ?person_uri ns:hasVehicle ?vehicle_uri .
@@ -223,6 +232,7 @@ class User:
         user_model = User(self.settings)
         user_model.user_uri = results[0][0][2]
         user_model.user_name = results[0][1][2]
+        user_model.user_password = results[0][9][2]
         user_model.user_uid = user_id
         user_model.vehicles = []
         user_model.reservations = []
@@ -270,6 +280,7 @@ class User:
             ?user_uri rdf:type ns:Person .
             ?user_uri ns:hasVehicle ?vehicle_uri .
             ?user_uri ns:hasName ?name .
+            ?user_uri ns:hasPassword ?user_password .
             ?user_uri ns:hasUserIdentifier "%s" .
             ?vehicle_uri rdf:type ns:Vehicle .
             ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
@@ -284,6 +295,7 @@ class User:
         WHERE {
             ?user_uri rdf:type ns:Person .
             ?user_uri ns:hasName ?name .
+            ?user_uri ns:hasPassword ?user_password .
             ?user_uri ns:hasUserIdentifier "%s" .
             OPTIONAL {
                 ?user_uri ns:hasVehicle ?vehicle_uri .
@@ -317,6 +329,7 @@ class User:
         udict = {}
         udict["user_uid"] = self.user_uid
         udict["user_name"] = self.user_name
+        udict["user_password"] = self.user_password
         udict["user_uri"] = self.user_uri
         udict["user_vehicles"] = self.vehicles
         udict["user_reservations"] = self.reservations

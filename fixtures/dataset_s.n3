@@ -56,21 +56,21 @@ ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasVehicle ns:91552902-cf3a-430a-8ca4
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d rdf:type ns:Person .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasUserIdentifier "FabioV_ea19421a" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasName "Fabio Viola" .
-ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasPasswd "FabioViola" .
+ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasPassword "FabioViola" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasVehicle ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 .
 ##############################################################
 # Person: Alfredo D'Elia
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 rdf:type ns:Person .
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasUserIdentifier "AlfredoDE_e0d8201e" .
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasName "Alfredo D'Elia" .
-ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasPasswd "AlfredoDElia" .
+ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasPassword "AlfredoDElia" .
 ns:e0d8201e-b4f3-4aba-bb01-60e2b51e47a4 ns:hasVehicle ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 .
 ##############################################################
 # Person: Francesco Antoniazzi
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 rdf:type ns:Person .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasUserIdentifier "FrancescoA_3d16d7aa" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasName "Francesco Antoniazzi" .
-ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasPasswd "FrancescoAntoniazzi" .
+ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasPassword "FrancescoAntoniazzi" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasVehicle ns:259a5076-0df8-4192-b22f-ba6566c74da4 .
 ##############################################################
 #
