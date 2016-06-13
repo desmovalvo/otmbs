@@ -736,6 +736,40 @@ def users():
     return jsonify(results = users)
 
 
+@app.route('/bs/vehicles', methods=['GET'])
+def vehicles():
+
+    """Returns the list of vehicles. Default
+    data format for the results is JSON.
+    Note: the user_id must be provided. """
+
+    # check if the user_id was provided
+    user_id = None
+    if request.args.has_key('user_id'):
+
+        # read the user_id
+        user_id = request.args['user_id']
+
+        # get the vehicle list
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        print vehicles_query % user_id
+        kp.load_query_sparql(vehicles_query % user_id)
+        results = kp.result_sparql_query
+
+        # parse the results
+        vehicles = []
+        for result in results:
+            vehicle = {}
+            for field in result:
+                vehicle[field[0]] = field[2]
+            vehicles.append(vehicle)
+
+    else:
+         return make_response(jsonify({'error': 'Bad Request - The user_id must be provided'}), 401)
+
+    # return
+    return jsonify(results = vehicles)
+
 
 ################################################
 #
