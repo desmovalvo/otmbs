@@ -19,6 +19,7 @@ from controllers.UsersController import *
 from controllers.AuthController import *
 
 # importing other local libraries
+from libs.traditional_bs_queries import *
 from libs.n3loader import *
 from libs.alfrest import *
 
@@ -707,7 +708,129 @@ def reservations_update(reservation_id):
 
 ################################################
 #
-# alfred non-rest interface
+# Traditional Booking Service Interface
+#
+################################################
+
+@app.route('/bs/users', methods=['GET'])
+def users():
+
+    """Returns the list of the users of the booking service.
+    The default data format for the results is JSON."""
+
+    # get the user list
+    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+    kp.load_query_sparql(users_query)
+    results = kp.result_sparql_query
+    
+    # parse the results
+    users = []
+    for result in results:
+        user = {}
+        user["uri"] = result[0][2]
+        user["name"] = result[1][2]
+        user["id"] = result[2][2]
+        users.append(user)
+
+    # return
+    return jsonify(results = users)
+
+
+@app.route('/bs/vehicles', methods=['GET'])
+def vehicles():
+
+    """Returns the list of vehicles. Default
+    data format for the results is JSON.
+    Note: the user_id must be provided. """
+
+    # check if the user_id was provided user_id = None if
+    if request.args.has_key('user_id'):
+
+        # read the user_id
+        user_id = request.args['user_id']
+
+        # get the vehicle list
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        print vehicles_query % user_id
+        kp.load_query_sparql(vehicles_query % user_id)
+        results = kp.result_sparql_query
+
+        # parse the results
+        vehicles = []
+        for result in results:
+            vehicle = {}
+            for field in result:
+                vehicle[field[0]] = field[2]
+            vehicles.append(vehicle)
+
+    else:
+         return make_response(jsonify({'error': 'Bad Request - The user_id must be provided'}), 401)
+
+    # return
+    return jsonify(results = vehicles)
+
+
+@app.route('/bs/gcps', methods=['GET'])
+def gcps():
+
+    """Returns the list of GCPs. Default
+    data format for the results is JSON."""
+
+    # get the list of gcps
+    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+    print gcps_query 
+    kp.load_query_sparql(gcps_query)
+    results = kp.result_sparql_query
+    
+    # parse the results
+    gcps = []
+    for result in results:
+        gcp = {}
+        for field in result:
+            gcp[field[0]] = field[2]
+        gcps.append(gcp)
+                
+    # return
+    return jsonify(results = gcps)
+
+
+@app.route('/bs/reservations', methods=['GET'])
+def reservations():
+
+    """Returns the list of reservations for
+    a given user. JSON output."""
+
+    # check if the user_id was provided user_id = None if
+    if request.args.has_key('user_id'):
+
+        # read the user_id
+        user_id = request.args['user_id']
+
+        # get the reservation list
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        print reservations_query % user_id
+        kp.load_query_sparql(reservations_query % user_id)
+        results = kp.result_sparql_query
+
+        # parse the results
+        reservations = []
+        for result in results:
+            reservation = {}
+            for field in result:
+                reservation[field[0]] = field[2]
+            reservations.append(reservation)
+
+    else:
+         return make_response(jsonify({'error': 'Bad Request - The user_id must be provided'}), 401)
+
+    # return
+    return jsonify(results = reservations)
+    
+
+
+################################################
+#
+# TODO -- alfred non-rest interface
 #
 ################################################
 @app.route('/alfred', methods=['GET', 'POST'])
