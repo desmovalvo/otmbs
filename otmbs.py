@@ -19,6 +19,7 @@ from controllers.UsersController import *
 from controllers.AuthController import *
 
 # importing other local libraries
+from libs.traditional_bs_queries import *
 from libs.n3loader import *
 from libs.alfrest import *
 
@@ -707,7 +708,38 @@ def reservations_update(reservation_id):
 
 ################################################
 #
-# alfred non-rest interface
+# Traditional Booking Service Interface
+#
+################################################
+
+@app.route('/bs/users', methods=['GET'])
+def users():
+
+    """Returns the list of the users of the booking service.
+    The default data format for the results is JSON."""
+
+    # get the user list
+    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+    kp.load_query_sparql(users_query)
+    results = kp.result_sparql_query
+    
+    # parse the results
+    users = []
+    for result in results:
+        user = {}
+        user["uri"] = result[0][2]
+        user["name"] = result[1][2]
+        user["id"] = result[2][2]
+        users.append(user)
+
+    # return
+    return jsonify(results = users)
+
+
+
+################################################
+#
+# TODO -- alfred non-rest interface
 #
 ################################################
 @app.route('/alfred', methods=['GET', 'POST'])
