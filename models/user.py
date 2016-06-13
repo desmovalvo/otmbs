@@ -228,6 +228,8 @@ class User:
         kp.load_query_sparql(query % (RDF, NS, user_id))
         results = kp.result_sparql_query           
 
+        print results
+
         # build the model for the user
         user_model = User(self.settings)
         user_model.user_uri = results[0][0][2]

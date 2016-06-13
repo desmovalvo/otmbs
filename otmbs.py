@@ -67,7 +67,6 @@ def get_password(username):
 
     # invoke the auth controller
     res = auth_controller.get_password(username)
-    print res
 
     # return
     return res
@@ -76,6 +75,13 @@ def get_password(username):
 @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    
+    # TODO: yet to implement!
+    pass
 
 
 ################################################
@@ -232,8 +238,12 @@ def vehicles_create():
 
 @app.route('/vehicles/delete/<vehicle_id>', methods=['GET'])
 @app.route('/vehicles/<vehicle_id>', methods=['DELETE'])
+@auth.login_required
 def vehicles_delete(vehicle_id):
     
+    # TODO: check if the logged user corresponds to the
+    # owner of the vehicle
+
     # invoke the controller
     res = vehicles_controller.delete_vehicle(vehicle_id)
     
@@ -270,7 +280,6 @@ def users_showall():
 
 
 @app.route('/users/<user_id>', methods=['GET'])
-@auth.login_required
 def users_show(user_id):
 
 
@@ -295,6 +304,7 @@ def users_show(user_id):
 
 @app.route('/users/delete/<user_id>', methods=['GET'])
 @app.route('/users/<user_id>', methods=['DELETE'])
+@auth.login_required
 def users_delete(user_id):
     
     # invoke the controller
@@ -469,6 +479,7 @@ def gss_create():
 
 @app.route('/groundstations/delete/<gs_id>', methods=['GET'])
 @app.route('/groundstations/<gs_id>', methods=['DELETE'])
+@auth.login_required
 def gss_delete(gs_id):
     
     # invoke the controller
@@ -588,6 +599,7 @@ def reservations_show(reservation_id):
 
 @app.route('/reservations/delete/<reservation_id>', methods=['GET'])
 @app.route('/reservations/<reservation_id>', methods=['DELETE'])
+@auth.login_required
 def reservations_delete(reservation_id):
     
     # invoke the controller
