@@ -4,7 +4,7 @@
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
 # OTMBS Namespace
-NS = "http://mml.arces.unibo.it/otmbs#"
+NS = "http://www.m3.com/2012/05/m3/ioe-ontology.owl#"
 
 # Common properties
 RDF_TYPE = RDF + "type"
