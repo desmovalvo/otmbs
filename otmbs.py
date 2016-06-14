@@ -794,6 +794,40 @@ def gcps():
     return jsonify(results = gcps)
 
 
+@app.route('/bs/evses', methods=['GET'])
+def evses():
+
+    """Returns the list of evses. Default
+    data format for the results is JSON.
+    Note: the gcp_name must be provided. """
+
+    # check if the user_id was provided user_id = None if
+    if request.args.has_key('gcp_name'):
+
+        # read the user_id
+        gcp_name = request.args['gcp_name']
+
+        # get the evse list
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        print evses_query % gcp_name
+        kp.load_query_sparql(evses_query % gcp_name)
+        results = kp.result_sparql_query
+
+        # parse the results
+        evses = []
+        for result in results:
+            evse = {}
+            for field in result:
+                evse[field[0]] = field[2]
+            evses.append(evse)
+
+    else:
+         return make_response(jsonify({'error': 'Bad Request - The gcp_name must be provided'}), 401)
+
+    # return
+    return jsonify(results = evses)
+
+
 @app.route('/bs/reservations', methods=['GET'])
 def reservations():
 
