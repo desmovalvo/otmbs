@@ -197,6 +197,8 @@ class User:
         
         """Method used to retrieve a single user from the SIB"""
 
+        print user_id
+
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
@@ -225,6 +227,7 @@ class User:
                 }
             }
         }"""
+        print query % (RDF, NS, user_id)
         kp.load_query_sparql(query % (RDF, NS, user_id))
         results = kp.result_sparql_query           
 
@@ -232,6 +235,7 @@ class User:
 
         # build the model for the user
         user_model = User(self.settings)
+        print results
         user_model.user_uri = results[0][0][2]
         user_model.user_name = results[0][1][2]
         user_model.user_password = results[0][9][2]

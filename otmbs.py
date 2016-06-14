@@ -239,7 +239,7 @@ def vehicles_create():
 
 @app.route('/vehicles/delete/<vehicle_id>', methods=['GET'])
 @app.route('/vehicles/<vehicle_id>', methods=['DELETE'])
-@auth.login_required
+# @auth.login_required
 def vehicles_delete(vehicle_id):
     
     # TODO: check if the logged user corresponds to the
@@ -305,7 +305,7 @@ def users_show(user_id):
 
 @app.route('/users/delete/<user_id>', methods=['GET'])
 @app.route('/users/<user_id>', methods=['DELETE'])
-@auth.login_required
+# @auth.login_required
 def users_delete(user_id):
     
     # invoke the controller
@@ -480,7 +480,7 @@ def gss_create():
 
 @app.route('/groundstations/delete/<gs_id>', methods=['GET'])
 @app.route('/groundstations/<gs_id>', methods=['DELETE'])
-@auth.login_required
+# @auth.login_required
 def gss_delete(gs_id):
     
     # invoke the controller
@@ -600,7 +600,7 @@ def reservations_show(reservation_id):
 
 @app.route('/reservations/delete/<reservation_id>', methods=['GET'])
 @app.route('/reservations/<reservation_id>', methods=['DELETE'])
-@auth.login_required
+# @auth.login_required
 def reservations_delete(reservation_id):
     
     # invoke the controller
