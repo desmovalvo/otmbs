@@ -18,8 +18,10 @@ WHERE {
    ?uri ns:hasName ?name .
    ?uri ns:hasManufacturer ?manu .
    ?uri ns:hasModel ?model .
-   ?uri ns:hasGPSData ?gps .
-   ?uri ns:hasBatteryData ?batt .
+   OPTIONAL {
+      ?uri ns:hasGPSData ?gps } .
+   OPTIONAL {
+      ?uri ns:hasBatteryData ?batt }
 }"""
 
 gcps_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
