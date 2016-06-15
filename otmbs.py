@@ -867,8 +867,6 @@ def reservations():
 @app.route('/bs/chargerequests', methods=['GET'])
 def charge_request():
 
-    print "CHARGE"
-    
     # read form data
     try:
         data = request.args
@@ -885,16 +883,12 @@ def charge_request():
     except Exception as e:
         print "ECCEXIONE:" + str(e)
         print e
-    print "DATA READ"
-
-    print vehicle_uri
     
     # generate UUIDs
     request_uri = NS + str(uuid4())
     time_interval_uri = NS + str(uuid4())
     energy_uri = NS + str(uuid4())
     spatial_range_uri = NS + str(uuid4())
-    print "UUID GENERATED"
 
     # insert
     triple_list = []
@@ -917,7 +911,6 @@ def charge_request():
     triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), LLiteral(rad)))
     kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
     kp.load_rdf_insert(triple_list)
-    print "TRIPLE INSERTED"
 
     # query (instead of subscription)
     results = False
@@ -929,9 +922,6 @@ def charge_request():
         if len(query_results) > 0:
             results = query_results
 
-    print "RECURSIVE QUERY RESULTS OBTAINED"
-    print results
-
     # query:
     res_uri = results[0][0]
     print res_uri
@@ -939,9 +929,6 @@ def charge_request():
     kp.load_query_sparql(chargeresponse_query % (res_uri, res_uri))
     charge_requests = []
     results2 = kp.result_sparql_query
-    print results2
-    print "QUERY RESULTS OBTAINED"
-    print results2
     
     # parse the results
     charge_requests = []
@@ -950,12 +937,41 @@ def charge_request():
         for field in result:
             charge_request[field[0]] = field[2]
         charge_requests.append(charge_request)
-    print "RESULTS" 
-    print charge_requests
 
     # return
+    # TODO: gestire caso d'errore
     return jsonify(results = charge_requests)
 
+
+@app.route("/bs/chargeoption_confirm", methods=["GET"])
+def confirm_chargeoption():
+
+    # read form data
+    try:
+        data = request.args
+        charge_option = data["option"]
+    except Exception as e:
+        print "ECCEXIONE:" + str(e)
+        print e
+
+    # insert the triple
+    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+    kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), Literal("true"))])
+
+    # look for system confirm
+    # (subscription replaced by iterative query)
+    results = None
+    while not results:
+        kp.load_query_rdf(Triple(URI(NS + charge_option), URI(NS + "confirmBySystem"), None))        
+        results = kp.result_rdf_query
+    sysconfirm = results[0][2]
+
+    # send ACK
+    if sysconfirm.lower() == "true":
+        kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), Literal("true"))])
+        return make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
+    else:
+        return make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
 
 
 ################################################
