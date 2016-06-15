@@ -75,3 +75,25 @@ WHERE {
    ?cinu ns:hasValue ?cin .
    ?conn ns:hasConnectorType ?type
 }"""
+
+chargeresponse_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?req ?opt ?gcp ?gcpName ?evse ?evseName ?veh ?user ?price ?from ?to ?lat ?lon 
+WHERE {
+   <%s> ns:hasRelatedRequest ?req .
+   <%s> ns:hasChargeOption ?opt .
+   ?opt ns:optionHasEVSE ?evse .
+   ?evse ns:hasName ?evseName .
+   ?opt ns:hasGridConnectionPoint ?gcp .
+   ?gcp ns:hasName ?gcpName .
+   ?opt ns:hasRequestingVehicle ?veh .
+   ?opt ns:hasRequestingUser ?user .
+   ?opt ns:hasTotalPrice ?pri .
+   ?pri ns:hasValue ?price .
+   ?opt ns:hasTimeInterval ?tim .
+   ?tim ns:hasFromTimeMillisec ?from .
+   ?tim ns:hasToMillisec ?to .
+   ?opt ns:hasGCPPosition ?pos .
+   ?pos ns:hasGPSLatitude ?lat .
+   ?pos ns:hasGPSLongitude ?lon
+}"""
