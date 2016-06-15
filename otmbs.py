@@ -3,6 +3,8 @@
 # system-wide requirements
 from flask import Flask, jsonify, render_template, request, redirect, url_for, make_response
 from flask.ext.httpauth import HTTPBasicAuth
+from smart_m3.m3_kp_api import *
+from smart_m3.m3_kp_api import Literal as LLiteral
 from uuid import uuid4
 import ConfigParser
 import requests
@@ -862,48 +864,57 @@ def reservations():
     return jsonify(results = reservations)
     
 
-@app.route('/bs/chargerequests', methods=['POST'])
+@app.route('/bs/chargerequests', methods=['GET'])
 def charge_request():
+
+    print "CHARGE"
     
     # read form data
-    data = request.args
-    lat = data["lat"]
-    lng = data["lng"]
-    rad = data["radius"]
-    timeto = data["timeto"]
-    timefrom = data["timefrom"]
-    user_uri = data["user_uri"]
-    vehicle_uri = data["vehicle_uri"]
-    bidirectional = data["bidirectional"]
-    requested_energy = data["requested_energy"]
+    try:
+        data = request.args
+        print data
+        lat = data["lat"]
+        lng = data["lon"]
+        rad = data["radius"]
+        timeto = data["timeto"]
+        timefrom = data["timefrom"]
+        user_uri = NS + data["user_uri"]
+        vehicle_uri = NS + data["vehicle_uri"]
+        bidirectional = data["bidirectional"]
+        requested_energy = data["requested_energy"]
+    except Exception as e:
+        print "ECCEXIONE:" + str(e)
+        print e
     print "DATA READ"
 
+    print vehicle_uri
+    
     # generate UUIDs
     request_uri = NS + str(uuid4())
     time_interval_uri = NS + str(uuid4())
     energy_uri = NS + str(uuid4())
     spatial_range_uri = NS + str(uuid4())
     print "UUID GENERATED"
-    
+
     # insert
     triple_list = []
-    triple_list.append(Triple(URI(request_uri), URI(RDF + "type"), URI(NS + "ChargeRequest")))
+    triple_list.append(Triple(URI(request_uri), URI(RDF_TYPE), URI(NS + "ChargeRequest")))
     triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingVehicle"), URI(vehicle_uri)))
     triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingUser"), URI(user_uri)))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "allowBidirectional"), Literal(bidirectional)))
-    triple_list.append(Triple(URI(time_interval_uri), URI(RDF + "type"), URI(NS + "TimeInterval")))
+    triple_list.append(Triple(URI(request_uri), URI(NS + "allowBidirectional"), LLiteral("true")))
+    triple_list.append(Triple(URI(time_interval_uri), URI(RDF_TYPE), URI(NS + "TimeInterval")))
     triple_list.append(Triple(URI(request_uri), URI(NS + "hasTimeInterval"), URI(time_interval_uri)))
-    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasFromTimeMillisec"), Literal(timefrom)))
-    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasToTimeMillisec"), Literal(timeto)))
-    triple_list.append(Triple(URI(energy_uri), URI(RDF + "type"), URI(NS + "EnergyData")))
+    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasFromTimeMillisec"), LLiteral(str(timefrom))))
+    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasToTimeMillisec"), LLiteral(timeto)))
+    triple_list.append(Triple(URI(energy_uri), URI(RDF_TYPE), URI(NS + "EnergyData")))
     triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestedEnergy"), URI(energy_uri)))
     triple_list.append(Triple(URI(energy_uri), URI(NS + "hasUnitOfMeasure"), URI(NS + "kiloWattHour")))
-    triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), Literal(requested_energy)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(RDF + "type"), URI(NS + "SpatialRangeData")))
+    triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), LLiteral(requested_energy)))
+    triple_list.append(Triple(URI(spatial_range_uri), URI(RDF_TYPE), URI(NS + "SpatialRangeData")))
     triple_list.append(Triple(URI(request_uri), URI(NS + "hasSpatialRange"), URI(spatial_range_uri)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLatitude"), Literal(lat)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLongitude"), Literal(lng)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), Literal(rad)))
+    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLatitude"), LLiteral(lat)))
+    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLongitude"), LLiteral(lng)))
+    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), LLiteral(rad)))
     kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
     kp.load_rdf_insert(triple_list)
     print "TRIPLE INSERTED"
@@ -917,18 +928,24 @@ def charge_request():
         query_results = kp.result_rdf_query
         if len(query_results) > 0:
             results = query_results
+
     print "RECURSIVE QUERY RESULTS OBTAINED"
+    print results
 
     # query:
     res_uri = results[0][0]
+    print res_uri
+    print chargeresponse_query % (res_uri, res_uri)
     kp.load_query_sparql(chargeresponse_query % (res_uri, res_uri))
     charge_requests = []
-    results = kp.result_sparql_query
+    results2 = kp.result_sparql_query
+    print results2
     print "QUERY RESULTS OBTAINED"
+    print results2
     
     # parse the results
     charge_requests = []
-    for result in results:
+    for result in results2:
         charge_request = {}
         for field in result:
             charge_request[field[0]] = field[2]

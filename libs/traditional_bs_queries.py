@@ -92,7 +92,7 @@ WHERE {
    ?pri ns:hasValue ?price .
    ?opt ns:hasTimeInterval ?tim .
    ?tim ns:hasFromTimeMillisec ?from .
-   ?tim ns:hasToMillisec ?to .
+   ?tim ns:hasToTimeMillisec ?to .
    ?opt ns:hasGCPPosition ?pos .
    ?pos ns:hasGPSLatitude ?lat .
    ?pos ns:hasGPSLongitude ?lon
