@@ -974,6 +974,49 @@ def confirm_chargeoption():
         return make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
 
 
+@app.route("/bs/reservations/<res_id>", methods=["DELETE"])
+def reservation_retire(res_id):
+
+    # initialize the return value
+    success = True
+
+    # connect to the SIB
+    try:
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+
+        # get the res_uri
+        res_uri = NS + res_id
+        
+        # generate a reservation retire uri
+        res_ret_uri = NS + str(uuid4())
+
+        # get the reservation user
+        kp.load_query_rdf(Triple(URI(res_uri), URI(NS + "reservationHasUser"), None))
+        query_results = kp.result_rdf_query
+        user_uri = query_results[0][2]
+
+        # build the triple list
+        triple_list = []
+        triple_list.append(Triple(URI(res_ret_uri), URI(RDF_TYPE), URI(NS + "ReservationRetire")))
+        triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredByUser"), URI(user_uri)))
+        triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredReservation"), URI(res_uri)))
+        
+        # insert the reservation retire request
+        kp.load_rdf_insert(triple_list)
+
+    except:
+    
+        # no success :'(
+        success = False
+    
+    # send ACK
+    if success:
+        return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
+    else:
+        return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
+
+
+
 ################################################
 #
 # TODO -- alfred non-rest interface
