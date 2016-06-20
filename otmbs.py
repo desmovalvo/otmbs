@@ -956,7 +956,7 @@ def confirm_chargeoption():
 
     # insert the triple
     kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-    kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), Literal("true"))])
+    kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), LLiteral("true"))])
 
     # look for system confirm
     # (subscription replaced by iterative query)
@@ -967,8 +967,8 @@ def confirm_chargeoption():
     sysconfirm = results[0][2]
 
     # send ACK
-    if sysconfirm.lower() == "true":
-        kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), Literal("true"))])
+    if str(sysconfirm).lower() == "true":
+        kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
         return make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
     else:
         return make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
