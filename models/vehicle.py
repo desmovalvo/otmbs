@@ -119,6 +119,7 @@ class Vehicle:
                     ?person_uri ns:hasUserIdentifier ?person_uid
                 }
             }"""
+            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS, user_id))
 
         else:
 
@@ -138,7 +139,7 @@ class Vehicle:
                 }
             }"""
 
-        kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
+            kp.load_query_sparql(query % (RDF, NS, VEHICLE_CLASS))
         results = kp.result_sparql_query           
         
         # build a list of vehicle models
