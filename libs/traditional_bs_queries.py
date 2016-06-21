@@ -11,7 +11,7 @@ WHERE {
 
 vehicles_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
-SELECT ?uri ?name ?manu ?model ?gps ?batt
+SELECT ?uri ?name ?manu ?model ?gps ?batt ?vehicle_id
 WHERE {
    ?user_uri ns:hasUserIdentifier "%s" .
    ?user_uri ns:hasVehicle ?uri .
@@ -22,6 +22,8 @@ WHERE {
       ?uri ns:hasGPSData ?gps } .
    OPTIONAL {
       ?uri ns:hasBatteryData ?batt }
+   OPTIONAL {
+      ?uri ns:hasVehicleIdentifier ?vehicle_id }
 }"""
 
 gcps_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
