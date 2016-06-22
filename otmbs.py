@@ -609,6 +609,25 @@ def reservations_delete(reservation_id):
     # invoke the controller
     res = reservations_controller.delete_reservation(reservation_id)
     
+    # select the proper output form
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
+            if res:
+                return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
+            else:
+                return make_response(jsonify({'error': 'Reservation not retired'}), 401)
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            if res:
+                return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
+            else:
+                return make_response(jsonify({'error': 'Reservation not retired'}), 401)
+    except:
+        pass
+
     # redirect to the index
     return redirect(url_for("reservations_showall"))
 
@@ -1014,7 +1033,6 @@ def reservation_retire(res_id):
         return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
     else:
         return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
-
 
 
 ################################################
