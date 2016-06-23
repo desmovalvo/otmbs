@@ -106,6 +106,28 @@ def mainpage():
 #
 ################################################
 
+@app.route('/users/<user_id>/vehicles', methods=['GET'])
+def users_vehicles(user_id):
+
+    # invoke the controller
+    res = vehicles_controller.show_vehicles(user_id)
+
+    # select the proper output form
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
+            return jsonify(results = res)
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_vehicles.html", title="Vehicles", entries=res)
+
+
 @app.route('/vehicles', methods=['GET'])
 def vehicles_showall():
 
@@ -578,6 +600,28 @@ def reservations_showall():
 
     return render_template("show_reservations.html", entries=res, title="Reservations")
     
+
+@app.route('/users/<user_id>/reservations', methods=['GET'])
+def user_reservations():
+
+    # invoking the controller
+    res = reservations_controller.show_reservations(user_id)
+
+    # select the proper output form
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
+            return jsonify(results = res)
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return jsonify(results = res)
+    except:
+        pass
+
+    return render_template("show_reservations.html", entries=res, title="Reservations")
+
 
 @app.route('/reservations/<reservation_id>', methods=['GET'])
 def reservations_show(reservation_id):
