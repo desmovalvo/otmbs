@@ -602,7 +602,7 @@ def reservations_showall():
     
 
 @app.route('/users/<user_id>/reservations', methods=['GET'])
-def user_reservations():
+def user_reservations(user_id):
 
     # invoking the controller
     res = reservations_controller.show_reservations(user_id)
