@@ -267,11 +267,27 @@ def vehicles_create():
 # @auth.login_required
 def vehicles_delete(vehicle_id):
     
-    # TODO: check if the logged user corresponds to the
-    # owner of the vehicle
-
     # invoke the controller
     res = vehicles_controller.delete_vehicle(vehicle_id)
+    
+    # select the proper output form
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
+            if res:
+                return make_response(jsonify({'OK': 'Vehicle Deleted'}), 200)        
+            else:
+                return make_response(jsonify({'error': 'Vehicle not Deleted'}), 401)
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            if res:
+                return make_response(jsonify({'OK': 'Vehicle Deleted'}), 200)        
+            else:
+                return make_response(jsonify({'error': 'Vehicle not Deleted'}), 401)
+    except:
+        pass
     
     # redirect to the index
     return redirect("/vehicles")
