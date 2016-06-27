@@ -319,6 +319,21 @@ ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb rdf:type ns:GPSData .
 ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLatitude "45.135348" .
 ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLongitude "7.093068" .
 ##############################################################
+# GroundStation: Firenze
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 rdf:type ns:GroundStation .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasGSIdentifier "Firenze_20f26477" .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasName "Firenze" .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasStartGPSData ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasEndGPSData ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b .
+# GPSData 21
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b rdf:type ns:GPSData .
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b ns:hasLatitude "43.77975" .
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b ns:hasLongitude "11.24837" .
+# GPSData 22
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b rdf:type ns:GPSData .
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b ns:hasLatitude "43.777773" .
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b ns:hasLongitude "11.24897" .
+##############################################################
 #
 # Reservations
 #
