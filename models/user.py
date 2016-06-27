@@ -210,11 +210,15 @@ class User:
             ?person_uri rdf:type ns:Person .
             ?person_uri ns:hasUserIdentifier "%s" .
             ?person_uri ns:hasName ?person_name .
-            ?person_uri ns:hasPassword ?person_password .
+            OPTIONAL {
+                ?person_uri ns:hasPassword ?person_password .
+            } .
             OPTIONAL {
                 ?vehicle_uri rdf:type ns:Vehicle .
                 ?person_uri ns:hasVehicle ?vehicle_uri .
-                ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                OPTIONAL {
+                    ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
+                } .
                 ?vehicle_uri ns:hasManufacturer ?vehicle_manufacturer .
                 ?vehicle_uri ns:hasModel ?vehicle_model .
                 OPTIONAL { 
