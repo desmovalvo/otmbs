@@ -5,6 +5,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, m
 from flask.ext.httpauth import HTTPBasicAuth
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
+from arrowheadlibs import *
 from uuid import uuid4
 import ConfigParser
 import requests
@@ -34,6 +35,15 @@ settings["sib_host"] = settingsParser.get("sib", "host")
 settings["sib_port"] = settingsParser.getint("sib", "port")
 settings["flask_port"] = settingsParser.getint("flask", "port")
 settings["flask_host"] = settingsParser.get("flask", "host")
+settings["ah_enabled"] = settingsParser.getboolean("arrowhead", "enabled")
+settings["ah_host"] = settingsParser.get("arrowhead", "host")
+settings["ah_port"] = settingsParser.getint("arrowhead", "port")
+settings["ah_service_domain"] = settingsParser.get("arrowhead", "service_domain")
+settings["ah_service_host"] = settingsParser.get("arrowhead", "service_host")
+settings["ah_service_name"] = settingsParser.get("arrowhead", "service_name")
+settings["ah_service_port"] = settingsParser.getint("arrowhead", "service_port")
+settings["ah_service_path"] = settingsParser.get("arrowhead", "service_path")
+settings["ah_service_type"] = settingsParser.get("arrowhead", "service_type")
 settings["block_size"] = settingsParser.getint("kb", "block_size")
 settings["kb_files"] = []
 for filename in settingsParser.get("kb", "kb_file").split("%"):
@@ -1162,4 +1172,20 @@ def alfred_routes():
 
 # main
 if __name__ == '__main__':
-    app.run(debug = True, host = settings["flask_host"], port = settings["flask_port"])
+
+
+    # arrowhead interaction
+    if settings["ah_enabled"]:
+        ah = ArrowheadClient(settings["ah_host"], settings["ah_port"])
+        ah.publish(settings["ah_service_domain"],
+                   settings["ah_service_host"],
+                   settings["ah_service_name"],
+                   str(settings["ah_service_port"]),
+                   {"path":settings["ah_service_path"]},
+                   settings["ah_service_type"])
+    
+    # start the server
+    try:
+        app.run(debug = True, host = settings["flask_host"], port = settings["flask_port"])
+    except KeyboardInterrupt:
+        ah.unpublish(settings["ah_service_host"], settings["ah_service_name"], str(settings["ah_service_port"]), settings["ah_service_type"])
