@@ -1,0 +1,18 @@
+# Prefixes
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ns:  <http://www.m3.com/2012/05/m3/ioe-ontology.owl#> .
+# old vehicles
+ns:ac5084e9-74ed-4043-9698-762346dbeea4 rdf:type ns:Vehicle .
+ns:766d942a-f66f-4242-b9ae-a391bdf26bfa rdf:type ns:Vehicle .
+ns:61b9f560-0df0-44b3-9524-83afa5bc170b rdf:type ns:Vehicle .
+ns:2f8ed518-4f48-46ee-9371-8b8101acc25f rdf:type ns:Vehicle .
+ns:8ad183a5-ed3b-4754-8ac2-fea930028c20 rdf:type ns:Vehicle .
+ns:4dc707e8-e455-4c86-87b3-73f6f0ec14a4 rdf:type ns:Vehicle .
+ns:956217c1-8912-429f-a6d1-03b6151556c4 rdf:type ns:Vehicle .
+ns:ac5084e9-74ed-4043-9698-762346dbeea4 ns:hasVehicleIdentifier "Fiat500e_ac5084e9" .
+ns:766d942a-f66f-4242-b9ae-a391bdf26bfa ns:hasVehicleIdentifier "FiatDaily_766d942a"  .
+ns:61b9f560-0df0-44b3-9524-83afa5bc170b ns:hasVehicleIdentifier "Alfa146_61b9f560"  .
+ns:2f8ed518-4f48-46ee-9371-8b8101acc25f ns:hasVehicleIdentifier "TeslaX_2f8ed518"  .
+ns:8ad183a5-ed3b-4754-8ac2-fea930028c20 ns:hasVehicleIdentifier "Fiat500e_8ad183a5"  .
+ns:4dc707e8-e455-4c86-87b3-73f6f0ec14a4 ns:hasVehicleIdentifier "FiatDaily_4dc707e8"  .
+ns:956217c1-8912-429f-a6d1-03b6151556c4 ns:hasVehicleIdentifier "TeslaX_956217c1"  .
