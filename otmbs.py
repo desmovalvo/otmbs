@@ -390,12 +390,14 @@ def users_create():
     try:
         if request.content_type == "application/json":
             data = json.loads(request.data)
+            print data
+            print data.keys()
             name = data["name"]
             nick = data["nickname"]
             passwd = data["password"]
             
             # invoke the controller
-            status, user = users_controller.create_user(name, nickname, passwd)
+            status, user = users_controller.create_user(name, nick, passwd)
 
             # if OK
             if status:
@@ -413,10 +415,8 @@ def users_create():
 
     # redirect to the index
     if status:
-        flash("User created!")
         return redirect("/users/%s" % user["user_uid"])
     else:
-        flash("Nickname already taken")
         return redirect("/users")
 
 

@@ -5,7 +5,7 @@ from models.user import *
 from models.vehicle import *
 
 # import helpers
-from snoop import *
+from libs.snoop import *
 
 class UsersController:
 
@@ -73,7 +73,7 @@ class UsersController:
         """Method to create a person"""
 
         # verify if the nickname is already taken
-        if snoop.user_uid_available(self.settings, user_uid):
+        if user_uid_available(self.settings, user_id):
 
             # create!
             u = User(self.settings, name, user_id, passwd)

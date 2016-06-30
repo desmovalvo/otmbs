@@ -14,10 +14,10 @@ def user_uid_available(settings, user_uid):
     the user uid is free, True otherwise"""
 
     # connect to the sib
-    kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
     
     # perform the query
-    kp.load_query_sparql(user_exists)
+    kp.load_query_sparql(user_exists % user_uid)
     result = str(kp.result_sparql_query[0][0])
 
     # return True or False
