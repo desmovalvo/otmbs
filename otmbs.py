@@ -1177,15 +1177,23 @@ if __name__ == '__main__':
     # arrowhead interaction
     if settings["ah_enabled"]:
         ah = ArrowheadClient(settings["ah_host"], settings["ah_port"])
-        ah.publish(settings["ah_service_domain"],
-                   settings["ah_service_host"],
-                   settings["ah_service_name"],
-                   str(settings["ah_service_port"]),
-                   {"path":settings["ah_service_path"]},
-                   settings["ah_service_type"])
+        res = ah.publish(settings["ah_service_domain"],
+                         settings["ah_service_host"],
+                         settings["ah_service_name"],
+                         str(settings["ah_service_port"]),
+                         {"path":settings["ah_service_path"]},
+                         settings["ah_service_type"])
+        if not res:
+            print "Arrowhead registration failed!"
+        else:
+            print "Arrowhead service registered!"
     
     # start the server
     try:
         app.run(debug = True, host = settings["flask_host"], port = settings["flask_port"])
     except KeyboardInterrupt:
-        ah.unpublish(settings["ah_service_host"], settings["ah_service_name"], str(settings["ah_service_port"]), settings["ah_service_type"])
+        res = ah.unpublish(settings["ah_service_host"], settings["ah_service_name"], str(settings["ah_service_port"]), settings["ah_service_type"])
+        if not res:
+            print "Arrowhead service not retired"
+        else:
+            print "Arrowhead service retired"
