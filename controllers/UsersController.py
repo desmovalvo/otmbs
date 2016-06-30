@@ -77,7 +77,7 @@ class UsersController:
         if not u.user_uri:
 
             # create!
-            u = User(self.settings, name, nickname, passwd)
+            u = User(self.settings, name, user_id, passwd)
             status, user = u.create()
 
             # json representation
