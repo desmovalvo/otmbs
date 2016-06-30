@@ -117,6 +117,7 @@ def mainpage():
 ################################################
 
 @app.route('/users/<user_id>/vehicles', methods=['GET'])
+@auth.login_required
 def users_vehicles(user_id):
 
     # invoke the controller
@@ -245,6 +246,7 @@ def vehicles_new():
 
 
 @app.route('/vehicles', methods=['POST'])
+@auth.login_required
 def vehicles_create():
     
     # verify if the payload is json
@@ -638,6 +640,7 @@ def reservations_showall():
     
 
 @app.route('/users/<user_id>/reservations', methods=['GET'])
+@auth.login_required
 def user_reservations(user_id):
 
     # invoking the controller
@@ -931,6 +934,7 @@ def evses():
 
 
 @app.route('/bs/reservations', methods=['GET'])
+@auth.login_required
 def reservations():
 
     """Returns the list of reservations for
@@ -964,6 +968,7 @@ def reservations():
     
 
 @app.route('/bs/chargerequests', methods=['GET'])
+@auth.login_required
 def charge_request():
 
     # read form data
