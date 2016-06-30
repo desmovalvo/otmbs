@@ -6,13 +6,6 @@
 # Vehicles
 #
 ##############################################################
-# Vehicle: Fiat 500
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 rdf:type ns:Vehicle .
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasVehicleIdentifier "Fiat500_accdba29" .
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasManufacturer "Fiat" .
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasModel "500" .
-ns:accdba29-c9b6-4910-af8e-4f3563a8d263 ns:hasName "Fiat 500" .
-##############################################################
 # Vehicle: Fiat Daily
 ns:91552902-cf3a-430a-8ca4-61276268ef9d rdf:type ns:Vehicle .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasVehicleIdentifier "FiatDaily_91552902" .
@@ -44,13 +37,6 @@ ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasName "Tesla Model S" .
 #
 # People
 #
-##############################################################
-# Person: Tullio Salmon Cinotti
-ns:445195be-eca7-48ab-8ff1-8f45039548fb rdf:type ns:Person .
-ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasUserIdentifier "TullioS_445195be" .
-ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasName "Tullio Salmon Cinotti" .
-ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasVehicle ns:accdba29-c9b6-4910-af8e-4f3563a8d263 .
-ns:445195be-eca7-48ab-8ff1-8f45039548fb ns:hasPassword "TullioSalmonCinotti" .
 ##############################################################
 # Person: Luca Roffia
 ns:4e1acc06-d07f-4802-931c-b68b95a547d7 rdf:type ns:Person .

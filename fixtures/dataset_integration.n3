@@ -16,3 +16,11 @@ ns:2f8ed518-4f48-46ee-9371-8b8101acc25f ns:hasVehicleIdentifier "TeslaX_2f8ed518
 ns:8ad183a5-ed3b-4754-8ac2-fea930028c20 ns:hasVehicleIdentifier "Fiat500e_8ad183a5"  .
 ns:4dc707e8-e455-4c86-87b3-73f6f0ec14a4 ns:hasVehicleIdentifier "FiatDaily_4dc707e8"  .
 ns:956217c1-8912-429f-a6d1-03b6151556c4 ns:hasVehicleIdentifier "TeslaX_956217c1"  .
+# old users
+ns:c274eb97-2a82-4025-9358-3b4ec371e2c1 ns:hasPassword "OvidiuVermesan" .
+ns:01b0b21d-5052-4b82-bdb6-41b447aa7461 ns:hasPassword "StefanoCerchio" .
+ns:83387635-5edd-4b3c-8f8c-208f64c39013 ns:hasPassword "PaolaDucolin" .
+ns:0e7dc0dc-6d23-410c-a7f0-a2dab22381d1 ns:hasPassword "GiuseppeBorgone" .
+ns:29cfc4f4-8f24-4746-8c5c-c3c5f9019260 ns:hasPassword "StefanoBasili" .
+ns:66e30c8f-9b65-42ee-bbaa-5839a9ffce65 ns:hasPassword "EnriqueRodriguez" .
+ns:9101b706-84da-40fb-8ef9-b6fb6d465b9d ns:hasPassword "TullioSalmonCinotti" 
