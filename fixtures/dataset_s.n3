@@ -47,7 +47,7 @@ ns:4e1acc06-d07f-4802-931c-b68b95a547d7 ns:hasPassword "LucaRoffia" .
 ##############################################################
 # Person: Fabio Viola
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d rdf:type ns:Person .
-ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasUserIdentifier "FabioV_ea19421a" .
+ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasUserIdentifier "FabioV" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasName "Fabio Viola" .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasVehicle ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 .
 ns:ea19421a-e920-46d4-a71f-01ff4c4d372d ns:hasPassword "FabioViola" .
