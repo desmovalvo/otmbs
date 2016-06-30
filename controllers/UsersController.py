@@ -65,19 +65,31 @@ class UsersController:
 
 
     # create user
-    def create_user(self, name, passwd):
+    def create_user(self, name, user_id, passwd):
 
         """Method to create a person"""
 
-        # create!
-        u = User(self.settings, name, passwd)
-        status, user = u.create()
+        # verify if the nickname is already taken
+        u = User(self.settings)
+        u.find_user(user_id)
 
-        # json representation
-        json_user = user.to_json()
+        # create the user if it don't exist
+        if not u.user_uri:
+
+            # create!
+            u = User(self.settings, name, nickname, passwd)
+            status, user = u.create()
+
+            # json representation
+            json_user = user.to_json()
         
-        # return
-        return status, json_user
+            # return
+            return status, json_user
+
+        else:
+
+            # return
+            return False, None
 
 
     # update user

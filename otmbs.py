@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # system-wide requirements
-from flask import Flask, jsonify, render_template, request, redirect, url_for, make_response
+from flask import Flask, jsonify, render_template, request, redirect, url_for, make_response, flash
 from flask.ext.httpauth import HTTPBasicAuth
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
@@ -391,23 +391,33 @@ def users_create():
         if request.content_type == "application/json":
             data = json.loads(request.data)
             name = data["name"]
+            nick = data["nickname"]
             passwd = data["password"]
             
             # invoke the controller
-            status, user = users_controller.create_user(name, passwd)
+            status, user = users_controller.create_user(name, nickname, passwd)
 
-            # redirect to the index
-            return jsonify(results = user)
+            # if OK
+            if status:
+                return jsonify(results = user)
+
+            else:
+                return make_response(jsonify({'error': 'Nickname already taken'}), 406)
 
     except Exception as e:
         print e
         pass
 
     # invoke the controller
-    status, user = users_controller.create_user(request.form["name"], request.form["password"])
+    status, user = users_controller.create_user(request.form["name"], request.form["nickname"], request.form["password"])
 
     # redirect to the index
-    return redirect("/users/%s" % user["user_uid"])
+    if status:
+        flash("User created!")
+        return redirect("/users/%s" % user["user_uid"])
+    else:
+        flash("Nickname already taken")
+        return redirect("/users")
 
 
 @app.route('/users/<user_id>', methods=['PUT'])

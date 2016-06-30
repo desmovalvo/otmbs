@@ -229,51 +229,58 @@ class User:
                 }
             }
         }"""
-        print query % (RDF, NS, user_id)
         kp.load_query_sparql(query % (RDF, NS, user_id))
         results = kp.result_sparql_query           
 
-        print results
+        # check if there are results
+        if len(results) > 0:
 
-        # build the model for the user
-        user_model = User(self.settings)
-        print results
-        user_model.user_uri = results[0][0][2]
-        user_model.user_name = results[0][1][2]
-        user_model.user_password = results[0][9][2]
-        user_model.user_uid = user_id
-        user_model.vehicles = []
-        user_model.reservations = []
-
-        # add vehicles to the user
-        for res in results:
-
-            if res[2][2]:
-
-                v = {"vehicle_id": res[2][2],
-                     "vehicle_manufacturer": res[3][2],
-                     "vehicle_model": res[4][2],
-                }
-                
-                if not v in user_model.vehicles:
-                    user_model.vehicles.append(v)
+            # build the model for the user
+            user_model = User(self.settings)
+            print results
+            user_model.user_uri = results[0][0][2]
+            user_model.user_name = results[0][1][2]
+            user_model.user_password = results[0][9][2]
+            user_model.user_uid = user_id
+            user_model.vehicles = []
+            user_model.reservations = []
+    
+            # add vehicles to the user
+            for res in results:
+    
+                if res[2][2]:
+    
+                    v = {"vehicle_id": res[2][2],
+                         "vehicle_manufacturer": res[3][2],
+                         "vehicle_model": res[4][2],
+                    }
                     
-
-        # add reservations to the user
-        for res in results:
-            
-            if res[6][2]:
-
-                r = {"reservation_id": res[6][2],
-                     "reservation_gs": res[8][2],
-                     "reservation_vehicle": res[2][2]
-                 }
-            
-                if not r in user_model.reservations:
-                    user_model.reservations.append(r)
-
-        # return
-        return user_model
+                    if not v in user_model.vehicles:
+                        user_model.vehicles.append(v)
+                        
+    
+            # add reservations to the user
+            for res in results:
+                
+                if res[6][2]:
+    
+                    r = {"reservation_id": res[6][2],
+                         "reservation_gs": res[8][2],
+                         "reservation_vehicle": res[2][2]
+                     }
+                
+                    if not r in user_model.reservations:
+                        user_model.reservations.append(r)
+                    
+        
+            # return model
+            return user_model
+                
+        else:
+        
+            # return model
+            return self
+        
 
 
     # delete
