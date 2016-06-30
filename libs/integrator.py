@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # requirements
-from uuid import uuid4()
+from uuid import uuid4
 from smart_m3.m3_kp_api import *
 
 def integrate(settings):
