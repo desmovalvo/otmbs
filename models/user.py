@@ -15,7 +15,7 @@ class User:
     service and the SIB content for the Person class"""
 
     # constructor
-    def __init__(self, settings, name = None, password = None):
+    def __init__(self, settings, name = None, uid = None, password = None):
 
         """Constructor for the User class"""
 
@@ -24,7 +24,7 @@ class User:
 
         # initialization of class attributes
         self.user_uri = None
-        self.user_uid = None
+        self.user_uid = uid
         self.user_name = name
         self.user_password = password
         self.vehicles = []
@@ -39,10 +39,6 @@ class User:
 
         # generating an UUID for the user
         uid = str(uuid.uuid4())
-        try:
-            self.user_uid = self.user_name.split(" ")[0] + self.user_name.split(" ")[1][0:1] + "_" + uid.split("-")[0]
-        except:
-            self.user_uid = self.user_name.replace(" ", "") + "_" + uid.split("-")[0]            
         self.user_uri = NS + uid        
         
         # creating the triples
