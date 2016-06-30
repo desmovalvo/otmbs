@@ -135,7 +135,7 @@ class User:
             vehicle_model = res[6][2]
             res_id = res[7][2]
             gs_id = res[8][2]
-            person_password = res[9][2]
+            person_password = res[11][2]
 
             if user_dicts.has_key(person_uri):
 
