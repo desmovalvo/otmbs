@@ -613,6 +613,31 @@ def gss_update(gs_id):
 ################################################
 
 @app.route('/reservations', methods=['GET'])
+def reservations_check():
+
+    # check if a gs is reserved
+    try:
+        if request.content_type == "application/json":
+            data = json.loads(request.data)
+            gs_id = data["gs_id"]
+            vehicle_id = data["vehicle_id"]
+            user_id = data["user_id"]    
+
+            # invoke the controller
+            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id)
+
+            # return
+            if res:
+                return make_response(jsonify({'OK': 'Valid Reservation'}), 200)        
+            else:
+                return make_response(jsonify({'error': 'Reservation not found'}), 404)
+
+    except Exception as e:
+        print e
+        return make_response(jsonify({'error': 'Bad Request'}), 400)
+
+
+@app.route('/reservations', methods=['GET'])
 def reservations_showall():
 
     # check if the user_id was given

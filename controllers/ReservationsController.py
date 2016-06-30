@@ -104,3 +104,18 @@ class ReservationsController:
         # return the model
         json_model = r.to_json()
         return status, json_model
+
+
+    # create reservation
+    def check_reservation(self, gs_id, vehicle_id, user_id):
+
+        """Method to check if a reservation exists"""
+
+        # perform the query
+        status = reservation_exists(user_id, vehicle_id, gs_id)        
+
+        # return status
+        if status:
+            return True
+        else:
+            return False
