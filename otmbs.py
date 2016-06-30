@@ -5,6 +5,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, m
 from flask.ext.httpauth import HTTPBasicAuth
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
+from libs.integrator import *
 from arrowheadlibs import *
 from uuid import uuid4
 import ConfigParser
@@ -1227,6 +1228,10 @@ if __name__ == '__main__':
             print "Arrowhead registration failed!"
         else:
             print "Arrowhead service registered!"
+
+    # initialization 
+    # this code is needed to integrate the old ontology
+    integrate(settings)
     
     # start the server
     try:
