@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# requirements
+from smart_m3.m3_kp_api import *
+
 def integrate(settings):
 
     """This function is used to insert new triples
