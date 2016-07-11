@@ -1,17 +1,17 @@
 #!/usr/bin/python
 
-"""PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+reservation_exists_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
 ASK WHERE {
    ?v rdf:type ns:Vehicle .
-   ?v ns:hasVechicleIdentifier "%s" .
+   ?v ns:hasVehicleIdentifier "%s" .
    ?u rdf:type ns:Person .
    ?u ns:hasUserIdentifier "%s" .
    ?g rdf:type ns:GroundStation .
-   ?g ns:hasGsIdentifier "%s" .
+   ?g ns:hasGSIdentifier "%s" .
    ?r rdf:type ns:Reservation .
    ?r ns:hasUser ?u .
-   ?r ns:hasVehicle ?v .
+   ?r ns:reservedByVehicle ?v .
    ?r ns:hasGS ?g
 }"""
 
@@ -22,7 +22,7 @@ ASK WHERE {
 #
 ######################################################### 
 
-user_exists = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+user_exists_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>

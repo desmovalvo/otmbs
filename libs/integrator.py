@@ -28,15 +28,25 @@ def integrate(settings):
         vid = str(uuid.uuid4())
 
         # perform the update
+        print "updating user " + user_id
         kp.load_query_sparql("""PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
         INSERT {
             ?personuri ns:hasPassword "%s" .
-            ?vehicleuri rdf:type ns:Vehicle .
-            ?vehicleuri ns:hasVehicleIdentifier "%s"
         }
         WHERE {
             ?personuri rdf:type ns:Person .
             ?personuri ns:hasUserIdentifier "%s" .
+        }""" % (user_id, user_id))
+
+        print "updating his vehicle"
+        kp.load_query_sparql("""PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+        INSERT {
+            ?vehicleuri rdf:type ns:Vehicle .
+            ?vehicleuri ns:hasVehicleIdentifier "%s"
+        }
+        WHERE {
+            ?personuri ns:hasUserIdentifier "%s" .
             ?personuri ns:hasVehicle ?vehicleuri
-        }""" % (user_id, vid, user_id))
+        }""" % (vid, user_id))        

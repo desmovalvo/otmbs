@@ -1,0 +1,263 @@
+# Prefixes
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ns:  <http://www.m3.com/2012/05/m3/ioe-ontology.owl#> .
+##############################################################
+#
+# Ground Stations
+#
+##############################################################
+# GroundStation: Emilia Ponente
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c rdf:type ns:GroundStation .
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasGSIdentifier "EmiliaPonente_c625f1a3" .
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasName "EmiliaPonente" .
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasStartGPSData ns:678d2144-bff5-4433-842e-48d1a7f1dd1d .
+ns:c625f1a3-5bf8-4051-8cbd-b740d32a0f6c ns:hasEndGPSData ns:eec1eef0-e1ed-489c-885e-a4d96abc4cf7 .
+# GPSData 1
+ns:678d2144-bff5-4433-842e-48d1a7f1dd1d rdf:type ns:GPSData .
+ns:678d2144-bff5-4433-842e-48d1a7f1dd1d ns:hasLatitude "44.50212" .
+ns:678d2144-bff5-4433-842e-48d1a7f1dd1d ns:hasLongitude "11.31903" .
+# GPSData 2
+ns:eec1eef0-e1ed-489c-885e-a4d96abc4cf7 rdf:type ns:GPSData .
+ns:eec1eef0-e1ed-489c-885e-a4d96abc4cf7 ns:hasLatitude "44.50882" .
+ns:eec1eef0-e1ed-489c-885e-a4d96abc4cf7 ns:hasLongitude "11.29669" .
+##############################################################
+# GroundStation: Saffi
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef rdf:type ns:GroundStation .
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasGSIdentifier "Saffi_06ecce32" .
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasName "Saffi" .
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef	ns:hasStartGPSData ns:d5b38bac-c380-42ae-b963-9b0355897623 .
+ns:06ecce32-dc24-4b1c-88c4-4eb4d52e43ef ns:hasEndGPSData ns:7e20bfc3-012d-4c42-9b7b-726843126482 .
+# GPSData 3
+ns:d5b38bac-c380-42ae-b963-9b0355897623 rdf:type ns:GPSData .
+ns:d5b38bac-c380-42ae-b963-9b0355897623 ns:hasLatitude "44.49953" .
+ns:d5b38bac-c380-42ae-b963-9b0355897623 ns:hasLongitude "11.32674" .
+# GPSData 4
+ns:7e20bfc3-012d-4c42-9b7b-726843126482 rdf:type ns:GPSData .
+ns:7e20bfc3-012d-4c42-9b7b-726843126482 ns:hasLatitude "44.50204" .
+ns:7e20bfc3-012d-4c42-9b7b-726843126482 ns:hasLongitude "11.31941" .
+##############################################################
+# GroundStation: SanFelice
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 rdf:type ns:GroundStation .
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasGSIdentifier "SanFelice_bda8a77c" .
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasName "SanFelice" .
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasStartGPSData ns:ac092fd6-9eeb-473c-8551-5096a83b059c .
+ns:bda8a77c-f7e5-4a46-abbd-ea0370ee51d0 ns:hasEndGPSData ns:e19214b0-dc39-4926-a981-966f61edcb59 .
+# GPSData 5
+ns:ac092fd6-9eeb-473c-8551-5096a83b059c rdf:type ns:GPSData .
+ns:ac092fd6-9eeb-473c-8551-5096a83b059c ns:hasLatitude "44.49902" .
+ns:ac092fd6-9eeb-473c-8551-5096a83b059c ns:hasLongitude "11.32780" .
+# GPSData 6
+ns:e19214b0-dc39-4926-a981-966f61edcb59 rdf:type ns:GPSData .
+ns:e19214b0-dc39-4926-a981-966f61edcb59 ns:hasLatitude "44.49590" .
+ns:e19214b0-dc39-4926-a981-966f61edcb59 ns:hasLongitude "11.33686" .
+##############################################################
+# GroundStation: BassiRizzoli
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a rdf:type ns:GroundStation .
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasGSIdentifier "BassiRizzoli_e12369a9" .
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasName "BassiRizzoli" .
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasStartGPSData ns:0c09bf24-6573-4c50-b00e-7ba8210779c6 .
+ns:e12369a9-2a6a-46ec-95f7-f113cf7e883a ns:hasEndGPSData ns:0e9ea899-3353-4454-bcb4-0e52e6a9b7d3 .
+# GPSData 7
+ns:0c09bf24-6573-4c50-b00e-7ba8210779c6 rdf:type ns:GPSData .
+ns:0c09bf24-6573-4c50-b00e-7ba8210779c6 ns:hasLatitude "44.49548" .
+ns:0c09bf24-6573-4c50-b00e-7ba8210779c6 ns:hasLongitude "11.33790" .
+# GPSData 8
+ns:0e9ea899-3353-4454-bcb4-0e52e6a9b7d3 rdf:type ns:GPSData .
+ns:0e9ea899-3353-4454-bcb4-0e52e6a9b7d3 ns:hasLatitude "44.49418" .
+ns:0e9ea899-3353-4454-bcb4-0e52e6a9b7d3 ns:hasLongitude "11.34611" .
+##############################################################
+# GroundStation: StradaMaggiore
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 rdf:type ns:GroundStation .
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasGSIdentifier "StradaMaggiore_2da444d4" .
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasName "StradaMagiore" .
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasStartGPSData ns:208eb67b-b57c-44bf-95e2-4facb7ac658e .
+ns:2da444d4-4a24-4f21-b406-b037adff4a79 ns:hasEndGPSData ns:a25fee0e-0eeb-4071-8fae-7b8c623ecc03 .
+# GPSData 9 
+ns:208eb67b-b57c-44bf-95e2-4facb7ac658e rdf:type ns:GPSData .
+ns:208eb67b-b57c-44bf-95e2-4facb7ac658e ns:hasLatitude "44.49246" .
+ns:208eb67b-b57c-44bf-95e2-4facb7ac658e ns:hasLongitude "11.35124" .
+# GPSData 10
+ns:a25fee0e-0eeb-4071-8fae-7b8c623ecc03 rdf:type ns:GPSData .
+ns:a25fee0e-0eeb-4071-8fae-7b8c623ecc03 ns:hasLatitude "44.48997" .
+ns:a25fee0e-0eeb-4071-8fae-7b8c623ecc03 ns:hasLongitude "11.35729" .
+##############################################################
+# GroundStation: Mazzini
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 rdf:type ns:GroundStation .
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasGSIdentifier "Mazzini_c627d663" .
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasName "Mazzini" .
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasStartGPSData ns:95f02bee-c206-4d57-a6b5-c192afd1eb9f .
+ns:c627d663-3a8f-40db-9e5d-89d55a083263 ns:hasEndGPSData ns:97f4611a-07dd-4850-b466-194f573f2653 .
+# GPSData 11
+ns:95f02bee-c206-4d57-a6b5-c192afd1eb9f rdf:type ns:GPSData .
+ns:95f02bee-c206-4d57-a6b5-c192afd1eb9f ns:hasLatitude "44.48991" .
+ns:95f02bee-c206-4d57-a6b5-c192afd1eb9f ns:hasLongitude "11.35816" .
+# GPSData 12
+ns:97f4611a-07dd-4850-b466-194f573f2653 rdf:type ns:GPSData .
+ns:97f4611a-07dd-4850-b466-194f573f2653 ns:hasLatitude "44.48381" .
+ns:97f4611a-07dd-4850-b466-194f573f2653 ns:hasLongitude "11.37311" .
+##############################################################
+# GroundStation: EmiliaLevante
+ns:5a85d32e-f4c4-4123-891b-42182268756d rdf:type ns:GroundStation .
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasGSIdentifier "EmiliaLevante_5a85d32e" .
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasName "EmiliaLevante" .
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasStartGPSData ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 .
+ns:5a85d32e-f4c4-4123-891b-42182268756d ns:hasEndGPSData ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da .
+# GPSData 13 
+ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 rdf:type ns:GPSData .
+ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 ns:hasLatitude "44.48403" .
+ns:5d1275cc-45f5-4ac7-925d-c6d25ecb2608 ns:hasLongitude "11.37328" .
+# GPSData 14
+ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da rdf:type ns:GPSData .
+ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da ns:hasLatitude "44.47752" .
+ns:d1eba8af-a385-4e0b-a1dd-80dc3c3746da ns:hasLongitude "11.39020" .
+##############################################################
+# GroundStation: Aldini
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 rdf:type ns:GroundStation .
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasGSIdentifier "Aldini_bce09a70" .
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasName "Aldini" .
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasStartGPSData ns:3905da09-b596-42eb-976f-d75856c41f4c .
+ns:bce09a70-15ec-49fd-93c9-0111733a56b8 ns:hasEndGPSData ns:cb768afc-9079-4a6c-860d-0763319f6b28 .
+# GPSData 15
+ns:3905da09-b596-42eb-976f-d75856c41f4c rdf:type ns:GPSData .
+ns:3905da09-b596-42eb-976f-d75856c41f4c ns:hasLatitude "44.48982" .
+ns:3905da09-b596-42eb-976f-d75856c41f4c ns:hasLongitude "11.33003" .
+# GPSData 16
+ns:cb768afc-9079-4a6c-860d-0763319f6b28 rdf:type ns:GPSData .
+ns:cb768afc-9079-4a6c-860d-0763319f6b28 ns:hasLatitude "44.48669" .
+ns:cb768afc-9079-4a6c-860d-0763319f6b28 ns:hasLongitude "11.33833" .
+##############################################################
+# GroundStation: PanzacchiGozzadini
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 rdf:type ns:GroundStation .
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasGSIdentifier "PanzacchiGozzadini_0ebdcdf0" .
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasName "PanzacchiGozzadini" .
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasStartGPSData ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 .
+ns:0ebdcdf0-915b-4b39-af0a-fe079d6fe204 ns:hasEndGPSData ns:cfcfdd49-99fe-4ba1-8031-0341eaa5db7f .
+# GPSData 17
+ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 rdf:type ns:GPSData .
+ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 ns:hasLatitude "44.48635" .
+ns:2bbd9b8f-e985-4649-a9e8-f180b14db176 ns:hasLongitude "11.34093" .
+# GPSData 18
+ns:cfcfdd49-99fe-4ba1-8031-0341eaa5db7f rdf:type ns:GPSData .
+ns:cfcfdd49-99fe-4ba1-8031-0341eaa5db7f ns:hasLatitude "44.48474" .
+ns:cfcfdd49-99fe-4ba1-8031-0341eaa5db7f ns:hasLongitude "11.35325" .
+##############################################################
+# GroundStation: CarducciFilopanti
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf rdf:type ns:GroundStation .
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasGSIdentifier "CarducciFilopanti_901070bd" .
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasName "CarducciFilopanti" .
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasStartGPSData ns:02e63b23-829d-49d5-a466-b36792faf622 .
+ns:901070bd-0ae6-43df-bf4c-ddd13f646cbf ns:hasEndGPSData ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 .
+# GPSData 19
+ns:02e63b23-829d-49d5-a466-b36792faf622 rdf:type ns:GPSData .
+ns:02e63b23-829d-49d5-a466-b36792faf622 ns:hasLatitude "44.48652" .
+ns:02e63b23-829d-49d5-a466-b36792faf622 ns:hasLongitude "11.35811" .
+# GPSData 20
+ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 rdf:type ns:GPSData .
+ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 ns:hasLatitude "44.49798" .
+ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 ns:hasLongitude "11.35688" .
+##############################################################
+# GroundStation: Susa
+ns:2835a529-cf31-445a-9bfc-769d3487a62f rdf:type ns:GroundStation .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasGSIdentifier "Susa_901070bd" .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasName "Susa" .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasStartGPSData ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasEndGPSData ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb .
+# GPSData 19
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd rdf:type ns:GPSData .
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLatitude "45.135647" .
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLongitude "7.092475" .
+# GPSData 20
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb rdf:type ns:GPSData .
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLatitude "45.135348" .
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLongitude "7.093068" .
+##############################################################
+# GroundStation: Firenze
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 rdf:type ns:GroundStation .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasGSIdentifier "Firenze_20f26477" .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasName "Firenze" .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasStartGPSData ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b .
+ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasEndGPSData ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b .
+# GPSData 21
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b rdf:type ns:GPSData .
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b ns:hasLatitude "43.77975" .
+ns:4e34024f-9bc1-4efb-99ac-0b4340b9645b ns:hasLongitude "11.24837" .
+# GPSData 22
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b rdf:type ns:GPSData .
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b ns:hasLatitude "43.777773" .
+ns:e8c6bccc-d5e1-4460-a5a3-650449dd9a8b ns:hasLongitude "11.24897" .
+##############################################################
+# GroundStation: SilvaniPietramellara
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 rdf:type ns:GroundStation .
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasGSIdentifier "SilvaniPietramellara_e93cadad" .
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasName "SilvaniPietramellara" .
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasStartGPSData ns:a1bd1837-b0d1-4373-8711-aa0bb31b9607 .
+ns:e93cadad-a310-4cf2-a007-559ca7b889a2 ns:hasEndGPSData ns:6d5e5b3d-0368-48fa-a8c0-ee8bb93eb006 .
+# GPSData 1
+ns:a1bd1837-b0d1-4373-8711-aa0bb31b9607 rdf:type ns:GPSData .
+ns:a1bd1837-b0d1-4373-8711-aa0bb31b9607 ns:hasLatitude "44.49952" .
+ns:a1bd1837-b0d1-4373-8711-aa0bb31b9607 ns:hasLongitude "11.32708" .
+# GPSData 2
+ns:6d5e5b3d-0368-48fa-a8c0-ee8bb93eb006 rdf:type ns:GPSData .
+ns:6d5e5b3d-0368-48fa-a8c0-ee8bb93eb006 ns:hasLatitude "44.50534" .
+ns:6d5e5b3d-0368-48fa-a8c0-ee8bb93eb006 ns:hasLongitude "11.33941" .
+##############################################################
+# GroundStation: Irnerio
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 rdf:type ns:GroundStation .
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasGSIdentifier "Irnerio_235d86f8" .
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasName "Irnerio" .
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasStartGPSData ns:6e431238-f4c2-4308-bfa9-9fc269878160 .
+ns:235d86f8-b5d5-4829-b0cc-388bba526551 ns:hasEndGPSData ns:9c9d9f3c-62aa-4ac1-8273-1f6da0f24bf7 .
+# GPSData 3
+ns:6e431238-f4c2-4308-bfa9-9fc269878160 rdf:type ns:GPSData .
+ns:6e431238-f4c2-4308-bfa9-9fc269878160 ns:hasLatitude "44.50112" .
+ns:6e431238-f4c2-4308-bfa9-9fc269878160 ns:hasLongitude "11.34464" .
+# GPSData 4
+ns:9c9d9f3c-62aa-4ac1-8273-1f6da0f24bf7 rdf:type ns:GPSData .
+ns:9c9d9f3c-62aa-4ac1-8273-1f6da0f24bf7 ns:hasLatitude "44.49818" .
+ns:9c9d9f3c-62aa-4ac1-8273-1f6da0f24bf7 ns:hasLongitude "11.35609" .
+##############################################################
+# GroundStation: SanDonato1
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 rdf:type ns:GroundStation .
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasGSIdentifier "SanDonato1_df6f2cd4" .
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasName "SanDonato1" .
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasStartGPSData ns:993574d7-34d0-4e18-a0d3-02c4e1cb9674 .
+ns:df6f2cd4-22cc-478a-99e6-d9b6c835a244 ns:hasEndGPSData ns:a5aea480-9f0f-4f94-bab0-36f99158b768.
+# GPSData 5
+ns:993574d7-34d0-4e18-a0d3-02c4e1cb9674 rdf:type ns:GPSData .
+ns:993574d7-34d0-4e18-a0d3-02c4e1cb9674 ns:hasLatitude "44.50391" .
+ns:993574d7-34d0-4e18-a0d3-02c4e1cb9674 ns:hasLongitude "11.36827" .
+# GPSData 6
+ns:a5aea480-9f0f-4f94-bab0-36f99158b768 rdf:type ns:GPSData .
+ns:a5aea480-9f0f-4f94-bab0-36f99158b768 ns:hasLatitude "44.50717" .
+ns:a5aea480-9f0f-4f94-bab0-36f99158b768 ns:hasLongitude "11.37619" .
+##############################################################
+# GroundStation: SanDonato2
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a rdf:type ns:GroundStation .
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasGSIdentifier "SanDonato2_1aac9406" .
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasName "SanDonato2" .
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasStartGPSData ns:4baccc40-37a4-4e52-ad54-74778848d0ca .
+ns:1aac9406-b4e4-42d1-bdd7-ce21e273095a ns:hasEndGPSData ns:2988cd7e-13ae-4d00-b878-198d56c2c01e .
+# GPSData 7
+ns:4baccc40-37a4-4e52-ad54-74778848d0ca rdf:type ns:GPSData .
+ns:4baccc40-37a4-4e52-ad54-74778848d0ca ns:hasLatitude "44.50848" .
+ns:4baccc40-37a4-4e52-ad54-74778848d0ca ns:hasLongitude "11.37852" .
+# GPSData 8
+ns:2988cd7e-13ae-4d00-b878-198d56c2c01e rdf:type ns:GPSData .
+ns:2988cd7e-13ae-4d00-b878-198d56c2c01e ns:hasLatitude "44.51584" .
+ns:2988cd7e-13ae-4d00-b878-198d56c2c01e ns:hasLongitude "11.39179" .
+##############################################################
+# GroundStation: Murri
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 rdf:type ns:GroundStation .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasGSIdentifier "Murri_08ee4f13" .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasName "Murri" .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasStartGPSData ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 .
+ns:08ee4f13-ac3e-4836-aec2-05b37b48d0f4 ns:hasEndGPSData ns:273e76d7-9ea2-4b70-8317-691c9ad1680c .
+# GPSData 9
+ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 rdf:type ns:GPSData .
+ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 ns:hasLatitude "44.48405" .
+ns:b7324bfc-b2e3-4bb0-82ca-edb924f6cee8 ns:hasLongitude "11.35699" .
+# GPSData 10
+ns:273e76d7-9ea2-4b70-8317-691c9ad1680c rdf:type ns:GPSData .
+ns:273e76d7-9ea2-4b70-8317-691c9ad1680c ns:hasLatitude "44.47909" .
+ns:273e76d7-9ea2-4b70-8317-691c9ad1680c ns:hasLongitude "11.36393" .
+##############################################################

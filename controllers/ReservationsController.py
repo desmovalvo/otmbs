@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # import models
+from libs.snoop import *
 from models.reservation import *
 
 class ReservationsController:
@@ -107,12 +108,12 @@ class ReservationsController:
 
 
     # create reservation
-    def check_reservation(self, gs_id, vehicle_id, user_id):
+    def check_reservation(self, gs_id, vehicle_id, user_id, res_type):
 
         """Method to check if a reservation exists"""
 
         # perform the query
-        status = reservation_exists(user_id, vehicle_id, gs_id)        
+        status = reservation_exists(self.settings, user_id, vehicle_id, gs_id, res_type)        
 
         # return status
         if status:

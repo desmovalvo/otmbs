@@ -89,6 +89,7 @@ def get_password(username):
 
 @auth.error_handler
 def unauthorized():
+    print "UNAUTHORIZED ACCESS!"
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 
@@ -613,7 +614,7 @@ def gss_update(gs_id):
 #
 ################################################
 
-@app.route('/reservations', methods=['GET'])
+@app.route('/reservations/status', methods=['GET'])
 def reservations_check():
 
     # check if a gs is reserved
@@ -622,13 +623,15 @@ def reservations_check():
             data = json.loads(request.data)
             gs_id = data["gs_id"]
             vehicle_id = data["vehicle_id"]
-            user_id = data["user_id"]    
-
+            user_id = data["user_id"]
+            res_type = data["res_type"]
+            
             # invoke the controller
-            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id)
+            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id, res_type)
+            print status
 
             # return
-            if res:
+            if status:
                 return make_response(jsonify({'OK': 'Valid Reservation'}), 200)        
             else:
                 return make_response(jsonify({'error': 'Reservation not found'}), 404)
@@ -953,7 +956,20 @@ def evses():
             evses.append(evse)
 
     else:
-         return make_response(jsonify({'error': 'Bad Request - The gcp_name must be provided'}), 401)
+
+        # get the evse list
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        print evses_query_all
+        kp.load_query_sparql(evses_query_all)
+        results = kp.result_sparql_query
+
+        # parse the results
+        evses = []
+        for result in results:
+            evse = {}
+            for field in result:
+                evse[field[0]] = field[2]
+            evses.append(evse)
 
     # return
     return jsonify(results = evses)
@@ -1214,7 +1230,6 @@ def alfred_routes():
 # main
 if __name__ == '__main__':
 
-
     # arrowhead interaction
     if settings["ah_enabled"]:
         ah = ArrowheadClient(settings["ah_host"], settings["ah_port"])
@@ -1231,7 +1246,7 @@ if __name__ == '__main__':
 
     # initialization 
     # this code is needed to integrate the old ontology
-    integrate(settings)
+    # integrate(settings)
     
     # start the server
     try:
