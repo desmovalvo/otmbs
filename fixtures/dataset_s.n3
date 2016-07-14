@@ -11,7 +11,8 @@ ns:91552902-cf3a-430a-8ca4-61276268ef9d rdf:type ns:Vehicle .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasVehicleIdentifier "FiatDaily_91552902" .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasManufacturer "Fiat" .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasModel "Daily" . 
-ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasName "Fiat Daily" . 
+ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasName "Fiat Daily" .
+ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasPlate "CA634RN" .
 ##############################################################
 # Vehicle: Mission R
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 rdf:type ns:Vehicle .
@@ -19,6 +20,7 @@ ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasVehicleIdentifier "MissionR_b0d1d4
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasManufacturer "Mission" .
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasModel "R" .
 ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasName "Mission R" .
+ns:b0d1d4b0-f80a-4d33-9cc9-243daba36379 ns:hasPlate "BK81985" .
 ##############################################################
 # Vehicle: Nissan Leaf
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 rdf:type ns:Vehicle .
@@ -26,13 +28,14 @@ ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasVehicleIdentifier "NissanLeaf_afe8
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasManufacturer "Nissan" .
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasModel "Leaf" .
 ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasName "Nissan Leaf" .
+ns:afe8692f-b8aa-43f4-ac35-1847cb50ca18 ns:hasPlate "AL753FN" .
 ##############################################################
 # Vehicle: Tesla Model S
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 rdf:type ns:Vehicle .
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasVehicleIdentifier "TeslaModelS_259a5076" .
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasManufacturer "Tesla" .
 ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasModel "Model S" .
-ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasName "Tesla Model S" .
+ns:259a5076-0df8-4192-b22f-ba6566c74da4 ns:hasPlate "LE537009" .
 ##############################################################
 #
 # People

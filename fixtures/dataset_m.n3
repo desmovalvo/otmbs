@@ -12,6 +12,7 @@ ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasVehicleIdentifier "NissanLeaf_96a5
 ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasManufacturer "Nissan" .
 ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasModel "Leaf" .
 ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasName "Nissan Leaf" .
+ns:96a591ef-b1d8-4210-b924-52244af68750 ns:hasPlate "LF452SG" .
 ##############################################################
 # Vehicle: Nissan Leaf
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda rdf:type ns:Vehicle .
@@ -19,6 +20,7 @@ ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasVehicleIdentifier "NissanLeaf_fcc1
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasManufacturer "Nissan" .
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasModel "Leaf" .
 ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasName "Nissan Leaf" .
+ns:fcc19b03-5c58-4cab-b48a-c4c380ba0bda ns:hasPlate "GS254GT" .
 ##############################################################
 # Vehicle: Toyota Prius
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 rdf:type ns:Vehicle .
@@ -26,6 +28,7 @@ ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasVehicleIdentifier "ToyotaPrius_5cf
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasManufacturer "Toyota" .
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasModel "Prius" .
 ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasName "Toyota Prius" .
+ns:5cfa73d6-34a9-420b-ae6b-b10712c273d6 ns:hasPlate "SG223DG" .
 ##############################################################
 # Vehicle: Toyota Prius
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a rdf:type ns:Vehicle .
@@ -33,6 +36,7 @@ ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasVehicleIdentifier "ToyotaPrius_bbd
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasManufacturer "Toyota" .
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasModel "Prius" .
 ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasName "Toyota Prius" .
+ns:bbd7cb27-f725-4e11-a2da-d866d1efdc1a ns:hasPlate "TS232SG" .
 ##############################################################
 # Vehicle: Toyota Prius
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 rdf:type ns:Vehicle .
@@ -40,6 +44,7 @@ ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasVehicleIdentifier "ToyotaPrius_01f
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasManufacturer "Toyota" .
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasModel "Prius" .
 ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasName "Toyota Prius" .
+ns:01f128dd-1fca-4b5b-b422-ff92116be365 ns:hasPlate "LP314141" .
 ##############################################################
 # Vehicle: Fiat 500
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c rdf:type ns:Vehicle .
@@ -47,6 +52,7 @@ ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasVehicleIdentifier "Fiat500_b973587
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasManufacturer "Fiat" .
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasModel "500" .
 ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasName "Fiat 500" .
+ns:b9735872-b59c-43fc-bac0-6adef92f2a8c ns:hasPlate "LO252SW" .
 ##############################################################
 # Vehicle: Fiat Daily
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea rdf:type ns:Vehicle .
@@ -54,6 +60,7 @@ ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasVehicleIdentifier "FiatDaily_c5d61
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasManufacturer "Fiat" .
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasModel "Daily" .
 ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasName "Fiat Daily" .
+ns:c5d6124b-8bc9-4ad2-8a5f-4ca07343caea ns:hasPlate "LP111GS" .
 ##############################################################
 # Vehicle: Mission R
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 rdf:type ns:Vehicle .
@@ -61,6 +68,7 @@ ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasVehicleIdentifier "MissionR_2cf6da
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasManufacturer "Mission" .
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasModel "R" .
 ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasName "Mission R" .
+ns:2cf6da50-b6f2-48c5-8df6-31196d38c9e5 ns:hasPlate "SS522PP" .
 ##############################################################
 # Vehicle: Nissan Leaf
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 rdf:type ns:Vehicle .
@@ -68,6 +76,7 @@ ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasVehicleIdentifier "NissanLeaf_4b11
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasManufacturer "Nissan" .
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasModel "Leaf" .
 ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasName "Nissan Leaf" .
+ns:4b11ef6b-b5db-4f11-a4f1-7d14b25f5b84 ns:hasPlate "QW141AG" .
 ##############################################################
 # Vehicle: Tesla Model S
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 rdf:type ns:Vehicle .
@@ -75,6 +84,7 @@ ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasVehicleIdentifier "TeslaModelS_1ac
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasManufacturer "Tesla" .
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasModel "Model S" .
 ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasName "Tesla Model S" .
+ns:1ac14b0c-671f-440f-bcf9-cd87b8e5ecd7 ns:hasPlate "VW525SL" .
 ##############################################################
 #
 # Persons
