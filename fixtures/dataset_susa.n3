@@ -1,0 +1,70 @@
+# Prefixes
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ns:  <http://www.m3.com/2012/05/m3/ioe-ontology.owl#> .
+##############################################################
+#
+# Vehicles
+#
+##############################################################
+# Vehicle: Fiat Daily
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 rdf:type ns:Vehicle .
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 ns:hasVehicleIdentifier "FiatDaily_5c4fde21" .
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 ns:hasManufacturer "Fiat" .
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 ns:hasModel "Daily" . 
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 ns:hasName "Fiat Daily" .
+ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 ns:hasPlate "X1P26137" .
+##############################################################
+# Vehicle: Fiat Daily
+ns:930252a3-0236-4c87-89dc-b3c18bed702e rdf:type ns:Vehicle .
+ns:930252a3-0236-4c87-89dc-b3c18bed702e ns:hasVehicleIdentifier "FiatDaily_930252a3" .
+ns:930252a3-0236-4c87-89dc-b3c18bed702e ns:hasManufacturer "Fiat" .
+ns:930252a3-0236-4c87-89dc-b3c18bed702e ns:hasModel "Daily" .
+ns:930252a3-0236-4c87-89dc-b3c18bed702e ns:hasName "Fiat Daily" .
+ns:930252a3-0236-4c87-89dc-b3c18bed702e ns:hasPlate "X0P01304" .
+##############################################################
+# Vehicle: Fiat Daily
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 rdf:type ns:Vehicle .
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 ns:hasVehicleIdentifier "FiatDaily_ac7a8ff2" .
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 ns:hasManufacturer "Fiat" .
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 ns:hasModel "Daily" .
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 ns:hasName "Fiat Daily" .
+ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 ns:hasPlate "X0P32781" .
+##############################################################
+#
+# People
+#
+##############################################################
+# Person: Michele Ornato
+ns:42b4bd1d-c334-45c3-bfee-896da1437970 rdf:type ns:Person .
+ns:42b4bd1d-c334-45c3-bfee-896da1437970 ns:hasUserIdentifier "MicheleO" .
+ns:42b4bd1d-c334-45c3-bfee-896da1437970 ns:hasName "Michele Ornato" .
+ns:42b4bd1d-c334-45c3-bfee-896da1437970 ns:hasVehicle ns:5c4fde21-9b95-4e5b-bb77-cdfb7a79dca5 .
+ns:42b4bd1d-c334-45c3-bfee-896da1437970 ns:hasPassword "000" .
+##############################################################
+# Person: Roberto Tola
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b rdf:type ns:Person .
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b ns:hasUserIdentifier "RobertoT" .
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b ns:hasName "Roberto Tola" .
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b ns:hasVehicle ns:930252a3-0236-4c87-89dc-b3c18bed702e .
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b ns:hasVehicle ns:ac7a8ff2-60b6-4f74-9a9e-3087887e21e1 .
+ns:655851ea-0faa-4e3a-8288-55995c14ab3b ns:hasPassword "000" .
+##############################################################
+#
+# Ground Stations
+#
+##############################################################
+# GroundStation: Susa
+ns:2835a529-cf31-445a-9bfc-769d3487a62f rdf:type ns:GroundStation .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasGSIdentifier "Susa_901070bd" .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasName "Susa" .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasStartGPSData ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd .
+ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasEndGPSData ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb .
+# GPSData 19
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd rdf:type ns:GPSData .
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLatitude "45.135647" .
+ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLongitude "7.092475" .
+# GPSData 20
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb rdf:type ns:GPSData .
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLatitude "45.135348" .
+ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLongitude "7.093068" .
+##############################################################

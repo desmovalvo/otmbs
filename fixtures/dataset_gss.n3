@@ -156,21 +156,6 @@ ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 rdf:type ns:GPSData .
 ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 ns:hasLatitude "44.49798" .
 ns:284ebe2d-41eb-4bc9-b26d-ab55b0ad7922 ns:hasLongitude "11.35688" .
 ##############################################################
-# GroundStation: Susa
-ns:2835a529-cf31-445a-9bfc-769d3487a62f rdf:type ns:GroundStation .
-ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasGSIdentifier "Susa_901070bd" .
-ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasName "Susa" .
-ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasStartGPSData ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd .
-ns:2835a529-cf31-445a-9bfc-769d3487a62f ns:hasEndGPSData ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb .
-# GPSData 19
-ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd rdf:type ns:GPSData .
-ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLatitude "45.135647" .
-ns:f3696fcb-0e4d-462a-a1d4-fe5ee9ced0bd ns:hasLongitude "7.092475" .
-# GPSData 20
-ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb rdf:type ns:GPSData .
-ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLatitude "45.135348" .
-ns:6dbcd43d-621c-4515-8684-3cc0323a3bdb ns:hasLongitude "7.093068" .
-##############################################################
 # GroundStation: Firenze
 ns:20f26477-63ca-482d-a95c-f6df96b543b6 rdf:type ns:GroundStation .
 ns:20f26477-63ca-482d-a95c-f6df96b543b6 ns:hasGSIdentifier "Firenze_20f26477" .
