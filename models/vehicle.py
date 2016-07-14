@@ -26,13 +26,14 @@ class Vehicle:
         self.user = None
         self.brand = None
         self.model = None
+        self.plate = None
         self.user_uid = None 
         self.vehicle_id = None
         self.vehicle_uri = None
 
 
     # create vehicles
-    def create(self, brand, model, user_uid):
+    def create(self, brand, model, plate, user_uid):
 
         """Method used to create a NEW vehicle. Returns True for
         a successful creation, False otherwise"""
@@ -40,6 +41,7 @@ class Vehicle:
         # read attributes
         self.brand = brand
         self.model = model
+        self.plate = plate
         self.user_uid = user_uid
 
         # generating an UUID for the vehicle
@@ -57,6 +59,7 @@ class Vehicle:
             <%s> rdf:type ns:Vehicle .
             <%s> ns:hasVehicleIdentifier "%s" .
             <%s> ns:hasManufacturer "%s" .
+            <%s> ns:hasPlate "%s" .
             <%s> ns:hasModel "%s" .
         }
         WHERE {
@@ -67,10 +70,14 @@ class Vehicle:
         # putting triples
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-            kp.load_query_sparql(query % (RDF, NS, self.vehicle_uri,
-                                          self.vehicle_uri, self.vehicle_uri, self.vehicle_id, 
-                                          self.vehicle_uri, self.brand, self.vehicle_uri, 
-                                          self.model, self.user_uid))
+            kp.load_query_sparql(query % (RDF, NS,
+                                          self.vehicle_uri,
+                                          self.vehicle_uri,
+                                          self.vehicle_uri, self.vehicle_id, 
+                                          self.vehicle_uri, self.brand,
+                                          self.vehicle_uri, self.plate,
+                                          self.vehicle_uri, self.model,
+                                          self.user_uid))
 
             # retrieve the user name in order to complete the model
             query = """PREFIX rdf:<%s>
@@ -86,6 +93,7 @@ class Vehicle:
 
             return True, self
         except Exception as e:
+            print "ECCEZIONE NEL MODEL"
             print e
             return False, None
             
@@ -105,12 +113,13 @@ class Vehicle:
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid
+            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid ?plate
             WHERE {
                 ?vehicle rdf:type <%s> .
                 ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
                 ?vehicle ns:hasManufacturer ?brand .
                 ?vehicle ns:hasModel ?model .
+                ?vehicle ns:hasPlate ?plate .
                 ?user_uri ns:hasVehicle ?vehicle .
                 ?user_uri ns:hasUserIdentifier "%s" 
                 OPTIONAL {
@@ -126,12 +135,13 @@ class Vehicle:
             # perform a SPARQL query
             query = """PREFIX rdf:<%s>
             PREFIX ns:<%s>
-            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid
+            SELECT ?vehicle ?vehicle_id ?brand ?model ?person_uri ?person_name ?person_uid ?plate
             WHERE {
                 ?vehicle rdf:type <%s> .
                 ?vehicle ns:hasVehicleIdentifier ?vehicle_id .
                 ?vehicle ns:hasManufacturer ?brand .
                 ?vehicle ns:hasModel ?model .
+                ?vehicle ns:hasPlate ?plate .
                 OPTIONAL {
                     ?person_uri ns:hasVehicle ?vehicle .
                     ?person_uri ns:hasName ?person_name .
@@ -153,6 +163,7 @@ class Vehicle:
             new_model.user_uri = result[4][2]
             new_model.user_name = result[5][2]
             new_model.user_uid = result[6][2]
+            new_model.plate = result[7][2]
             model_results.append(new_model)
                 
         # return
@@ -170,12 +181,13 @@ class Vehicle:
         # query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?vehicle_uri ?brand ?model ?person_uri ?person_name ?person_uid
+        SELECT ?vehicle_uri ?brand ?model ?person_uri ?person_name ?person_uid ?plate
         WHERE {
             ?vehicle_uri rdf:type <%s> .
             ?vehicle_uri ns:hasManufacturer ?brand .
             ?vehicle_uri ns:hasModel ?model .
             ?vehicle_uri ns:hasVehicleIdentifier "%s" .
+            ?vehicle_uri ns:hasPlate ?plate .
             OPTIONAL {
                 ?person_uri ns:hasVehicle ?vehicle_uri .
                 ?person_uri ns:hasName ?person_name .
@@ -187,15 +199,14 @@ class Vehicle:
         results = kp.result_sparql_query
 
         # build the model to return
-        print "POST WUERY"
         model_result = Vehicle(self.settings)
         model_result.vehicle_uri = results[0][0][2]
-        print "POST WUERY"
         model_result.brand = results[0][1][2]
         model_result.model = results[0][2][2]
         model_result.user_uri = results[0][3][2]
         model_result.user_name = results[0][4][2]
         model_result.user_uid = results[0][5][2]
+        model_result.plate = results[0][6][2]
         model_result.vehicle_id = vehicle_id
         # return
         return model_result
@@ -213,15 +224,15 @@ class Vehicle:
         # query
         query = """PREFIX rdf:<%s>
         PREFIX ns:<%s>
-        SELECT ?vehicle_uri ?brand ?model ?vehicle_id
+        SELECT ?vehicle_uri ?brand ?model ?vehicle_id ?plate
         WHERE {
             ?vehicle_uri rdf:type <%s> .
             ?vehicle_uri ns:hasManufacturer ?brand .
             ?vehicle_uri ns:hasModel ?model .
             ?vehicle_uri ns:hasVehicleIdentifier ?vehicle_id .
             ?user_uri ns:hasUserIdentifier "%s" .
-            ?user_uri ns:hasVehicle ?vehicle_uri
-        
+            ?user_uri ns:hasVehicle ?vehicle_uri .
+            ?vehicle_uri ns:hasPlate ?plate
         }"""
         
         print query % (RDF, NS, VEHICLE_CLASS, user_id)
@@ -243,6 +254,7 @@ class Vehicle:
             ?vehicle_uri ns:hasVehicleIdentifier "%s" .
             ?vehicle_uri ns:hasManufacturer ?manufacturer .
             ?vehicle_uri ns:hasModel ?model .
+            ?vehicle_uri ns:hasPlate ?plate .
             ?user_uri ns:hasVehicle ?vehicle_uri .
             ?reservation_uri rdf:type ns:Reservation .
             ?reservation_uri ns:reservedByVehicle ?vehicle_uri .
@@ -264,7 +276,7 @@ class Vehicle:
 
     
     # update
-    def update(self, manufacturer, model, user_id):
+    def update(self, manufacturer, model, plate, user_id):
 
         """Method used to update the model of a vehicle"""
 
@@ -277,12 +289,14 @@ class Vehicle:
         INSERT {
             ?vehicle_uri ns:hasModel "%s" .
             ?vehicle_uri ns:hasManufacturer "%s" .
+            ?vehicle_uri ns:hasPlate "%s" .
             ?user_uri ns:hasVehicle ?vehicle_uri .
             ?reservation_uri ns:hasUser ?user_uri
         }
         DELETE {
             ?vehicle_uri ns:hasModel ?old_model .
             ?vehicle_uri ns:hasManufacturer ?old_manufacturer .
+            ?vehicle_uri ns:hasPlate ?plate
             ?old_user_uri ns:hasVehicle ?vehicle_uri .
             ?reservation_uri ns:hasUser ?old_user_uri
         }
@@ -290,6 +304,7 @@ class Vehicle:
             ?vehicle_uri rdf:type ns:Vehicle .
             ?vehicle_uri ns:hasModel ?old_model .
             ?vehicle_uri ns:hasManufacturer ?old_manufacturer .
+            ?vehicle_uri ns:hasPlate ?plate .
             ?vehicle_uri ns:hasVehicleIdentifier "%s" .
             ?old_user_uri ns:hasVehicle ?vehicle_uri .
             ?old_user_uri ns:hasUserIdentifier ?old_user_id .
@@ -300,8 +315,7 @@ class Vehicle:
         }"""
 
         try:
-            print query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id)
-            kp.load_query_sparql(query % (RDF, NS, model, manufacturer, self.vehicle_id, user_id))
+            kp.load_query_sparql(query % (RDF, NS, model, manufacturer, plate, self.vehicle_id, user_id))
             results = kp.result_sparql_query    
             model = self.find_vehicle(self.vehicle_id)
 
@@ -322,5 +336,6 @@ class Vehicle:
         vdict["vehicle_model"] = self.model
         vdict["vehicle_user_uid"] = self.user_uid
         vdict["vehicle_user_name"] = self.user_name
+        vdict["vehicle_plate"] = self.plate
 
         return vdict

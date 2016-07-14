@@ -50,21 +50,24 @@ class VehiclesController:
 
 
     # create vehicle
-    def create_vehicle(self, manufacturer, model, user_uid):
+    def create_vehicle(self, manufacturer, model, plate, user_uid):
 
         """This method is used to create a new vehicle"""
 
         # create the vehicle
         v = Vehicle(self.settings)
-        status, vehicle = v.create(manufacturer, model, user_uid)
+        status, vehicle = v.create(manufacturer, model, plate, user_uid)
+        print "CONTROLLER"
+        print status
+        print vehicle
         json_vehicle = vehicle.to_json()
 
         # return
         return status, json_vehicle
 
 
-    # create vehicle
-    def update_vehicle(self, vehicle_id, manufacturer, model, user_id):
+    # update vehicle
+    def update_vehicle(self, vehicle_id, manufacturer, model, plate, user_id):
 
         """This method is used to update a vehicle"""
 
@@ -73,7 +76,7 @@ class VehiclesController:
         v = v.find_vehicle(vehicle_id)
         
         # update it
-        status, newmodel = v.update(manufacturer, model, user_id)
+        status, newmodel = v.update(manufacturer, model, plate, user_id)
         jsonmodel = newmodel.to_json()
         
         # return

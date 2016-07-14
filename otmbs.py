@@ -213,10 +213,11 @@ def vehicles_update(vehicle_id):
             data = json.loads(request.data)
             model = data["model"]
             manufacturer = data["manufacturer"]
+            plate = data["plate"]
             user_uid = data["user_uid"]
             
             # invoke the controller
-            status, vehicle = vehicles_controller.update_vehicle(vehicle_id, manufacturer, model, user_uid)
+            status, vehicle = vehicles_controller.update_vehicle(vehicle_id, manufacturer, model, plate, user_uid)
 
             # redirect to the index
             return jsonify(results = vehicle)
@@ -228,10 +229,11 @@ def vehicles_update(vehicle_id):
     # read the form
     vehicle_model = request.form["model"]
     vehicle_user_id = request.form["user_uid"]
+    vehicle_plate = request.form["plate"]
     vehicle_manufacturer = request.form["manufacturer"]
 
     # invoke the controller
-    res, newmodel = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_user_id)
+    res, newmodel = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_plate, vehicle_user_id)
 
     # redirect to the index
     return redirect("/vehicles/%s" % newmodel["vehicle_id"])
@@ -257,10 +259,11 @@ def vehicles_create():
             data = json.loads(request.data)
             model = data["model"]
             manufacturer = data["manufacturer"]
+            plate = data["plate"]
             user_uid = data["user_uid"]
             
             # invoke the controller
-            status, vehicle = vehicles_controller.create_vehicle(manufacturer, model, user_uid)
+            status, vehicle = vehicles_controller.create_vehicle(manufacturer, model, plate, user_uid)
 
             # redirect to the index
             return jsonify(results = vehicle)
@@ -270,7 +273,7 @@ def vehicles_create():
         pass
 
     # invoke the controller
-    status, vehicle = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["user_uid"])
+    status, vehicle = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["plate"], request.form["user_uid"])
 
     # redirect to the index
     return redirect("/vehicles/%s" % vehicle["vehicle_id"])

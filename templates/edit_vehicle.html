@@ -14,6 +14,10 @@
        <input type="text" name="model" value={{ vehicle["vehicle_model"] }} /><br />
      </div>
      <div class="form-group">
+       <label for="plate">Plate:</label>
+       <input type="text" name="plate" value={{ vehicle["vehicle_plate"] }} /><br />
+     </div>     
+     <div class="form-group">
        User: <select name="user_uid">
 	 {% for user in users %}
 	 {% if user["user_uid"] == vehicle["vehicle_user_uid"] %}
