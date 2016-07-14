@@ -4,7 +4,7 @@ reservation_exists_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-synt
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
 ASK WHERE {
    ?v rdf:type ns:Vehicle .
-   ?v ns:hasVehicleIdentifier "%s" .
+   ?v ns:hasPlate "%s" .
    ?u rdf:type ns:Person .
    ?u ns:hasUserIdentifier "%s" .
    ?g rdf:type ns:GroundStation .

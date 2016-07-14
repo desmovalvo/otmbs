@@ -113,7 +113,7 @@ class ReservationsController:
         """Method to check if a reservation exists"""
 
         # perform the query
-        status = reservation_exists(self.settings, user_id, vehicle_id, gs_id, res_type)        
+        status = reservation_exists(self.settings, user_id, vehicle_plate, gs_id, res_type)        
 
         # return status
         if status:

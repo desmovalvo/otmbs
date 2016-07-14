@@ -29,7 +29,7 @@ def user_uid_available(settings, user_uid):
 
 
 # check reservation
-def reservation_exists(settings, user_uid, vehicle_id, gs_id, res_type):
+def reservation_exists(settings, user_uid, vehicle_snoop, gs_id, res_type):
 
     """This method is used to check if a reservation
     with the given details exists. If affirmative returns

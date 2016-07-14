@@ -132,7 +132,7 @@ WHERE {
     ?user_uri ns:hasUserIdentifier "%s" .
     ?res ns:reservationHasUser ?user_uri .
     ?res ns:reservedByVehicle ?veh .
-    ?veh ns:hasVehicleIdentifier "%s" .
+    ?veh ns:hasPlate "%s" .
     ?res ns:isBidirectional ?bid .
     ?res ns:hasEVSE ?evse .
     ?evse ns:hasEVSEIdentifier "%s" .

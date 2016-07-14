@@ -625,12 +625,12 @@ def reservations_check():
         if request.content_type == "application/json":
             data = json.loads(request.data)
             gs_id = data["gs_id"]
-            vehicle_id = data["vehicle_id"]
+            vehicle_id = data["vehicle_plate"]
             user_id = data["user_id"]
             res_type = data["res_type"]
             
             # invoke the controller
-            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id, res_type)
+            status = reservations_controller.check_reservation(gs_id, vehicle_plate,  user_id, res_type)
             print status
 
             # return
