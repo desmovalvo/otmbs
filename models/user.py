@@ -43,10 +43,10 @@ class User:
         
         # creating the triples
         triples = []
-        triples.append(Triple(URI(NS + self.user_uri), URI(RDF_TYPE), URI(PERSON_CLASS)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasUserIdentifier"), Literal(self.user_uid)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
-        triples.append(Triple(URI(NS + self.user_uri), URI(NS + "hasPassword"), Literal(self.user_password)))
+        triples.append(Triple(URI(self.user_uri), URI(RDF_TYPE), URI(PERSON_CLASS)))
+        triples.append(Triple(URI(self.user_uri), URI(NS + "hasUserIdentifier"), Literal(self.user_uid)))
+        triples.append(Triple(URI(self.user_uri), URI(NS + "hasName"), Literal(self.user_name)))
+        triples.append(Triple(URI(self.user_uri), URI(NS + "hasPassword"), Literal(self.user_password)))
 
         # putting triples
         try:

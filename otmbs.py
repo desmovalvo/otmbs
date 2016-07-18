@@ -620,17 +620,20 @@ def gss_update(gs_id):
 @app.route('/reservations/status', methods=['GET'])
 def reservations_check():
 
+    print "CHECKING RESERVATION..."
+    
     # check if a gs is reserved
     try:
         if request.content_type == "application/json":
             data = json.loads(request.data)
+            print data
             gs_id = data["gs_id"]
             vehicle_id = data["vehicle_plate"]
             user_id = data["user_id"]
             res_type = data["res_type"]
             
             # invoke the controller
-            status = reservations_controller.check_reservation(gs_id, vehicle_plate,  user_id, res_type)
+            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id, res_type)
             print status
 
             # return
@@ -1096,8 +1099,10 @@ def charge_request():
 def confirm_chargeoption():
 
     # read form data
+    print "READING FORM DATA"
     try:
         data = request.args
+        print "DATA: " + str(data)
         charge_option = data["option"]
     except Exception as e:
         print "ECCEXIONE:" + str(e)
@@ -1116,6 +1121,7 @@ def confirm_chargeoption():
     sysconfirm = results[0][2]
 
     # send ACK
+    print "CONFERMA: %s" % str(sysconfirm)
     if str(sysconfirm).lower() == "true":
         kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
         return make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
