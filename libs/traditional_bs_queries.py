@@ -142,3 +142,16 @@ WHERE {
     ?priu ns:hasValue ?pri .
     ?time ns:hasToTimeMillisec ?to
 }"""
+
+evse_status_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?r ?t ?timefrom ?timeto 
+WHERE { 
+    ?r rdf:type ns:Reservation .
+    ?r ns:hasEVSE ?evse .
+    ?evse ns:hasEVSEIdentifier "%s" .
+    ?r ns:hasTimeInterval ?t .
+    ?t rdf:type ns:TimeInterval .
+    ?t ns:hasFromTimeMillisec ?timefrom .
+    ?t ns:hasToTimeMillisec ?timeto
+}"""

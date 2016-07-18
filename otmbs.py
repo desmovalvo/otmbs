@@ -9,6 +9,7 @@ from libs.integrator import *
 from arrowheadlibs import *
 from uuid import uuid4
 import ConfigParser
+import traceback
 import requests
 import json
 
@@ -22,6 +23,7 @@ from controllers.ReservationsController import *
 from controllers.VehiclesController import *
 from controllers.UsersController import *
 from controllers.AuthController import *
+from controllers.TradController import *
 
 # importing other local libraries
 from libs.traditional_bs_queries import *
@@ -66,6 +68,7 @@ gss_controller = GroundStationsController(settings)
 vehicles_controller = VehiclesController(settings)
 users_controller = UsersController(settings)
 auth_controller = AuthController(settings)
+trad_controller = TradController(settings)
 
 
 ################################################
@@ -852,6 +855,34 @@ def reservations_update(reservation_id):
 #
 ################################################
 
+@app.route('/bs/evses/status', methods=['GET'])
+def evses_status():
+
+    """It returns the status of the EVSE specifying
+    if it is currently reserved and when it is scheduled
+    the next reservation"""
+
+    # read data
+    try:
+        if request.content_type == "application/json":
+
+            # read data
+            data = json.loads(request.data)
+            evse_id = data["evse_id"]    
+
+            # invoke the controller
+            print "Invoking the controller"
+            res = trad_controller.check_evse_status(evse_id)
+
+            # build a reply
+            return make_response(jsonify(res), 200)        
+
+    except Exception as e:
+        print e
+        print traceback.print_exc()
+        pass
+
+    
 @app.route('/bs/users', methods=['GET'])
 def users():
 
