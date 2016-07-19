@@ -1,0 +1,48 @@
+# Prefixes
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ns:  <http://www.m3.com/2012/05/m3/ioe-ontology.owl#> .
+##############################################################
+#
+# EVSEs
+#
+##############################################################
+# EVSE: CRF
+ns:8d81c784-9ab8-4bdb-a98d-5fdec5735224 ns:hasName "IOE CRF" .
+ns:8d81c784-9ab8-4bdb-a98d-5fdec5735224 rdf:type ns:GridConnectionPoint .
+ns:8d81c784-9ab8-4bdb-a98d-5fdec5735224 ns:hasGPSData ns:fe276659-9025-4c31-88a5-e4a7e44e431a .
+ns:fe276659-9025-4c31-88a5-e4a7e44e431a rdf:type ns:GPSData .
+ns:fe276659-9025-4c31-88a5-e4a7e44e431a ns:hasGPSLatitude "45.015127" .
+ns:fe276659-9025-4c31-88a5-e4a7e44e431a ns:hasGPSLongitude "7.568210" .
+ns:8d81c784-9ab8-4bdb-a98d-5fdec5735224 ns:hasEVSE ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 rdf:type ns:EVSE .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasEVSEIdentifier "EVSE_CRF" .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasName "EVSE-1" .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasReservationList ns:0ff65eb6-c098-426a-ac63-e9d47b52e660 .
+ns:0ff65eb6-c098-426a-ac63-e9d47b52e660 rdf:type ns:ReservationList .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasChargeProfile ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 rdf:type ns:ChargeProfile .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasPower ns:86b033a1-12af-42ff-ba88-665c75caaa1b .
+ns:86b033a1-12af-42ff-ba88-665c75caaa1b rdf:type ns:PowerData .
+ns:86b033a1-12af-42ff-ba88-665c75caaa1b ns:hasValue "10.0" .
+ns:86b033a1-12af-42ff-ba88-665c75caaa1b ns:hasUnitOfMeasure ns:kiloWatt .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasMaxCurrentDensityIn ns:9fe6afba-1c20-472e-b1f1-1a31c12132e4 .
+ns:9fe6afba-1c20-472e-b1f1-1a31c12132e4 rdf:type ns:CurrentData .
+ns:9fe6afba-1c20-472e-b1f1-1a31c12132e4 ns:hasValue "6.0" .
+ns:9fe6afba-1c20-472e-b1f1-1a31c12132e4 ns:hasUnitOfMeasure ns:Ampere .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasMaxCurrentDensityOut ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc .
+ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc rdf:type ns:CurrentData .
+ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc ns:hasValue "16.0" .
+ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc ns:hasUnitOfMeasure ns:Ampere .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasPrice ns:ac72279f-aaa5-4812-b004-223208216df4 .
+ns:ac72279f-aaa5-4812-b004-223208216df4 rdf:type ns:PriceData .
+ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasValue "0.4" .
+ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasCurrency ns:Euro .
+ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasVoltage ns:cb0d9672-d782-44da-9566-b86ec27ce05c .
+ns:cb0d9672-d782-44da-9566-b86ec27ce05c rdf:type ns:VoltageData .
+ns:cb0d9672-d782-44da-9566-b86ec27ce05c ns:hasValue "400.0" .
+ns:cb0d9672-d782-44da-9566-b86ec27ce05c ns:hasUnitOfMeasure ns:Volt .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasConnector ns:c9e7d046-00b0-4d81-836d-b5f5cc2650c6 .
+ns:c9e7d046-00b0-4d81-836d-b5f5cc2650c6 rdf:type ns:Connector .
+ns:c9e7d046-00b0-4d81-836d-b5f5cc2650c6 ns:hasConnectorType "it" .
+ns:c9e7d046-00b0-4d81-836d-b5f5cc2650c6 ns:hasStatus "unplugged" .
+ns:74dc5167-6a3f-4cb2-a4e8-0730e08af005 ns:hasGridConnectionPoint ns:8d81c784-9ab8-4bdb-a98d-5fdec5735224 .
