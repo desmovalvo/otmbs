@@ -54,6 +54,7 @@ class TradController:
             # initialize results
             reserved_now = False
             nextreservation = None
+            nextuser = None
             
             # check if it is reserved now
             for res in query_results:
@@ -70,11 +71,13 @@ class TradController:
                     # if we have still not found a future reservation
                     if not nextreservation:
                         nextreservation = int(res[2][2])
+                        nextuser = res[4][2]
                         
                     # if we already found a future reservation
                     else:
                         if int(res[2][2]) < nextreservation:
                             nextreservation = int(res[2][2])
+                            nextuser = res[4][2]
 
             # if a nextreservation is found, then we have
             # to calculate the time difference in ms
@@ -83,8 +86,42 @@ class TradController:
 
             res = {
                 "nextReservationIn":nextreservation,
-                "isReservedNow":reserved_now
+                "isReservedNow":reserved_now,
+                "nextUser":nextuser
             }
 
         # return
         return res
+
+
+    # check EVSE status
+    def check_user_authorization(self, evse_id, user_id, tolerance):
+
+        """This method is used to check if the user can recharge"""
+
+        # initialize results
+        res = {}
+        authorized = False
+
+        # determine current time
+        now = int(round(time.time() * 1000))        
+        
+        # check if the user reserved the EVSE for this time
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+        kp.load_query_sparql(user_auth_query % (evse_id, user_id))
+        query_results = kp.result_sparql_query
+        for res in query_results:
+            if int(res[2][2]) <= now <= int(res[3][2]):
+                return {"confirmed":True}
+
+        
+        # check if the user that reserved the EVSE is himself
+        status = self.check_evse_status(evse_id)
+        if status["nextUser"] == user_id and status["nextReservationIn"] <= tolerance:
+            return {"confirmed":True}
+
+        # ...else...
+        return {"confirmed":False}
+        
+        
+        

@@ -145,7 +145,7 @@ WHERE {
 
 evse_status_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
-SELECT ?r ?t ?timefrom ?timeto 
+SELECT ?r ?t ?timefrom ?timeto ?userid
 WHERE { 
     ?r rdf:type ns:Reservation .
     ?r ns:hasEVSE ?evse .
@@ -153,5 +153,24 @@ WHERE {
     ?r ns:hasTimeInterval ?t .
     ?t rdf:type ns:TimeInterval .
     ?t ns:hasFromTimeMillisec ?timefrom .
-    ?t ns:hasToTimeMillisec ?timeto
+    ?t ns:hasToTimeMillisec ?timeto .
+    ?r ns:reservationHasUser ?user .
+    ?user ns:hasUserIdentifier ?userid
+}"""
+
+user_auth_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?userid ?evseid ?timefrom ?timeto
+WHERE { 
+  ?r rdf:type ns:Reservation .
+  ?r ns:hasTimeInterval ?t .
+  ?t ns:hasToTimeMillisec ?timeto .
+  ?t ns:hasFromTimeMillisec ?timefrom .
+  ?r ns:hasEVSE ?evse .
+  ?evse ns:hasEVSEIdentifier "%s" .
+  ?r ns:reservationHasUser ?user .
+  ?user ns:hasUserIdentifier "%s"
 }"""

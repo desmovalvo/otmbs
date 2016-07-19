@@ -5,6 +5,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, m
 from flask.ext.httpauth import HTTPBasicAuth
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
+from termcolor import colored
 from libs.integrator import *
 from arrowheadlibs import *
 from uuid import uuid4
@@ -855,6 +856,38 @@ def reservations_update(reservation_id):
 #
 ################################################
 
+@app.route('/bs/reservations/check', methods=['GET'])
+def user_authorization_check():
+
+    """This function is used to check if a user
+    can be authorized to recharge his vehicle"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
+
+    # read data    
+    try:
+        if request.content_type == "application/json":
+
+            # read data
+            data = json.loads(request.data)
+            evse_id = data["evse_id"]
+            user_id = data["user_id"]
+            tolerance = data["tolerance"]
+
+            # invoke the controller
+            print "Invoking the controller"
+            res = trad_controller.check_user_authorization(evse_id, user_id, tolerance)
+
+            # build a reply
+            return make_response(jsonify(res), 200)        
+    
+    except Exception as e:
+        print colored("main> ", "red", attrs=["bold"]) + "exception!"
+        print traceback.print_exc()
+        return make_response(jsonify({'error':'Exception %s' % str(e)}), 500)
+    
+
 @app.route('/bs/evses/status', methods=['GET'])
 def evses_status():
 
@@ -862,7 +895,10 @@ def evses_status():
     if it is currently reserved and when it is scheduled
     the next reservation"""
 
-    # read data
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "checking EVSE status"
+    
+    # read data    
     try:
         if request.content_type == "application/json":
 
@@ -878,9 +914,9 @@ def evses_status():
             return make_response(jsonify(res), 200)        
 
     except Exception as e:
-        print e
+        print colored("main> ", "red", attrs=["bold"]) + "exception!"
         print traceback.print_exc()
-        pass
+        return make_response(jsonify({'error':'Exception %s' % str(e)}), 500)
 
     
 @app.route('/bs/users', methods=['GET'])
