@@ -40,11 +40,7 @@ class TradController:
 
             # no reservation is active and
             # no reservation is scheduled!
-
-            res = {
-                "nextReservationIn":None,
-                "isReservedNow":False
-            }
+            res = { "nextReservationIn":None, "isReservedNow":False }
 
         else:
 
@@ -124,12 +120,12 @@ class TradController:
         return {"confirmed":False}
         
         
-    # get EVSE list
-    def get_evse_list(self):
+    # get GCP list
+    def get_gcp_list(self):
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
-        kp.load_query_sparql(evses_list_query)
+        kp.load_query_sparql(gcps_list_query)
         query_results = kp.result_sparql_query
 
         # build a dict
@@ -144,14 +140,14 @@ class TradController:
         return results
 
 
-    # get EVSE list
-    def get_evse_details(self, evse_name):
+    # get GCP details
+    def get_gcp_details(self, evse_name):
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
         # perform the query
-        kp.load_query_sparql(evse_details_query % evse_name)
+        kp.load_query_sparql(gcp_details_query % evse_name)
         query_results = kp.result_sparql_query
 
         # build a dict

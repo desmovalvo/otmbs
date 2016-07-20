@@ -175,7 +175,7 @@ WHERE {
   ?user ns:hasUserIdentifier "%s"
 }"""
 
-evses_list_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+gcps_list_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
 SELECT ?gcp ?gcpname ?lat ?lng
 WHERE {
@@ -185,7 +185,7 @@ WHERE {
    ?gpsdata ns:hasGPSLongitude ?lng .
 }"""
 
-evse_details_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+gcp_details_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
 SELECT ?conn ?evsename ?pow ?volt ?price ?cout ?cin ?stat
 WHERE {

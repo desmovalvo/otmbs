@@ -21,7 +21,7 @@
           zoom: 14
       });
       var smarker = L.icon({
-      iconUrl: "{{ url_for('static', filename='evse.png') }}",
+      iconUrl: "{{ url_for('static', filename='gcp.png') }}",
       iconSize:     [38, 58], // size of the icon
       iconAnchor:   [22, 62], // point of the icon which will correspond to marker's location
       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -33,8 +33,8 @@
       color: '#000'
       };
 
-      {% for evse in evses %}
-      L.marker( [{{ evse["gcp_lat"]}}, {{evse["gcp_lng"]}} ], {icon: smarker}).bindPopup("{{evse["gcp_name"]}}").addTo( map );
+      {% for gcp in gcps %}
+      L.marker( [{{ gcp["gcp_lat"]}}, {{gcp["gcp_lng"]}} ], {icon: smarker}).bindPopup("{{gcp["gcp_name"]}}").addTo( map );
       {% endfor %}
     </script>
 
@@ -51,11 +51,12 @@
       </thead>
 
       <tbody>
-      {% for evse in evses %}
+
+      {% for gcp in gcps %}
       <tr>
-	<td><a href='{{ url_for('evses_show', gcp_name = evse["gcp_name"]) }}'>{{ evse["gcp_name"] }}<a></td>
-	<td>{{ evse["gcp_lat"] }}</td>
-	<td>{{ evse["gcp_lng"] }}</td>
+	<td><a href='{{ url_for('gcps_show', gcp_name = gcp["gcp_name"]) }}'>{{ gcp["gcp_name"] }}<a></td>
+	<td>{{ gcp["gcp_lat"] }}</td>
+	<td>{{ gcp["gcp_lng"] }}</td>
       </tr>
       {% endfor %}
       </tbody>

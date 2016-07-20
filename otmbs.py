@@ -891,45 +891,51 @@ def reservations_update(reservation_id):
 ################################################
 #
 # Traditional Booking Service Interface
-# Routes for: EVSEs
+# Routes for: GCPs
 #
 ################################################
 
-@app.route('/evses', methods=['GET'])
-def evses_showall():
+@app.route('/gcps', methods=['GET'])
+def gcps_showall():
 
-    """This function is used to get a list of the EVSEs"""
+    """This function is used to get a list of the GCPs"""
 
     # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "retrieving EVSEs list"
+    print colored("main> ", "blue", attrs=["bold"]) + "retrieving GCPs list"
 
     # invoke the controller
-    res = trad_controller.get_evse_list()
+    res = trad_controller.get_gcp_list()
 
     # return data
     if output_format(request) == "json":        
         return jsonify(res)
     else:
-        return render_template("show_evses.html", title="EVSEs", evses=res)
+        return render_template("show_gcps.html", title="GCPs", gcps=res)
 
 
-@app.route('/evses/<gcp_name>', methods=['GET'])
-def evses_show(gcp_name):
+@app.route('/gcps/<gcp_name>', methods=['GET'])
+def gcps_show(gcp_name):
 
     """This function is used to get details about a GCP"""
 
     # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "retrieving EVSE details"
+    print colored("main> ", "blue", attrs=["bold"]) + "retrieving GCP details"
 
     # invoke the controller
-    res = trad_controller.get_evse_details(gcp_name)
+    res = trad_controller.get_gcp_details(gcp_name)
 
     # return data
-    if output_format(request) == "json":        
+    if output_format(request) == "json":                
         return jsonify(res)
     else:
-        return render_template("show_evse.html", title="EVSE %s" % gcp_name, evses = res, evsename = gcp_name)
+        return render_template("show_gcp.html", title="GCP %s" % gcp_name, gcps = res, gcpname = gcp_name)
 
+################################################
+#
+# Traditional Booking Service Interface
+# Routes for: EVSEs
+#
+################################################
 
 @app.route('/evses/<evse_id>', methods=['PUT'])
 @app.route('/evses/update/<evse_id>', methods=['POST'])
@@ -945,13 +951,54 @@ def evses_set_status(evse_id):
     data = get_input_data(request)
 
     # invoke the controller
-    res = trad_controller.set_evse_status(evse_id, data["status"])
+    res = trad_controller.set_evse_status(evse_id, data["status"], data["reservation"])
 
     # return
     if res:
         make_response(jsonify({'status': 'OK'}), 200)        
     else:
         make_response(jsonify({'status': 'error'}), 400)        
+
+
+@app.route('/evses/<evse_id>', methods=['GET'])
+def evses_status(evse_id):
+
+    """It returns the status of the EVSE specifying
+    if it is currently reserved and when it is scheduled
+    the next reservation"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "checking EVSE status"
+    
+    # get input data    
+    data = get_input_data(request)
+
+    # invoke the controller
+    res = trad_controller.check_evse_status(data["evse_id"])
+
+    # build a reply
+    return make_response(jsonify(res), 200)        
+
+
+@app.route('/evses/<evse_id>/check', methods=['GET'])
+def user_authorization_check(evse_id):
+
+    """This function is used to check if a user
+    can be authorized to recharge his vehicle"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
+
+    # read data    
+    data = get_input_data(request)
+
+    # invoke the controller
+    print "Invoking the controller"
+    res = trad_controller.check_user_authorization(data["evse_id"], data["user_id"], data["tolerance"])
+
+    # build a reply
+    return make_response(jsonify(res), 200)        
+
 
 ################################################
 #
@@ -993,70 +1040,7 @@ def treservations_check():
 # Routes for: other
 #
 ################################################
-
-
-@app.route('/bs/reservations/check', methods=['GET'])
-def user_authorization_check():
-
-    """This function is used to check if a user
-    can be authorized to recharge his vehicle"""
-
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
-
-    # read data    
-    try:
-        if request.content_type == "application/json":
-
-            # read data
-            data = json.loads(request.data)
-            evse_id = data["evse_id"]
-            user_id = data["user_id"]
-            tolerance = data["tolerance"]
-
-            # invoke the controller
-            print "Invoking the controller"
-            res = trad_controller.check_user_authorization(evse_id, user_id, tolerance)
-
-            # build a reply
-            return make_response(jsonify(res), 200)        
     
-    except Exception as e:
-        print colored("main> ", "red", attrs=["bold"]) + "exception!"
-        print traceback.print_exc()
-        return make_response(jsonify({'error':'Exception %s' % str(e)}), 500)
-    
-
-@app.route('/bs/evses/status', methods=['GET'])
-def evses_status():
-
-    """It returns the status of the EVSE specifying
-    if it is currently reserved and when it is scheduled
-    the next reservation"""
-
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "checking EVSE status"
-    
-    # read data    
-    try:
-        if request.content_type == "application/json":
-
-            # read data
-            data = json.loads(request.data)
-            evse_id = data["evse_id"]    
-
-            # invoke the controller
-            print "Invoking the controller"
-            res = trad_controller.check_evse_status(evse_id)
-
-            # build a reply
-            return make_response(jsonify(res), 200)        
-
-    except Exception as e:
-        print colored("main> ", "red", attrs=["bold"]) + "exception!"
-        print traceback.print_exc()
-        return make_response(jsonify({'error':'Exception %s' % str(e)}), 500)
-
     
 @app.route('/bs/users', methods=['GET'])
 def users():
