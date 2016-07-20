@@ -29,7 +29,6 @@ from controllers.TradController import *
 # importing other local libraries
 from libs.traditional_bs_queries import *
 from libs.n3loader import *
-from libs.alfrest import *
 
 # reading configuration
 settings = {}
@@ -93,6 +92,22 @@ def output_format(request):
 
 
     return "html"
+
+
+def get_input_data(request):
+
+    # read data    
+    try:
+        if request.content_type == "application/json":
+
+            # read data
+            data = json.loads(request.data)
+            return data
+
+    except Exception as e:
+
+        # not a valid json data
+        return None
 
 
 ################################################
@@ -876,6 +891,7 @@ def reservations_update(reservation_id):
 ################################################
 #
 # Traditional Booking Service Interface
+# Routes for: EVSEs
 #
 ################################################
 
@@ -914,6 +930,69 @@ def evses_show(gcp_name):
     else:
         return render_template("show_evse.html", title="EVSE %s" % gcp_name, evses = res, evsename = gcp_name)
 
+
+@app.route('/evses/<evse_id>', methods=['PUT'])
+@app.route('/evses/update/<evse_id>', methods=['POST'])
+def evses_set_status(evse_id):
+
+    """This function is used to set the status of an EVSE,
+    to signal the start or the end of a recharge"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "setting EVSE status"
+
+    # get input data
+    data = get_input_data(request)
+
+    # invoke the controller
+    res = trad_controller.set_evse_status(evse_id, data["status"])
+
+    # return
+    if res:
+        make_response(jsonify({'status': 'OK'}), 200)        
+    else:
+        make_response(jsonify({'status': 'error'}), 400)        
+
+################################################
+#
+# Traditional Booking Service Interface
+# Routes for: traditional reservations
+#
+################################################
+
+@app.route('/treservations/check', methods=['GET'])
+def treservations_check():
+
+    """This function is used to check if a user
+    can be authorized to recharge his vehicle"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
+    
+    # get input data
+    data = get_input_data(request)
+
+    # invoke the controller
+    if data:
+
+        # invoke the controller
+        res = trad_controller.check_treservation(data["user_id"], data["evse_id"])
+    
+        # return
+        return jsonify(res)
+
+    else:
+        
+        # return an error
+        return make_response(jsonify({'error': 'Bad request'}), 400)
+
+
+################################################
+#
+# Traditional Booking Service Interface
+# Routes for: other
+#
+################################################
 
 
 @app.route('/bs/reservations/check', methods=['GET'])
@@ -1296,71 +1375,6 @@ def reservation_retire(res_id):
         return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
     else:
         return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
-
-
-################################################
-#
-# TODO -- alfred non-rest interface
-#
-################################################
-@app.route('/alfred', methods=['GET', 'POST'])
-def alfred_routes():
-
-    print "***********************************************************"
-    print request.args
-    print "***********************************************************"
-    print request.form
-    print "***********************************************************"
-
-    # variables
-    action = None
-    data_format = None
-    resource_id = None
-    form_parameters = None
-
-    # retrieve the desired action, if present
-    if request.args.has_key('action'):    
-        action = request.args["action"]
-
-    # retrieve the desired data format, if present
-    if request.args.has_key('format'):
-        data_format = request.args["format"]
-
-    # retrieve the id, if present
-    if request.args.has_key('id'):
-        resource_id = request.args["id"]
-
-    # then call the proper action
-    # TODO: this is not complete
-    # TODO: optional arguments must be considered
-    # TODO: only GET are ok
-    if ALF_ACTIONS[action]["method"] == "GET":
-
-        # vehicle related request 
-        if action in ["showvehicles", "showvehicle", "deletevehicle"]:
-            return redirect(url_for(ALF_ACTIONS[action]["name"], vehicle_id = resource_id, format = data_format))
-
-        # user related request
-        if action in ["showusers", "showuser", "deleteuser"]:
-            return redirect(url_for(ALF_ACTIONS[action]["name"], user_id = resource_id, format = data_format))
-
-        # gss related request
-        if action in ["showgss", "showgs", "deletegs"]:
-            return redirect(url_for(ALF_ACTIONS[action]["name"], gs_id = resource_id, format = data_format))
-
-        # reservations related request
-        if action in ["showreservations", "showreservation", "deletereservation"]:
-            return redirect(url_for(ALF_ACTIONS[action]["name"], reservation_id = resource_id, format = data_format))
-
-    else:
-
-        # JSON form
-        json_data = {}
-        for k in request.args.keys():
-            json_data[k] = request.args[k]
-
-        # TODO: implement post!
-        pass
 
 
 # main

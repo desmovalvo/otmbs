@@ -149,6 +149,8 @@ class TradController:
 
         # connect to the SIB
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # perform the query
         kp.load_query_sparql(evse_details_query % evse_name)
         query_results = kp.result_sparql_query
 
@@ -167,3 +169,62 @@ class TradController:
 
         # return results
         return results
+
+
+    def check_treservations(self, user_id, evse_id):
+        
+        """This method is used to check if the user can
+        be authorized to perform a recharge"""
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
+        # perform the query
+        kp.load_query_sparql(check_trad_res_query % (evse_id, user_id))
+        query_results = kp.result_sparql_query
+        
+        # results initialization
+        status = {"status":"error", "reservation":None}
+        Tnow = int(round(time() * 1000))
+        minDifference = 0
+        reservationf = ""
+	
+	# building results
+        for results in query_results:
+            for result in results:
+                if result[0] == "Tstart":
+                    tstart = result[2]
+                elif result[0] == "Tend":
+                    tend = result[2]
+                elif result[0] == "r":
+                    reservation = result[2]
+                elif result[0] == "end":
+                    end = result[2]
+            difference = int(tstart) - int(Tnow)
+            if( (int(tend) - int(Tnow) > 0) and (end == None) and ((difference  < minDifference) or (minDifference == 0)) ):
+                minDifference=difference
+                reservationf = reservation
+                status = {"status":"OK", "reservation":reservationf}
+
+        # return
+        return status
+            
+
+    def set_evse_status(self, evse_id, status, reservation):
+    
+        """Method used to set the status of an EVSE"""
+
+        # calculate current time
+        Tnow = int(round(time() * 1000))
+
+        try:
+            if status.lower() == "start":
+                self.KP.load_update_sparql(set_evse_status_start % (reservation, Tnow))
+            elif status.lower() == "stop":
+                self.KP.load_update_sparql(set_evse_status_stop % (reservation, Tnow))
+            return True
+            
+        except Exception as e:
+            return False
+            
+        

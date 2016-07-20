@@ -210,3 +210,28 @@ WHERE {
    ?cinu ns:hasValue ?cin .
    ?conn ns:hasConnectorType ?type
 }"""
+
+check_trad_res_query = """PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?Tstart ?Tend ?r ?end
+WHERE{
+    ?evse ns:hasEVSEIdentifier "%s" .
+    ?evse ns:hasReservationList ?rl .
+    ?rl ns:hasReservation ?r .
+    ?p ns:hasUserIdentifier "%s" .
+    ?r ns:reservationHasUser ?p .
+    ?r ns:hasTimeInterval ?t .
+    ?t ns:hasFromTimeMillisec ?Tstart .
+    ?t ns:hasToTimeMillisec ?Tend
+    OPTIONAL { ?r ns:hasEndingTimeMillisec ?end }
+} """
+
+set_evse_status_start = """PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \
+PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+INSERT{ <%s> ns:hasStartingTimeMillisec "%s" }"""
+
+set_evse_status_stop = """PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \
+PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+INSERT{ <%s> ns:hasEndingTimeMillisec "%s" }"""
