@@ -71,6 +71,29 @@ users_controller = UsersController(settings)
 auth_controller = AuthController(settings)
 trad_controller = TradController(settings)
 
+################################################
+#
+# utilities
+#
+################################################
+
+def output_format(request):
+    
+    try:
+        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
+            return "json"
+    except:
+        pass
+        
+    try:
+        if request.args.has_key('format') and request.args['format'] == "json":
+            return "json"
+    except:
+        pass
+
+
+    return "html"
+
 
 ################################################
 #
@@ -855,6 +878,24 @@ def reservations_update(reservation_id):
 # Traditional Booking Service Interface
 #
 ################################################
+
+@app.route('/evses', methods=['GET'])
+def evses_showall():
+
+    """This function is used to get a list of the EVSEs"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "retrieving EVSEs list"
+
+    # invoke the controller
+    res = trad_controller.get_evse_list()
+
+    # return data
+    if output_format(request) == "json":        
+        return jsonify(res)
+    else:
+        return render_template("show_evses.html", title="EVSEs", evses=res)
+
 
 @app.route('/bs/reservations/check', methods=['GET'])
 def user_authorization_check():

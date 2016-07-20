@@ -22,7 +22,13 @@
 	<div class="col-md-2">
 	  <a href="{{ url_for('users_showall') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users</a><br/>
 	  <a href="{{ url_for('vehicles_showall') }}"><span class="glyphicon glyphicon-bed" aria-hidden="true"></span> Vehicles</a><br/>
+	  <hr>
+	  <b>On The Move</b><br/>
 	  <a href="{{ url_for('gss_showall') }}"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Ground Stations</a><br/>
+	  <a href="{{ url_for('reservations_showall') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reservations</a></li>
+          <hr>
+	  <b>Traditional</b><br/>
+	  <a href="{{ url_for('evses_showall') }}"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> EVSEs</a><br/>
 	  <a href="{{ url_for('reservations_showall') }}"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Reservations</a></li>
 	</div>
     
