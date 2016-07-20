@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<!-- BODY -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<div class="col-md-10">
+
+	  <div class="row-fluid">
+	  <h3>{{ evsename }}</h3>
+
+	  <table class="table table-striped table-hover">
+	    
+	    <tbody>
+
+	    <th><b>Connector:</b></th>	   
+	    <th><b>Power:</b></th>
+	    <th><b>Voltage:</b></th>
+	    <th><b>In Current:</b></th>
+	    <th><b>Out Current:</b></th>
+	    <th><b>Status:</b></th>
+
+	    {% for entry in evses %}
+
+	    <tr>
+	      <td>{{ entry["gcp_connector"] }}</td>
+	      <td>{{ entry["gcp_pow"] }}</td>
+	      <td>{{ entry["gcp_volt"] }}</td>
+	      <td>{{ entry["gcp_cin"] }}</td>
+	      <td>{{ entry["gcp_cout"] }}</td>
+	      <td>{{ entry["gcp_stat"] }}</td>
+	    </tbody>
+	    
+	    {% endfor %}
+
+	  </table>
+	  </div>
+
+	</div>
+      </div>
+
+{% endblock %}

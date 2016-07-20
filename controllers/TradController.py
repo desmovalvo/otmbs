@@ -142,3 +142,28 @@ class TradController:
 
         # return results
         return results
+
+
+    # get EVSE list
+    def get_evse_details(self, evse_name):
+
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+        kp.load_query_sparql(evse_details_query % evse_name)
+        query_results = kp.result_sparql_query
+
+        # build a dict
+        results = []
+        for res in query_results:
+            results.append({ "gcp_connector" : res[0][2],
+                             "gcp_evsename" : res[1][2],
+                             "gcp_pow" : res[2][2],
+                             "gcp_volt" : res[3][2],
+                             "gcp_price" : res[4][2],
+                             "gcp_cout" : res[5][2],
+                             "gcp_cin" : res[6][2],
+                             "gcp_stat" : res[7][2],
+                         })
+
+        # return results
+        return results

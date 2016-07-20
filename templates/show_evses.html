@@ -59,7 +59,7 @@
       <tbody>
       {% for evse in evses %}
       <tr>
-	<td>{{ evse["gcp_name"] }}</td>
+	<td><a href='{{ url_for('evses_show', gcp_name = evse["gcp_name"]) }}'>{{ evse["gcp_name"] }}<a></td>
 	<td>{{ evse["gcp_lat"] }}</td>
 	<td>{{ evse["gcp_lng"] }}</td>
       </tr>

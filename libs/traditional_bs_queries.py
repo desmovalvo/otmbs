@@ -184,3 +184,29 @@ WHERE {
    ?gpsdata ns:hasGPSLatitude ?lat .
    ?gpsdata ns:hasGPSLongitude ?lng .
 }"""
+
+evse_details_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?conn ?evsename ?pow ?volt ?price ?cout ?cin ?stat
+WHERE {
+   ?gcp ns:hasName "%s" .
+   ?gcp ns:hasEVSE ?evse .
+   ?evse ns:hasConnector ?conn .
+   ?evse ns:hasChargeProfile ?prof .
+   ?evse ns:hasReservationList ?lst .
+   ?evse ns:hasEVSEIdentifier ?evseid .
+   ?evse ns:hasName ?evsename .
+   ?conn ns:hasStatus ?stat .
+   ?evse ns:hasName ?evseName .
+   ?prof ns:hasPower ?powu .
+   ?prof ns:hasVoltage ?voltu .
+   ?prof ns:hasPrice ?priu .
+   ?prof ns:hasMaxCurrentDensityOut ?coutu .
+   ?prof ns:hasMaxCurrentDensityIn ?cinu .
+   ?powu ns:hasValue ?pow .
+   ?voltu ns:hasValue ?volt .
+   ?priu ns:hasValue ?price .
+   ?coutu ns:hasValue ?cout .
+   ?cinu ns:hasValue ?cin .
+   ?conn ns:hasConnectorType ?type
+}"""

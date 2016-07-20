@@ -897,6 +897,25 @@ def evses_showall():
         return render_template("show_evses.html", title="EVSEs", evses=res)
 
 
+@app.route('/evses/<gcp_name>', methods=['GET'])
+def evses_show(gcp_name):
+
+    """This function is used to get details about a GCP"""
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "retrieving EVSE details"
+
+    # invoke the controller
+    res = trad_controller.get_evse_details(gcp_name)
+
+    # return data
+    if output_format(request) == "json":        
+        return jsonify(res)
+    else:
+        return render_template("show_evse.html", title="EVSE %s" % gcp_name, evses = res, evsename = gcp_name)
+
+
+
 @app.route('/bs/reservations/check', methods=['GET'])
 def user_authorization_check():
 
