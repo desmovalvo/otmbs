@@ -383,7 +383,6 @@ def users_showall():
 @app.route('/users/<user_id>', methods=['GET'])
 def users_show(user_id):
 
-
     # invoke the controller
     res = users_controller.show_user(user_id)
 
