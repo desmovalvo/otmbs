@@ -648,7 +648,7 @@ def gcps_showall():
 
     # return data
     if output_format(request) == JSON:        
-        return jsonify(res)
+        return jsonify(results = res)
     else:
         return render_template("show_gcps.html", title="GCPs", gcps=res)
 
@@ -735,44 +735,55 @@ def user_authorization_check(evse_id):
 #
 ################################################
 
+@app.route('/treservations', methods=['GET'])
+@auth.login_required
+def treservations_showall():
+
+    # invoke the controller
+    status, res = trad_controller.get_tres_list()
+
+    # output
+    if output_format(request) == JSON:
+        return make_response(jsonify(results = res))
+    else:
+        return render_template("show_treservations.html", entries = res, title = "Traditional Reservations")
+
+
+
 @app.route('/treservations/get_options', methods=['GET'])
 @auth.login_required
 def chargeoptions_request():
 
     # input
+    data = None
     if input_format(request) == JSON:    
         data = get_input_data(request)
     else:
-        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
+        data = request.args
+        print data
 
     # invoke the controller
     charge_options = trad_controller.get_charge_options(data["lat"], data["lon"], data["radius"], data["timeto"], data["timefrom"], data["user_uri"], data["vehicle_uri"], data["bidirectional"], data["requested_energy"])
 
     # output
     if output_format(request) == JSON:
-        return make_response(jsonify(charge_options))
+        return make_response(jsonify(results = charge_options))
     else:
         return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
 
 
-@app.route("/treservations/confirm_option", methods=["POST"])
-def chargeoptions_confirm():
-
-    # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)    
+@app.route("/treservations/<option_id>/confirm", methods=["POST"])
+def chargeoptions_confirm(option_id):
 
     # invoke the controller
-    status = trad_controller.charge_option_confirm(data["option"])
+    status = trad_controller.charge_option_confirm(option_id)
 
     # output
     if output_format(request) == JSON:
         if status:
-            make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
+            return make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
         else:
-            make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
+            return make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
     else:
         return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)    
 
@@ -818,64 +829,6 @@ def reservation_deletion(res_id):
 #
 ################################################
     
-    
-@app.route('/bs/users', methods=['GET'])
-def users():
-
-    """Returns the list of the users of the booking service.
-    The default data format for the results is JSON."""
-
-    # get the user list
-    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-    kp.load_query_sparql(users_query)
-    results = kp.result_sparql_query
-    
-    # parse the results
-    users = []
-    for result in results:
-        user = {}
-        user["uri"] = result[0][2]
-        user["name"] = result[1][2]
-        user["id"] = result[2][2]
-        users.append(user)
-
-    # return
-    return jsonify(results = users)
-
-
-@app.route('/bs/vehicles', methods=['GET'])
-def vehicles():
-
-    """Returns the list of vehicles. Default
-    data format for the results is JSON.
-    Note: the user_id must be provided. """
-
-    # check if the user_id was provided user_id = None if
-    if request.args.has_key('user_id'):
-
-        # read the user_id
-        user_id = request.args['user_id']
-
-        # get the vehicle list
-        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-        print vehicles_query % user_id
-        kp.load_query_sparql(vehicles_query % user_id)
-        results = kp.result_sparql_query
-
-        # parse the results
-        vehicles = []
-        for result in results:
-            vehicle = {}
-            for field in result:
-                vehicle[field[0]] = field[2]
-            vehicles.append(vehicle)
-
-    else:
-         return make_response(jsonify({'error': 'Bad Request - The user_id must be provided'}), 401)
-
-    # return
-    return jsonify(results = vehicles)
-
 
 @app.route('/bs/gcps', methods=['GET'])
 def gcps():
@@ -981,162 +934,6 @@ def reservations():
     # return
     return jsonify(results = reservations)
     
-
-@app.route('/bs/chargerequests', methods=['GET'])
-@auth.login_required
-def charge_request():
-
-    # read form data
-    try:
-        data = request.args
-        print data
-        lat = data["lat"]
-        lng = data["lon"]
-        rad = data["radius"]
-        timeto = data["timeto"]
-        timefrom = data["timefrom"]
-        user_uri = NS + data["user_uri"]
-        vehicle_uri = NS + data["vehicle_uri"]
-        bidirectional = data["bidirectional"]
-        requested_energy = data["requested_energy"]
-    except Exception as e:
-        print "ECCEXIONE:" + str(e)
-        print e
-    
-    # generate UUIDs
-    request_uri = NS + str(uuid4())
-    time_interval_uri = NS + str(uuid4())
-    energy_uri = NS + str(uuid4())
-    spatial_range_uri = NS + str(uuid4())
-
-    # insert
-    triple_list = []
-    triple_list.append(Triple(URI(request_uri), URI(RDF_TYPE), URI(NS + "ChargeRequest")))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingVehicle"), URI(vehicle_uri)))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingUser"), URI(user_uri)))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "allowBidirectional"), LLiteral("true")))
-    triple_list.append(Triple(URI(time_interval_uri), URI(RDF_TYPE), URI(NS + "TimeInterval")))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "hasTimeInterval"), URI(time_interval_uri)))
-    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasFromTimeMillisec"), LLiteral(str(timefrom))))
-    triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasToTimeMillisec"), LLiteral(timeto)))
-    triple_list.append(Triple(URI(energy_uri), URI(RDF_TYPE), URI(NS + "EnergyData")))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestedEnergy"), URI(energy_uri)))
-    triple_list.append(Triple(URI(energy_uri), URI(NS + "hasUnitOfMeasure"), URI(NS + "kiloWattHour")))
-    triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), LLiteral(requested_energy)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(RDF_TYPE), URI(NS + "SpatialRangeData")))
-    triple_list.append(Triple(URI(request_uri), URI(NS + "hasSpatialRange"), URI(spatial_range_uri)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLatitude"), LLiteral(lat)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLongitude"), LLiteral(lng)))
-    triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), LLiteral(rad)))
-    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-    kp.load_rdf_insert(triple_list)
-
-    # query (instead of subscription)
-    results = False
-    while not results:
-        
-        # perform the query
-        kp.load_query_rdf(Triple(None, URI(NS + "hasRelatedRequest"), URI(request_uri)))
-        query_results = kp.result_rdf_query
-        if len(query_results) > 0:
-            results = query_results
-
-    # query:
-    res_uri = results[0][0]
-    print res_uri
-    print chargeresponse_query % (res_uri, res_uri)
-    kp.load_query_sparql(chargeresponse_query % (res_uri, res_uri))
-    charge_requests = []
-    results2 = kp.result_sparql_query
-    
-    # parse the results
-    charge_requests = []
-    for result in results2:
-        charge_request = {}
-        for field in result:
-            charge_request[field[0]] = field[2]
-        charge_requests.append(charge_request)
-
-    # return
-    # TODO: gestire caso d'errore
-    return jsonify(results = charge_requests)
-
-
-@app.route("/bs/chargeoption_confirm", methods=["GET"])
-def confirm_chargeoption():
-
-    # read form data
-    print "READING FORM DATA"
-    try:
-        data = request.args
-        print "DATA: " + str(data)
-        charge_option = data["option"]
-    except Exception as e:
-        print "ECCEXIONE:" + str(e)
-        print e
-
-    # insert the triple
-    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-    kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), LLiteral("true"))])
-
-    # look for system confirm
-    # (subscription replaced by iterative query)
-    results = None
-    while not results:
-        kp.load_query_rdf(Triple(URI(NS + charge_option), URI(NS + "confirmBySystem"), None))        
-        results = kp.result_rdf_query
-    sysconfirm = results[0][2]
-
-    # send ACK
-    print "CONFERMA: %s" % str(sysconfirm)
-    if str(sysconfirm).lower() == "true":
-        kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
-        return make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
-    else:
-        return make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
-
-
-@app.route("/bs/reservations/<res_id>", methods=["DELETE"])
-def reservation_retire(res_id):
-
-    # initialize the return value
-    success = True
-
-    # connect to the SIB
-    try:
-        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-
-        # get the res_uri
-        res_uri = NS + res_id
-        
-        # generate a reservation retire uri
-        res_ret_uri = NS + str(uuid4())
-
-        # get the reservation user
-        kp.load_query_rdf(Triple(URI(res_uri), URI(NS + "reservationHasUser"), None))
-        query_results = kp.result_rdf_query
-        user_uri = query_results[0][2]
-
-        # build the triple list
-        triple_list = []
-        triple_list.append(Triple(URI(res_ret_uri), URI(RDF_TYPE), URI(NS + "ReservationRetire")))
-        triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredByUser"), URI(user_uri)))
-        triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredReservation"), URI(res_uri)))
-        
-        # insert the reservation retire request
-        kp.load_rdf_insert(triple_list)
-
-    except:
-    
-        # no success :'(
-        success = False
-    
-    # send ACK
-    if success:
-        return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
-    else:
-        return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
-
 
 # main
 if __name__ == '__main__':

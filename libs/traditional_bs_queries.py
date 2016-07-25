@@ -235,3 +235,20 @@ set_evse_status_stop = """PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns
 PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> \
 PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
 INSERT{ <%s> ns:hasEndingTimeMillisec "%s" }"""
+
+tres_list_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?res ?evse ?veh ?from ?to ?pri ?bid ?uid ?vid
+WHERE {
+   ?user_uri ns:hasUserIdentifier ?uid .
+   ?res ns:reservationHasUser ?user_uri .
+   ?res ns:reservedByVehicle ?veh .
+   ?veh ns:hasVehicleIdentifier ?vid .
+   ?res ns:isBidirectional ?bid .
+   ?res ns:hasEVSE ?evse .
+   ?res ns:hasTimeInterval ?time .
+   ?time ns:hasFromTimeMillisec ?from .
+   ?res ns:hasPrice ?priu .
+   ?priu ns:hasValue ?pri .
+   ?time ns:hasToTimeMillisec ?to
+}"""

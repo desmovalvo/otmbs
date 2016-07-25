@@ -240,8 +240,8 @@ class TradController:
         # insert
         triple_list = []
         triple_list.append(Triple(URI(request_uri), URI(RDF_TYPE), URI(NS + "ChargeRequest")))
-        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingVehicle"), URI(vehicle_uri)))
-        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingUser"), URI(user_uri)))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingVehicle"), URI(NS + vehicle_uri)))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingUser"), URI(NS + user_uri)))
         triple_list.append(Triple(URI(request_uri), URI(NS + "allowBidirectional"), LLiteral("true")))
         triple_list.append(Triple(URI(time_interval_uri), URI(RDF_TYPE), URI(NS + "TimeInterval")))
         triple_list.append(Triple(URI(request_uri), URI(NS + "hasTimeInterval"), URI(time_interval_uri)))
@@ -250,13 +250,14 @@ class TradController:
         triple_list.append(Triple(URI(energy_uri), URI(RDF_TYPE), URI(NS + "EnergyData")))
         triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestedEnergy"), URI(energy_uri)))
         triple_list.append(Triple(URI(energy_uri), URI(NS + "hasUnitOfMeasure"), URI(NS + "kiloWattHour")))
-        triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), LLiteral(requested_energy)))
+        triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), LLiteral(req_energy)))
         triple_list.append(Triple(URI(spatial_range_uri), URI(RDF_TYPE), URI(NS + "SpatialRangeData")))
         triple_list.append(Triple(URI(request_uri), URI(NS + "hasSpatialRange"), URI(spatial_range_uri)))
         triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLatitude"), LLiteral(lat)))
         triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLongitude"), LLiteral(lng)))
         triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), LLiteral(rad)))
-        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
         kp.load_rdf_insert(triple_list)
 
         # query (instead of subscription)
@@ -292,9 +293,10 @@ class TradController:
         """This method is used to confirm a charge option"""
 
         # insert the triple
-        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
         kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), LLiteral("true"))])
-
+        print "NS: " + str(NS)
+        
         # look for system confirm (subscription replaced by iterative query)
         results = None
         while not results:
@@ -303,6 +305,7 @@ class TradController:
         sysconfirm = results[0][2]
 
         # return
+        print "SYSCONFIRM" + str(sysconfirm)
         if str(sysconfirm).lower() == "true":
             kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
             return True
@@ -319,7 +322,7 @@ class TradController:
 
         # connect to the SIB
         try:
-            kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
             # get the res_uri
             res_uri = NS + res_id
@@ -347,3 +350,27 @@ class TradController:
             success = False
 
         return success
+
+
+    def get_tres_list(self):
+
+        """This method is used to retrieve a list of all 
+        the traditional reservations"""
+        
+        # connect to the SIB
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_query_sparql(tres_list_query)
+            results = kp.result_sparql_query
+
+            json_results = []
+            for result in results:
+                json_result = {}
+                for field in result:
+                    json_result[field[0]] = field[2]
+                json_results.append(json_result)
+
+            return True, json_results
+
+        except:
+            return False, None
