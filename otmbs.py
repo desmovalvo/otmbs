@@ -6,7 +6,6 @@ from flask.ext.httpauth import HTTPBasicAuth
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
 from termcolor import colored
-from libs.integrator import *
 from arrowheadlibs import *
 from uuid import uuid4
 import ConfigParser
