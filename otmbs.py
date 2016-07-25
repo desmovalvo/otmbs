@@ -83,24 +83,15 @@ def get_password(username):
     """This is a callback used by the server to retrieve
     the password for a given username"""
 
-    # invoke the auth controller
     res = auth_controller.get_password(username)
-
-    # return
     return res
 
 
 @auth.error_handler
 def unauthorized():
-    print "UNAUTHORIZED ACCESS!"
+
+    print colored("main> ", "red", attrs=["bold"]) + " Unauthorized access!"
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
-
-
-@app.route('/logout', methods=['GET'])
-def logout():
-    
-    # TODO: yet to implement!
-    pass
 
 
 ################################################
@@ -111,7 +102,7 @@ def logout():
 
 @app.route('/', methods=['GET'])
 def mainpage():
-    return render_template("main.html", title="OTM Booking Service")
+    return render_template("main.html", title="ElectroMobility Booking Service")
 
 
 ################################################
@@ -652,9 +643,6 @@ def gcps_showall():
 
     """This function is used to get a list of the GCPs"""
 
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "retrieving GCPs list"
-
     # invoke the controller
     res = trad_controller.get_gcp_list()
 
@@ -669,9 +657,6 @@ def gcps_showall():
 def gcps_show(gcp_name):
 
     """This function is used to get details about a GCP"""
-
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "retrieving GCP details"
 
     # invoke the controller
     res = trad_controller.get_gcp_details(gcp_name)
@@ -696,9 +681,6 @@ def evses_set_status(evse_id):
     """This function is used to set the status of an EVSE,
     to signal the start or the end of a recharge"""
 
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "setting EVSE status"
-
     # get input data
     data = get_input_data(request)
 
@@ -719,9 +701,6 @@ def evses_status(evse_id):
     if it is currently reserved and when it is scheduled
     the next reservation"""
 
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "checking EVSE status"
-    
     # get input data    
     data = get_input_data(request)
 
@@ -737,9 +716,6 @@ def user_authorization_check(evse_id):
 
     """This function is used to check if a user
     can be authorized to recharge his vehicle"""
-
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
 
     # read data    
     data = get_input_data(request)
@@ -763,9 +739,6 @@ def user_authorization_check(evse_id):
 @auth.login_required
 def chargeoptions_request():
 
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "retrieving charge options"    
-
     # input
     if input_format(request) == JSON:    
         data = get_input_data(request)
@@ -784,9 +757,6 @@ def chargeoptions_request():
 
 @app.route("/treservations/confirm_option", methods=["POST"])
 def chargeoptions_confirm():
-
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "sending charge option confirm"    
 
     # input
     if input_format(request) == JSON:
@@ -813,9 +783,6 @@ def treservations_check():
     """This function is used to check if a user
     can be authorized to recharge his vehicle"""
 
-    # debug print
-    print colored("main> ", "blue", attrs=["bold"]) + "checking user authorization"
-    
     # get input data
     data = get_input_data(request)
 
