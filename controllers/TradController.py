@@ -374,3 +374,27 @@ class TradController:
 
         except:
             return False, None
+
+
+    def get_tres(self, res_id):
+
+        """This method is used to retrieve a traditional reservation"""
+        
+        # connect to the SIB
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            res = NS + res_id
+            kp.load_query_sparql(tres_query % (res, res, res, res, res, res))
+            results = kp.result_sparql_query
+
+            json_result = {}
+            for field in results[0]:
+                json_result[field[0]] = field[2]
+
+            return True, json_result
+
+        except Exception as e:
+            print "____________________________________________________"
+            print e
+            print "____________________________________________________"
+            return False, None

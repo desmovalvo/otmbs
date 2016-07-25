@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+	
+	<!-- BODY -->
+	<div class="col-md-10">
+
+	  <div class="row-fluid">
+	  <h3>Reservation {{ res_id }}</h3>
+
+	  <table class="table table-striped table-hover">
+	    
+	    <tbody>
+	      <tr><td><b>User:</td><td>{{ entry["uid"] }}</td></tr>
+	      <tr><td><b>Vehicle:</td><td>{{ entry["vid"] }}</td></tr>
+	      <tr><td><b>To:</td><td>{{ entry["to"] }}</td></tr>
+	      <tr><td><b>From:</td><td>{{ entry["from"] }}</td></tr>
+	      <tr><td><b>To:</td><td>{{ entry["to"] }}</td></tr>
+	      <tr><td><b>Price:</td><td>{{ entry["pri"] }}</td></tr>
+	      <tr><td><b>Bidirectional:</td><td>{{ entry["bid"] }}</td></tr>
+	      <tr><td><b>EVSE:</td><td>{{ entry["evse"] }}</td></tr>
+	    </tbody>
+
+	  </table>
+	  </div>
+
+	  <div class="row-fluid">
+	    <a href="{{ url_for('reservation_deletion', res_id=res_id)}}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+	    &nbsp;
+	  </div>
+
+	</div>
+      </div>
+
+{% endblock %}

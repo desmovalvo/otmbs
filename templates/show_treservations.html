@@ -15,7 +15,7 @@
 	<tbody>
 	  {% for e in entries %}
 	  <tr>
-	    <td>{{ e["res"].split('#')[1] }}</td>
+	    <td><a href="{{ url_for('treservations_show', res_id=e['res'].split('#')[1]) }}">{{ e["res"].split('#')[1] }}</a></td>
 	    <td><a href="{{ url_for('users_show', user_id=e['uid']) }}">{{ e["uid"] }}</a></td>
 	    <td><a href="{{ url_for('vehicles_show', vehicle_id=e['uid']) }}">{{ e["vid"] }}</td>
 	    <td>{{ e["from"] }}</td>

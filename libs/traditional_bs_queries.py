@@ -252,3 +252,20 @@ WHERE {
    ?priu ns:hasValue ?pri .
    ?time ns:hasToTimeMillisec ?to
 }"""
+
+tres_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?evse ?veh ?from ?to ?pri ?bid ?uid ?vid
+WHERE {
+   ?user_uri ns:hasUserIdentifier ?uid .
+   <%s> ns:reservationHasUser ?user_uri .
+   <%s> ns:reservedByVehicle ?veh .
+   ?veh ns:hasVehicleIdentifier ?vid .
+   <%s> ns:isBidirectional ?bid .
+   <%s> ns:hasEVSE ?evse .
+   <%s> ns:hasTimeInterval ?time .
+   ?time ns:hasFromTimeMillisec ?from .
+   <%s> ns:hasPrice ?priu .
+   ?priu ns:hasValue ?pri .
+   ?time ns:hasToTimeMillisec ?to
+}"""

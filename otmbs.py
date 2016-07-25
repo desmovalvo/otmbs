@@ -749,6 +749,19 @@ def treservations_showall():
         return render_template("show_treservations.html", entries = res, title = "Traditional Reservations")
 
 
+@app.route('/treservations/<res_id>', methods=['GET'])
+@auth.login_required
+def treservations_show(res_id):
+
+    # invoke the controller
+    status, res = trad_controller.get_tres(res_id)
+
+    # output
+    if output_format(request) == JSON:
+        return make_response(jsonify(results = res))
+    else:
+        return render_template("show_treservation.html", entry = res, title = "Traditional Reservation", res_id = res_id)
+
 
 @app.route('/treservations/get_options', methods=['GET'])
 @auth.login_required
