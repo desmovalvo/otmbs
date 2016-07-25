@@ -28,6 +28,8 @@ from controllers.TradController import *
 
 # importing other local libraries
 from libs.traditional_bs_queries import *
+from libs.otmbs_constants import *
+from libs.utilities import *
 from libs.n3loader import *
 
 # reading configuration
@@ -72,46 +74,6 @@ trad_controller = TradController(settings)
 
 ################################################
 #
-# utilities
-#
-################################################
-
-def output_format(request):
-    
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return "json"
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return "json"
-    except:
-        pass
-
-
-    return "html"
-
-
-def get_input_data(request):
-
-    # read data    
-    try:
-        if request.content_type == "application/json":
-
-            # read data
-            data = json.loads(request.data)
-            return data
-
-    except Exception as e:
-
-        # not a valid json data
-        return None
-
-
-################################################
-#
 # login methods
 #
 ################################################
@@ -150,7 +112,6 @@ def logout():
 
 @app.route('/', methods=['GET'])
 def mainpage():
-
     return render_template("main.html", title="OTM Booking Service")
 
 
@@ -168,19 +129,10 @@ def users_vehicles(user_id):
     res = vehicles_controller.show_vehicles(user_id)
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_vehicles.html", title="Vehicles", entries=res)
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:
+        return render_template("show_vehicles.html", title="Vehicles", entries=res)
 
 
 @app.route('/vehicles', methods=['GET'])
@@ -195,19 +147,10 @@ def vehicles_showall():
     res = vehicles_controller.show_vehicles(user_id)
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_vehicles.html", title="Vehicles", entries=res)
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:    
+        return render_template("show_vehicles.html", title="Vehicles", entries=res)
 
 
 @app.route('/vehicles/<vehicle_id>', methods=['GET'])
@@ -217,19 +160,10 @@ def vehicles_show(vehicle_id):
     res = vehicles_controller.show_vehicle(vehicle_id)
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_vehicle.html", entry=res, title="Vehicle details")
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:
+        return render_template("show_vehicle.html", entry=res, title="Vehicle details")
 
 
 @app.route('/vehicles/<vehicle_id>/edit', methods=['GET'])
@@ -249,36 +183,20 @@ def vehicles_edit(vehicle_id):
 @app.route('/vehicles/update/<vehicle_id>', methods=['POST'])
 def vehicles_update(vehicle_id):
 
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            model = data["model"]
-            manufacturer = data["manufacturer"]
-            plate = data["plate"]
-            user_uid = data["user_uid"]
-            
-            # invoke the controller
-            status, vehicle = vehicles_controller.update_vehicle(vehicle_id, manufacturer, model, plate, user_uid)
-
-            # redirect to the index
-            return jsonify(results = vehicle)
-
-    except Exception as e:
-        print e
-        pass
-
-    # read the form
-    vehicle_model = request.form["model"]
-    vehicle_user_id = request.form["user_uid"]
-    vehicle_plate = request.form["plate"]
-    vehicle_manufacturer = request.form["manufacturer"]
-
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
+           
     # invoke the controller
-    res, newmodel = vehicles_controller.update_vehicle(vehicle_id, vehicle_manufacturer, vehicle_model, vehicle_plate, vehicle_user_id)
+    res, vehicle = vehicles_controller.update_vehicle(data["vehicle_id"], data["manufacturer"], data["model"], data["plate"], data["user_uid"])
 
-    # redirect to the index
-    return redirect("/vehicles/%s" % newmodel["vehicle_id"])
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = vehicle)
+    else:
+        return redirect("/vehicles/%s" % vehicle["vehicle_id"])
 
 
 @app.route('/vehicles/new', methods=['GET'])
@@ -294,62 +212,39 @@ def vehicles_new():
 @app.route('/vehicles', methods=['POST'])
 @auth.login_required
 def vehicles_create():
-    
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            model = data["model"]
-            manufacturer = data["manufacturer"]
-            plate = data["plate"]
-            user_uid = data["user_uid"]
-            
-            # invoke the controller
-            status, vehicle = vehicles_controller.create_vehicle(manufacturer, model, plate, user_uid)
 
-            # redirect to the index
-            return jsonify(results = vehicle)
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
 
-    except Exception as e:
-        print e
-        pass
-
-    # invoke the controller
-    status, vehicle = vehicles_controller.create_vehicle(request.form["manufacturer"], request.form["model"], request.form["plate"], request.form["user_uid"])
-
-    # redirect to the index
-    return redirect("/vehicles/%s" % vehicle["vehicle_id"])
+    # invoke the controller    
+    status, vehicle = vehicles_controller.create_vehicle(data["manufacturer"], data["model"], data["plate"], data["user_uid"])
+        
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = vehicle)
+    else:
+        return redirect("/vehicles/%s" % vehicle["vehicle_id"])
 
 
 @app.route('/vehicles/delete/<vehicle_id>', methods=['GET'])
 @app.route('/vehicles/<vehicle_id>', methods=['DELETE'])
-# @auth.login_required
+@auth.login_required
 def vehicles_delete(vehicle_id):
     
     # invoke the controller
     res = vehicles_controller.delete_vehicle(vehicle_id)
     
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            if res:
-                return make_response(jsonify({'OK': 'Vehicle Deleted'}), 200)        
-            else:
-                return make_response(jsonify({'error': 'Vehicle not Deleted'}), 401)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            if res:
-                return make_response(jsonify({'OK': 'Vehicle Deleted'}), 200)        
-            else:
-                return make_response(jsonify({'error': 'Vehicle not Deleted'}), 401)
-    except:
-        pass
-    
-    # redirect to the index
-    return redirect("/vehicles")
+    if output_format(request) == JSON:
+        if res:
+            return make_response(jsonify({'OK': 'Vehicle Deleted'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'Vehicle not Deleted'}), 401)
+    else:
+        return redirect("/vehicles")
 
 
 ################################################
@@ -365,19 +260,10 @@ def users_showall():
     res = users_controller.show_users()
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_users.html", entries=res, title="Users")
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:
+        return render_template("show_users.html", entries=res, title="Users")
 
 
 @app.route('/users/<user_id>', methods=['GET'])
@@ -387,31 +273,28 @@ def users_show(user_id):
     res = users_controller.show_user(user_id)
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_user.html", entry=res, title="User details")
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:
+        return render_template("show_user.html", entry=res, title="User details")
 
 
 @app.route('/users/delete/<user_id>', methods=['GET'])
 @app.route('/users/<user_id>', methods=['DELETE'])
-# @auth.login_required
+@auth.login_required
 def users_delete(user_id):
-    
+
     # invoke the controller
     res = users_controller.delete_user(user_id)
-    
-    # redirect to the index
-    return redirect(url_for("users_showall"))
+
+    # select the proper output form
+    if output_format(request) == JSON:
+        if res:
+            return make_response(jsonify({'OK': 'User Deleted'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'User not Deleted'}), 401)
+    else:
+        return redirect("/users")
 
 
 @app.route('/users/<user_id>/edit', methods=['GET'])
@@ -434,66 +317,46 @@ def users_new():
 @app.route('/users', methods=['POST'])
 def users_create():
         
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            print data
-            print data.keys()
-            name = data["name"]
-            nick = data["nickname"]
-            passwd = data["password"]
-            
-            # invoke the controller
-            status, user = users_controller.create_user(name, nick, passwd)
-
-            # if OK
-            if status:
-                return jsonify(results = user)
-
-            else:
-                return make_response(jsonify({'error': 'Nickname already taken'}), 406)
-
-    except Exception as e:
-        print e
-        pass
+    # input
+    if input_format == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
 
     # invoke the controller
-    status, user = users_controller.create_user(request.form["name"], request.form["nickname"], request.form["password"])
+    status, user = users_controller.create_user(data["name"], data["nick"], data["password"])
 
-    # redirect to the index
-    if status:
-        return redirect("/users/%s" % user["user_uid"])
+    # output
+    if output_format == JSON:
+        if status:
+            return jsonify(results = user)          
+        else:
+            return make_response(jsonify({'error': 'Nickname already taken'}), 406)
     else:
-        return redirect("/users")
+        if status:
+            return redirect("/users/%s" % user["user_uid"])
+        else:
+            return redirect("/users")
 
 
 @app.route('/users/<user_id>', methods=['PUT'])
 @app.route('/users/update/<user_id>', methods=['POST'])
 def users_update(user_id):
         
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            name = data["name"]
-            passwd = data["password"]
-            
-            # invoke the controller
-            status, user = users_controller.update_user(user_id, name, passwd)
-
-            # redirect to the index
-            return jsonify(results = user)
-
-    except Exception as e:
-        print e
-        pass
+    # input
+    if input_format == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
 
     # invoke the controller
-    status, user = users_controller.update_user(user_id, request.form["name"], request.form["password"])
-
-    # redirect to the index
-    return redirect("/users/%s" % user["user_uid"])
+    status, user = users_controller.update_user(user_id, name, passwd)
+    
+    # output
+    if output_format == JSON:
+        return jsonify(results = user)
+    else:
+        return redirect("/users/%s" % user["user_uid"])
 
 
 ################################################
@@ -508,20 +371,11 @@ def gss_showall():
     # get the list of the ground stations
     res = gss_controller.show_gss()
 
-    # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_gss.html", gss = res, title="GroundStations")
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = res)
+    else:
+        return render_template("show_gss.html", gss = res, title="GroundStations")
 
 
 @app.route('/groundstations/<gs_id>', methods=['GET'])
@@ -530,20 +384,11 @@ def gss_show(gs_id):
     # get the list of the ground stations
     gs = gss_controller.show_gs(gs_id)
 
-    # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = gs)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = gs)
-    except:
-        pass
-    
-    return render_template("show_gs.html", entry = gs, title="GroundStation details")
+    # output
+    if output_format(request):
+        return jsonify(results = gs)
+    else:
+        return render_template("show_gs.html", entry = gs, title="GroundStation details")
 
 
 @app.route('/groundstations/new', methods=['GET'])
@@ -556,35 +401,20 @@ def gss_new():
 @app.route('/groundstations', methods=['POST'])
 def gss_create():
     
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-
-            # extract data
-            data = json.loads(request.data)
-            slat = data["slatitude"]
-            slong = data["slongitude"]
-            elat = data["elatitude"]
-            elong = data["elongitude"]
-            name = data["name"]
-
-            # invoke the controller
-            status, gs = gss_controller.create_gs(name, slat, slong, elat, elong)
-
-            # redirect to the index
-            return jsonify(results = gs)
-
-    except Exception as e:
-        print e
-        pass
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
 
     # invoke the controller
-    status, gs = gss_controller.create_gs(request.form["name"], 
-                                          request.form["slatitude"], request.form["slongitude"], 
-                                          request.form["elatitude"], request.form["elongitude"])
+    status, gs = gss_controller.create_gs(data["name"], data["slatitude"], data["slongitude"], data["elatitude"], data["elongitude"])
 
-    # redirect to the index
-    return redirect("/groundstations")
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = gs)
+    else:
+        return redirect("/groundstations")
 
 
 @app.route('/groundstations/delete/<gs_id>', methods=['GET'])
@@ -593,63 +423,46 @@ def gss_create():
 def gss_delete(gs_id):
     
     # invoke the controller
-    res = gss_controller.delete_gs(gs_id)
+    status = gss_controller.delete_gs(gs_id)
     
-    # redirect to the index
-    # return redirect("/groundstations", methods=['GET'])
-    return redirect(url_for("gss_showall"))
+    # select the proper output form
+    if output_format(request) == JSON:
+        if res:
+            return make_response(jsonify({'OK': 'GS Deleted'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'GS not Deleted'}), 401)
+    else:
+        return redirect("/groundstations")
 
 
 @app.route('/groundstations/<gs_id>/edit', methods=['GET'])
 def gss_edit(gs_id):
 
-    # invoke the controller in order to retrieve
-    # the gs that should be modified
+    # retrieve the gs that should be modified
     res = gss_controller.show_gs(gs_id)
 
-    # now render the edit template with the field
-    # filled with the previous results
+    # now render the template filled with the results
     return render_template("edit_gs.html", gs=res, title="Edit GroundStation")
 
 
 @app.route('/groundstations/<gs_id>', methods=['PUT'])
 @app.route('/groundstations/update/<gs_id>', methods=['POST'])
 def gss_update(gs_id):
-    
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
 
-            # extract data
-            data = json.loads(request.data)
-            slat = data["slatitude"]
-            slong = data["slongitude"]
-            elat = data["elatitude"]
-            elong = data["elongitude"]
-            name = data["name"]
-
-            # invoke the controller
-            status, gs = gss_controller.update_gs(gs_id, name, slat, slong, elat, elong)
-
-            # redirect to the index
-            return jsonify(results = gs)
-
-    except Exception as e:
-        print e
-        pass
-
-    # read the form
-    gs_name = request.form["name"]
-    gs_slat = request.form["slatitude"]
-    gs_elat = request.form["elatitude"]
-    gs_slong = request.form["slongitude"]
-    gs_elong = request.form["elongitude"]
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        data = request.form
 
     # invoke the controller
-    res, newmodel = gss_controller.update_gs(gs_id, gs_name, gs_slat, gs_slong, gs_elat, gs_elong)
+    status, gs = gss_controller.update_gs(gs_id, data["name"], data["slatitude"], data["slongitude"], data["elatitude"], data["elongitude"])
 
-    # redirect to the index
-    return redirect("/groundstations/%s" % newmodel["gs_id"])
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = gs)
+    else:
+        return redirect("/groundstations/%s" % newmodel["gs_id"])
 
 
 ################################################
@@ -661,30 +474,25 @@ def gss_update(gs_id):
 @app.route('/reservations/status', methods=['GET'])
 def reservations_check():
 
-    print "CHECKING RESERVATION..."
-    
     # check if a gs is reserved
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            print data
-            gs_id = data["gs_id"]
-            vehicle_id = data["vehicle_plate"]
-            user_id = data["user_id"]
-            res_type = data["res_type"]
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        return make_response(jsonify({'error': 'Bad Request'}), 400)
             
-            # invoke the controller
-            status = reservations_controller.check_reservation(gs_id, vehicle_id,  user_id, res_type)
-            print status
+    # invoke the controller
+    try:
+        status = reservations_controller.check_reservation(data["gs_id"], data["vehicle_id"],  data["user_id"], data["res_type"])
+    except:
+        return make_response(jsonify({'error': 'Bad Request'}), 400)
 
-            # return
-            if status:
-                return make_response(jsonify({'OK': 'Valid Reservation'}), 200)        
-            else:
-                return make_response(jsonify({'error': 'Reservation not found'}), 404)
-
-    except Exception as e:
-        print e
+    # output
+    if output_format(request) == JSON:
+        if status:
+            return make_response(jsonify({'OK': 'Valid Reservation'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'Reservation not found'}), 404)            
+    else:
         return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
@@ -700,19 +508,10 @@ def reservations_showall():
     res = reservations_controller.show_reservations(user_id)
 
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_reservations.html", entries=res, title="Reservations")
+    if output_format(request) == JSON:        
+        return jsonify(results = res)
+    else:
+        return render_template("show_reservations.html", entries=res, title="Reservations")
     
 
 @app.route('/users/<user_id>/reservations', methods=['GET'])
@@ -722,20 +521,11 @@ def user_reservations(user_id):
     # invoking the controller
     res = reservations_controller.show_reservations(user_id)
 
-    # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_reservations.html", entries=res, title="Reservations")
+    # output
+    if output_format(request) == JSON:        
+        return jsonify(results = res)
+    else:
+        return render_template("show_reservations.html", entries=res, title="Reservations")
 
 
 @app.route('/reservations/<reservation_id>', methods=['GET'])
@@ -743,52 +533,30 @@ def reservations_show(reservation_id):
     
     # invoking the controller
     res = reservations_controller.show_reservation(reservation_id)
-
-    # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            return jsonify(results = res)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            return jsonify(results = res)
-    except:
-        pass
-
-    return render_template("show_reservation.html", entry = res, title="Reservation details")
+    
+    # output
+    if output_format(request) == "json":        
+        return jsonify(results = res)
+    else:
+        return render_template("show_reservation.html", entry = res, title="Reservation details")
 
 
 @app.route('/reservations/delete/<reservation_id>', methods=['GET'])
 @app.route('/reservations/<reservation_id>', methods=['DELETE'])
-# @auth.login_required
+@auth.login_required
 def reservations_delete(reservation_id):
     
     # invoke the controller
     res = reservations_controller.delete_reservation(reservation_id)
     
     # select the proper output form
-    try:
-        if request.headers.has_key('Accept') and request.headers['Accept'] == 'application/json':
-            if res:
-                return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
-            else:
-                return make_response(jsonify({'error': 'Reservation not retired'}), 401)
-    except:
-        pass
-        
-    try:
-        if request.args.has_key('format') and request.args['format'] == "json":
-            if res:
-                return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
-            else:
-                return make_response(jsonify({'error': 'Reservation not retired'}), 401)
-    except:
-        pass
-
-    # redirect to the index
-    return redirect(url_for("reservations_showall"))
+    if output_format(request) == JSON:
+        if res:
+            return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'Reservation not retired'}), 401)
+    else:
+        return redirect(url_for("reservations_showall"))
 
 
 @app.route('/reservations/new', methods=['GET'])
@@ -813,31 +581,24 @@ def reservations_new():
 @app.route('/reservations', methods=['POST'])
 def reservations_create():
 
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            gs_id = data["gs_id"]
-            vehicle_id = data["vehicle_id"]
-            user_id = data["user_id"]    
-
-            # invoke the controller
-            status, reservation = reservations_controller.create_reservation(gs_id, vehicle_id,  user_id)
-
-            # redirect to the index
-            return jsonify(results = reservation)
-
-    except Exception as e:
-        print e
-        pass
-
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+        vehicle_id = data["vehicle_id"]
+        user_id = data["user_id"]
+    else:
+        data = request.form
+        vehicle_id = request.form["user_car"].split("|")[0]
+        user_id = request.form["user_car"].split("|")[1] 
+               
     # invoke the controller
-    vehicle_id = request.form["user_car"].split("|")[0]
-    user_id = request.form["user_car"].split("|")[1] 
-    status, res = reservations_controller.create_reservation(request.form["gs"], vehicle_id, user_id)
+    status, reservation = reservations_controller.create_reservation(data["gs_id"], vehicle_id,  user_id)
 
-    # redirect to the index
-    return redirect("/reservations/%s" % res["reservation_id"])
+    # output
+    if output_format(request) == JSON:
+        return jsonify(results = reservation)
+    else:
+        return redirect("/reservations/%s" % res["reservation_id"])
 
 
 @app.route('/reservations/<reservation_id>/edit', methods=['GET'])
@@ -860,31 +621,24 @@ def reservations_edit(reservation_id):
 @app.route('/reservations/update/<reservation_id>', methods=['POST'])
 def reservations_update(reservation_id):
 
-    # verify if the payload is json
-    try:
-        if request.content_type == "application/json":
-            data = json.loads(request.data)
-            gs_id = data["gs_id"]
-            vehicle_id = data["vehicle_id"]
-            user_id = data["user_id"]    
-
-            # invoke the controller
-            status, reservation = reservations_controller.update_reservation(reservation_id, gs_id, vehicle_id,  user_id)
-
-            # redirect to the index
-            return jsonify(results = reservation)
-
-    except Exception as e:
-        print e
-        pass
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+        vehicle_id = data["vehicle_id"]
+        user_id = data["user_id"]
+    else:
+        data = request.form
+        vehicle_id = request.form["user_car"].split("|")[0]
+        user_id = request.form["user_car"].split("|")[1] 
 
     # invoke the controller
-    vehicle_id = request.form["user_car"].split("|")[0]
-    user_id = request.form["user_car"].split("|")[1] 
-    status, res = reservations_controller.update_reservation(reservation_id, request.form["gs"], vehicle_id, user_id)
+    status, reservation = reservations_controller.update_reservation(reservation_id, data["gs_id"], vehicle_id,  user_id)
 
-    # redirect to the index
-    return redirect("/reservations/%s" % res["reservation_id"])
+    # output
+    if output_format(request) == JSON:        
+        return jsonify(results = reservation)
+    else:
+        return redirect("/reservations/%s" % res["reservation_id"])
 
 
 ################################################
@@ -906,7 +660,7 @@ def gcps_showall():
     res = trad_controller.get_gcp_list()
 
     # return data
-    if output_format(request) == "json":        
+    if output_format(request) == JSON:        
         return jsonify(res)
     else:
         return render_template("show_gcps.html", title="GCPs", gcps=res)
@@ -924,7 +678,7 @@ def gcps_show(gcp_name):
     res = trad_controller.get_gcp_details(gcp_name)
 
     # return data
-    if output_format(request) == "json":                
+    if output_format(request) == JSON:                
         return jsonify(res)
     else:
         return render_template("show_gcp.html", title="GCP %s" % gcp_name, gcps = res, gcpname = gcp_name)

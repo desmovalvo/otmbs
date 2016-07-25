@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+# output format
+JSON = 0
+HTML = 1
+
 # RDF Namespace
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
