@@ -3,9 +3,12 @@
 # global libraries
 import time
 import traceback
+from uuid import uuid4
 from smart_m3.m3_kp_api import *
+from smart_m3.m3_kp_api import Literal as LLiteral
 
 # local libraries
+from libs.otmbs_constants import *
 from libs.traditional_bs_queries import *
 
 # controller
@@ -224,3 +227,123 @@ class TradController:
             return False
             
         
+    def get_charge_options(self, lat, lng, rad, timeto, timefrom, user_uri, vehicle_uri, bidirectional, req_energy):
+
+        """Method used to retrieve the possible charge options"""
+        
+        # generate UUIDs
+        request_uri = NS + str(uuid4())
+        time_interval_uri = NS + str(uuid4())
+        energy_uri = NS + str(uuid4())
+        spatial_range_uri = NS + str(uuid4())
+
+        # insert
+        triple_list = []
+        triple_list.append(Triple(URI(request_uri), URI(RDF_TYPE), URI(NS + "ChargeRequest")))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingVehicle"), URI(vehicle_uri)))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestingUser"), URI(user_uri)))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "allowBidirectional"), LLiteral("true")))
+        triple_list.append(Triple(URI(time_interval_uri), URI(RDF_TYPE), URI(NS + "TimeInterval")))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasTimeInterval"), URI(time_interval_uri)))
+        triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasFromTimeMillisec"), LLiteral(str(timefrom))))
+        triple_list.append(Triple(URI(time_interval_uri), URI(NS + "hasToTimeMillisec"), LLiteral(timeto)))
+        triple_list.append(Triple(URI(energy_uri), URI(RDF_TYPE), URI(NS + "EnergyData")))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasRequestedEnergy"), URI(energy_uri)))
+        triple_list.append(Triple(URI(energy_uri), URI(NS + "hasUnitOfMeasure"), URI(NS + "kiloWattHour")))
+        triple_list.append(Triple(URI(energy_uri), URI(NS + "hasValue"), LLiteral(requested_energy)))
+        triple_list.append(Triple(URI(spatial_range_uri), URI(RDF_TYPE), URI(NS + "SpatialRangeData")))
+        triple_list.append(Triple(URI(request_uri), URI(NS + "hasSpatialRange"), URI(spatial_range_uri)))
+        triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLatitude"), LLiteral(lat)))
+        triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasGPSLongitude"), LLiteral(lng)))
+        triple_list.append(Triple(URI(spatial_range_uri), URI(NS + "hasRadius"), LLiteral(rad)))
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        kp.load_rdf_insert(triple_list)
+
+        # query (instead of subscription)
+        results = False
+        while not results:
+        
+            # perform the query
+            kp.load_query_rdf(Triple(None, URI(NS + "hasRelatedRequest"), URI(request_uri)))
+            query_results = kp.result_rdf_query
+            if len(query_results) > 0:
+                results = query_results
+
+        # query:
+        res_uri = results[0][0]
+        kp.load_query_sparql(chargeresponse_query % (res_uri, res_uri))
+        charge_requests = []
+        results2 = kp.result_sparql_query
+    
+        # parse the results
+        charge_requests = []
+        for result in results2:
+            charge_request = {}
+            for field in result:
+                charge_request[field[0]] = field[2]
+            charge_requests.append(charge_request)
+
+        # return
+        return charge_requests
+
+        
+    def charge_option_confirm(self, charge_option):
+        
+        """This method is used to confirm a charge option"""
+
+        # insert the triple
+        kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+        kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), LLiteral("true"))])
+
+        # look for system confirm (subscription replaced by iterative query)
+        results = None
+        while not results:
+            kp.load_query_rdf(Triple(URI(NS + charge_option), URI(NS + "confirmBySystem"), None))        
+            results = kp.result_rdf_query
+        sysconfirm = results[0][2]
+
+        # return
+        if str(sysconfirm).lower() == "true":
+            kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
+            return True
+        else:
+            return False
+
+
+    def delete_reservation(self, res_id):
+
+        """This method is used to retire a reservation"""
+        
+        # initialize the return value
+        success = True
+
+        # connect to the SIB
+        try:
+            kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
+
+            # get the res_uri
+            res_uri = NS + res_id
+        
+            # generate a reservation retire uri
+            res_ret_uri = NS + str(uuid4())
+
+            # get the reservation user
+            kp.load_query_rdf(Triple(URI(res_uri), URI(NS + "reservationHasUser"), None))
+            query_results = kp.result_rdf_query
+            user_uri = query_results[0][2]
+
+            # build the triple list
+            triple_list = []
+            triple_list.append(Triple(URI(res_ret_uri), URI(RDF_TYPE), URI(NS + "ReservationRetire")))
+            triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredByUser"), URI(user_uri)))
+            triple_list.append(Triple(URI(res_ret_uri), URI(NS + "retiredReservation"), URI(res_uri)))
+            
+            # insert the reservation retire request
+            kp.load_rdf_insert(triple_list)
+
+        except:
+    
+            # no success :'(
+            success = False
+
+        return success

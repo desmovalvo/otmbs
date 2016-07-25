@@ -760,6 +760,54 @@ def user_authorization_check(evse_id):
 #
 ################################################
 
+@app.route('/treservations/get_options', methods=['GET'])
+@auth.login_required
+def chargeoptions_request():
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "retrieving charge options"    
+
+    # input
+    if input_format(request) == JSON:    
+        data = get_input_data(request)
+    else:
+        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
+
+    # invoke the controller
+    charge_options = trad_controller.get_charge_options(data["lat"], data["lon"], data["radius"], data["timeto"], data["timefrom"], data["user_uri"], data["vehicle_uri"], data["bidirectional"], data["requested_energy"])
+
+    # output
+    if output_format(request) == JSON:
+        return make_response(jsonify(charge_options))
+    else:
+        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
+
+
+@app.route("/treservations/confirm_option", methods=["POST"])
+def chargeoptions_confirm():
+
+    # debug print
+    print colored("main> ", "blue", attrs=["bold"]) + "sending charge option confirm"    
+
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data(request)
+    else:
+        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)    
+
+    # invoke the controller
+    status = trad_controller.charge_option_confirm(data["option"])
+
+    # output
+    if output_format(request) == JSON:
+        if status:
+            make_response(jsonify({'OK': 'Reservation confirmed'}), 200)        
+        else:
+            make_response(jsonify({'error': 'Reservation Not confirmed'}), 401)
+    else:
+        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)    
+
+
 @app.route('/treservations/check', methods=['GET'])
 def treservations_check():
 
@@ -774,17 +822,27 @@ def treservations_check():
 
     # invoke the controller
     if data:
-
-        # invoke the controller
         res = trad_controller.check_treservation(data["user_id"], data["evse_id"])
-    
-        # return
         return jsonify(res)
-
     else:
-        
-        # return an error
         return make_response(jsonify({'error': 'Bad request'}), 400)
+
+
+@app.route("/treservations/delete/<res_id>", methods=["GET"])
+@app.route("/treservations/<res_id>", methods=["DELETE"])
+def reservation_deletion(res_id):
+
+    # invoke the controller
+    success = trad_controller.delete_reservation(res_id)
+    
+    # output
+    if output_format(request) == JSON:
+        if success:
+            return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
+        else:
+            return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
+    else:
+        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
 
 
 ################################################
@@ -1130,10 +1188,6 @@ if __name__ == '__main__':
             print "Arrowhead registration failed!"
         else:
             print "Arrowhead service registered!"
-
-    # initialization 
-    # this code is needed to integrate the old ontology
-    # integrate(settings)
     
     # start the server
     try:
