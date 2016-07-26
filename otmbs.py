@@ -701,11 +701,8 @@ def evses_status(evse_id):
     if it is currently reserved and when it is scheduled
     the next reservation"""
 
-    # get input data    
-    data = get_input_data(request)
-
     # invoke the controller
-    res = trad_controller.check_evse_status(data["evse_id"])
+    res = trad_controller.check_evse_status(evse_id)
 
     # build a reply
     return make_response(jsonify(res), 200)        
@@ -721,7 +718,6 @@ def user_authorization_check(evse_id):
     data = get_input_data(request)
 
     # invoke the controller
-    print "Invoking the controller"
     res = trad_controller.check_user_authorization(data["evse_id"], data["user_id"], data["tolerance"])
 
     # build a reply
@@ -763,6 +759,27 @@ def treservations_show(res_id):
         return render_template("show_treservation.html", entry = res, title = "Traditional Reservation", res_id = res_id)
 
 
+@app.route('/treservations/onthefly', methods=['POST'])
+@auth.login_required
+def treservations_onthefly():
+
+    # input
+    if input_format(request) == JSON:
+        data = get_input_data
+    else:
+        data = request.args
+
+    # invoke the controller
+    res = trad_controller.new_onthefly(data["evse_id"], data["user_id"])
+
+    # output
+    if output_format(request) == JSON:
+        return make_response(jsonify(results = res))
+    else:
+        return redirect("/treservations/%s" % res["reservation_id"])
+
+
+
 @app.route('/treservations/get_options', methods=['GET'])
 @auth.login_required
 def chargeoptions_request():
@@ -773,7 +790,6 @@ def chargeoptions_request():
         data = get_input_data(request)
     else:
         data = request.args
-        print data
 
     # invoke the controller
     charge_options = trad_controller.get_charge_options(data["lat"], data["lon"], data["radius"], data["timeto"], data["timefrom"], data["user_uri"], data["vehicle_uri"], data["bidirectional"], data["requested_energy"])
@@ -841,32 +857,7 @@ def reservation_deletion(res_id):
 # Routes for: other
 #
 ################################################
-    
-
-@app.route('/bs/gcps', methods=['GET'])
-def gcps():
-
-    """Returns the list of GCPs. Default
-    data format for the results is JSON."""
-
-    # get the list of gcps
-    kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-    print gcps_query 
-    kp.load_query_sparql(gcps_query)
-    results = kp.result_sparql_query
-    
-    # parse the results
-    gcps = []
-    for result in results:
-        gcp = {}
-        for field in result:
-            gcp[field[0]] = field[2]
-        gcps.append(gcp)
-                
-    # return
-    return jsonify(results = gcps)
-
-
+   
 @app.route('/bs/evses', methods=['GET'])
 def evses():
 
@@ -882,7 +873,6 @@ def evses():
 
         # get the evse list
         kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-        print evses_query % gcp_name
         kp.load_query_sparql(evses_query % gcp_name)
         results = kp.result_sparql_query
 
@@ -898,7 +888,6 @@ def evses():
 
         # get the evse list
         kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-        print evses_query_all
         kp.load_query_sparql(evses_query_all)
         results = kp.result_sparql_query
 
@@ -929,7 +918,6 @@ def reservations():
 
         # get the reservation list
         kp = m3_kp_api(False, settings["sib_host"], settings["sib_port"])
-        print reservations_query % user_id
         kp.load_query_sparql(reservations_query % user_id)
         results = kp.result_sparql_query
 

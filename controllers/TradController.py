@@ -43,7 +43,7 @@ class TradController:
 
             # no reservation is active and
             # no reservation is scheduled!
-            res = { "nextReservationIn":None, "isReservedNow":False }
+            res = { "nextReservationIn":None, "isReservedNow":False, "nextUser":None }
 
         else:
 
@@ -384,7 +384,9 @@ class TradController:
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             res = NS + res_id
-            kp.load_query_sparql(tres_query % (res, res, res, res, res, res))
+            q = tres_query % (res, res, res, res, res, res)
+            print q
+            kp.load_query_sparql(q)
             results = kp.result_sparql_query
 
             json_result = {}
@@ -394,7 +396,20 @@ class TradController:
             return True, json_result
 
         except Exception as e:
-            print "____________________________________________________"
             print e
-            print "____________________________________________________"
             return False, None
+
+
+    def new_onthefly(self, evse_id, user_id):
+
+        #     def get_charge_options(self, lat, lng, rad, timeto, timefrom, user_uri, vehicle_uri, bidirectional, req_energy):
+
+
+        # retrieve evse data (lat, lng)
+    
+        # request charge options
+        # charge_options = self.get_charge_options(...)
+
+        # select a charge options
+
+        pass
