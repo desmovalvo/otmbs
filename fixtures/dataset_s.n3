@@ -6,6 +6,13 @@
 # Vehicles
 #
 ##############################################################
+# Vehicle: Unknown Vehicle
+ns:unknownVehicle rdf:type ns:Vehicle .
+ns:unknownVehicle ns:hasVehicleIdentifier "EM_UnkVeh" .
+ns:unknownVehicle ns:hasManufacturer "Generic Manufacturer" .
+ns:unknownVehicle ns:hasModel "Generic Model" . 
+ns:unknownVehicle ns:hasName "EM Generic Vehicle" .
+ns:unknownVehicle ns:hasPlate "AB012CD" .
 # Vehicle: Fiat Daily
 ns:91552902-cf3a-430a-8ca4-61276268ef9d rdf:type ns:Vehicle .
 ns:91552902-cf3a-430a-8ca4-61276268ef9d ns:hasVehicleIdentifier "FiatDaily_91552902" .
@@ -68,3 +75,10 @@ ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasUserIdentifier "FrancescoA" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasName "Francesco Antoniazzi" .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasVehicle ns:259a5076-0df8-4192-b22f-ba6566c74da4 .
 ns:3d16d7aa-41ee-4760-97e7-5a1ceff60443 ns:hasPassword "000" .
+##############################################################
+# Person: Generic User
+ns:c2cf0376-4605-49b0-ad56-1686426ee9f6 rdf:type ns:Person .
+ns:c2cf0376-4605-49b0-ad56-1686426ee9f6 ns:hasUserIdentifier "GenericU" .
+ns:c2cf0376-4605-49b0-ad56-1686426ee9f6 ns:hasName "Generic User" .
+ns:c2cf0376-4605-49b0-ad56-1686426ee9f6 ns:hasVehicle ns:unknownVehicle .
+ns:c2cf0376-4605-49b0-ad56-1686426ee9f6 ns:hasPassword "000" .

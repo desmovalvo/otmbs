@@ -440,7 +440,7 @@ class TradController:
         PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
         INSERT { <' + str(requestURI) + '> rdf:type ns:ChargeRequest . \
         <' + str(requestURI) + '> ns:hasRequestingVehicle ns:unknownVehicle . \
-        ns:unknownVehicle ns:hasVehicleIdentifier "UnkVeh" . \
+        ns:unknownVehicle ns:hasVehicleIdentifier "EM_UnkVeh" . \
         <' + str(requestURI) + '> ns:hasRequestingUser ?user . \
         <' + str(requestURI) + '> ns:hasTimeInterval <' + str(intervalURI) + '> . \
         <' + str(requestURI) + '> ns:hasSpatialRange <' + str(spaceURI) + '> . \
