@@ -7,7 +7,7 @@
    <form method="post" action="{{ url_for('reservations_create') }}">
 
      <div class="form-group">
-       Ground Station: <select name="gs">
+       Ground Station: <select name="gs_id">
 	 {% for gs in gss %}
 	 {% if selected_gs %}	 
 	 {% if selected_gs == gs["gs_id"] %}

@@ -174,10 +174,7 @@ def vehicles_edit(vehicle_id):
 def vehicles_update(vehicle_id):
 
     # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
+    data = get_input_data(request)
            
     # invoke the controller
     res, vehicle = vehicles_controller.update_vehicle(data["vehicle_id"], data["manufacturer"], data["model"], data["plate"], data["user_uid"])
@@ -204,10 +201,7 @@ def vehicles_new():
 def vehicles_create():
 
     # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
+    data = get_input_data(request)
 
     # invoke the controller    
     status, vehicle = vehicles_controller.create_vehicle(data["manufacturer"], data["model"], data["plate"], data["user_uid"])
@@ -308,13 +302,10 @@ def users_new():
 def users_create():
         
     # input
-    if input_format == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
-
+    data = get_input_data(request)
+    
     # invoke the controller
-    status, user = users_controller.create_user(data["name"], data["nick"], data["password"])
+    status, user = users_controller.create_user(data["name"], data["nickname"], data["password"])
 
     # output
     if output_format == JSON:
@@ -334,10 +325,7 @@ def users_create():
 def users_update(user_id):
         
     # input
-    if input_format == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
+    data = get_input_data(request)
 
     # invoke the controller
     status, user = users_controller.update_user(user_id, name, passwd)
@@ -375,7 +363,7 @@ def gss_show(gs_id):
     gs = gss_controller.show_gs(gs_id)
 
     # output
-    if output_format(request):
+    if output_format(request) == JSON:
         return jsonify(results = gs)
     else:
         return render_template("show_gs.html", entry = gs, title="GroundStation details")
@@ -392,10 +380,7 @@ def gss_new():
 def gss_create():
     
     # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
+    data = get_input_data(request)
 
     # invoke the controller
     status, gs = gss_controller.create_gs(data["name"], data["slatitude"], data["slongitude"], data["elatitude"], data["elongitude"])
@@ -440,10 +425,8 @@ def gss_edit(gs_id):
 def gss_update(gs_id):
 
     # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        data = request.form
+    data = get_input_data(request)
+    print data
 
     # invoke the controller
     status, gs = gss_controller.update_gs(gs_id, data["name"], data["slatitude"], data["slongitude"], data["elatitude"], data["elongitude"])
@@ -452,7 +435,7 @@ def gss_update(gs_id):
     if output_format(request) == JSON:
         return jsonify(results = gs)
     else:
-        return redirect("/groundstations/%s" % newmodel["gs_id"])
+        return redirect("/groundstations/%s" % gs["gs_id"])
 
 
 ################################################
@@ -464,11 +447,8 @@ def gss_update(gs_id):
 @app.route('/reservations/status', methods=['GET'])
 def reservations_check():
 
-    # check if a gs is reserved
-    if input_format(request) == JSON:
-        data = get_input_data(request)
-    else:
-        return make_response(jsonify({'error': 'Bad Request'}), 400)
+    # input
+    data = get_input_data(request)
             
     # invoke the controller
     try:
@@ -572,14 +552,14 @@ def reservations_new():
 def reservations_create():
 
     # input
-    if input_format(request) == JSON:
-        data = get_input_data(request)
+    data = get_input_data(request)
+    print data
+    if input_format(request) == JSON:    
         vehicle_id = data["vehicle_id"]
         user_id = data["user_id"]
     else:
-        data = request.form
-        vehicle_id = request.form["user_car"].split("|")[0]
-        user_id = request.form["user_car"].split("|")[1] 
+        vehicle_id = data["user_car"].split("|")[0]
+        user_id = data["user_car"].split("|")[1] 
                
     # invoke the controller
     status, reservation = reservations_controller.create_reservation(data["gs_id"], vehicle_id,  user_id)
@@ -588,7 +568,7 @@ def reservations_create():
     if output_format(request) == JSON:
         return jsonify(results = reservation)
     else:
-        return redirect("/reservations/%s" % res["reservation_id"])
+        return redirect("/reservations/%s" % reservation["reservation_id"])
 
 
 @app.route('/reservations/<reservation_id>/edit', methods=['GET'])
@@ -612,14 +592,16 @@ def reservations_edit(reservation_id):
 def reservations_update(reservation_id):
 
     # input
+    data = get_input_data(request)
+    print data
     if input_format(request) == JSON:
-        data = get_input_data(request)
         vehicle_id = data["vehicle_id"]
         user_id = data["user_id"]
     else:
         data = request.form
-        vehicle_id = request.form["user_car"].split("|")[0]
-        user_id = request.form["user_car"].split("|")[1] 
+        vehicle_id = data["user_car"].split("|")[0]
+        user_id = data["user_car"].split("|")[1] 
+    print "invoking"
 
     # invoke the controller
     status, reservation = reservations_controller.update_reservation(reservation_id, data["gs_id"], vehicle_id,  user_id)
@@ -628,7 +610,7 @@ def reservations_update(reservation_id):
     if output_format(request) == JSON:        
         return jsonify(results = reservation)
     else:
-        return redirect("/reservations/%s" % res["reservation_id"])
+        return redirect("/reservations/%s" % reservation["reservation_id"])
 
 
 ################################################
@@ -689,9 +671,9 @@ def evses_set_status(evse_id):
 
     # return
     if res:
-        make_response(jsonify({'status': 'OK'}), 200)        
+        return make_response(jsonify(status = res), 200)        
     else:
-        make_response(jsonify({'status': 'error'}), 400)        
+        return make_response(jsonify(status = res), 400)        
 
 
 @app.route('/evses/<evse_id>', methods=['GET'])
@@ -718,10 +700,10 @@ def user_authorization_check(evse_id):
     data = get_input_data(request)
 
     # invoke the controller
-    res = trad_controller.check_user_authorization(data["evse_id"], data["user_id"], data["tolerance"])
+    res = trad_controller.check_user_authorization(evse_id, data["user_id"], data["tolerance"])
 
     # build a reply
-    return make_response(jsonify(res), 200)        
+    return make_response(jsonify(status = res), 200)        
 
 
 ################################################
@@ -745,6 +727,23 @@ def treservations_showall():
         return render_template("show_treservations.html", entries = res, title = "Traditional Reservations")
 
 
+@app.route('/treservations/onthefly', methods=['GET'])
+def treservations_onthefly():
+
+    # input
+    data = get_input_data(request)
+    
+    # invoke the controller
+    print data
+    res = trad_controller.new_onthefly(data["evse_id"], data["user_id"])
+
+    # output
+    if output_format(request) == JSON:
+        return make_response(jsonify(status = res))
+    else:
+        return redirect("/treservations/%s" % res["reservation_id"])
+
+
 @app.route('/treservations/<res_id>', methods=['GET'])
 @auth.login_required
 def treservations_show(res_id):
@@ -759,38 +758,13 @@ def treservations_show(res_id):
         return render_template("show_treservation.html", entry = res, title = "Traditional Reservation", res_id = res_id)
 
 
-@app.route('/treservations/onthefly', methods=['POST'])
-@auth.login_required
-def treservations_onthefly():
-
-    # input
-    if input_format(request) == JSON:
-        data = get_input_data
-    else:
-        data = request.args
-
-    # invoke the controller
-    res = trad_controller.new_onthefly(data["evse_id"], data["user_id"])
-
-    # output
-    if output_format(request) == JSON:
-        return make_response(jsonify(results = res))
-    else:
-        return redirect("/treservations/%s" % res["reservation_id"])
-
-
-
 @app.route('/treservations/get_options', methods=['GET'])
 @auth.login_required
 def chargeoptions_request():
 
     # input
-    data = None
-    if input_format(request) == JSON:    
-        data = get_input_data(request)
-    else:
-        data = request.args
-
+    data = get_input_data(request)
+    
     # invoke the controller
     charge_options = trad_controller.get_charge_options(data["lat"], data["lon"], data["radius"], data["timeto"], data["timefrom"], data["user_uri"], data["vehicle_uri"], data["bidirectional"], data["requested_energy"])
 
@@ -842,13 +816,10 @@ def reservation_deletion(res_id):
     success = trad_controller.delete_reservation(res_id)
     
     # output
-    if output_format(request) == JSON:
-        if success:
-            return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
-        else:
-            return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
+    if success:
+        return make_response(jsonify({'OK': 'Reservation Retired'}), 200)        
     else:
-        return make_response(jsonify({'error': 'Bad Request - Only JSON is accepted!'}), 401)
+        return make_response(jsonify({'error': 'Reservation Not Retired'}), 401)
 
 
 ################################################

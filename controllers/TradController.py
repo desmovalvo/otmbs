@@ -4,6 +4,7 @@
 import time
 import traceback
 from uuid import uuid4
+from termcolor import colored
 from smart_m3.m3_kp_api import *
 from smart_m3.m3_kp_api import Literal as LLiteral
 
@@ -111,16 +112,15 @@ class TradController:
         query_results = kp.result_sparql_query
         for res in query_results:
             if int(res[2][2]) <= now <= int(res[3][2]):
-                return {"confirmed":True}
-
+                return True
         
         # check if the user that reserved the EVSE is himself
         status = self.check_evse_status(evse_id)
         if status["nextUser"] == user_id and status["nextReservationIn"] <= tolerance:
-            return {"confirmed":True}
+            return True
 
         # ...else...
-        return {"confirmed":False}
+        return False
         
         
     # get GCP list
@@ -214,13 +214,15 @@ class TradController:
         """Method used to set the status of an EVSE"""
 
         # calculate current time
-        Tnow = int(round(time() * 1000))
+        Tnow = int(round(time.time() * 1000))
 
         try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+
             if status.lower() == "start":
-                self.KP.load_update_sparql(set_evse_status_start % (reservation, Tnow))
+                kp.load_query_sparql(set_evse_status_start % (reservation, Tnow))
             elif status.lower() == "stop":
-                self.KP.load_update_sparql(set_evse_status_stop % (reservation, Tnow))
+                kp.load_query_sparql(set_evse_status_stop % (reservation, Tnow))
             return True
             
         except Exception as e:
@@ -295,7 +297,6 @@ class TradController:
         # insert the triple
         kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
         kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "confirmByUser"), LLiteral("true"))])
-        print "NS: " + str(NS)
         
         # look for system confirm (subscription replaced by iterative query)
         results = None
@@ -305,7 +306,6 @@ class TradController:
         sysconfirm = results[0][2]
 
         # return
-        print "SYSCONFIRM" + str(sysconfirm)
         if str(sysconfirm).lower() == "true":
             kp.load_rdf_insert([Triple(URI(NS + charge_option), URI(NS + "ackByUser"), LLiteral("true"))])
             return True
@@ -326,7 +326,7 @@ class TradController:
 
             # get the res_uri
             res_uri = NS + res_id
-        
+            
             # generate a reservation retire uri
             res_ret_uri = NS + str(uuid4())
 
@@ -361,6 +361,7 @@ class TradController:
         try:
             kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
             kp.load_query_sparql(tres_list_query)
+            print tres_list_query
             results = kp.result_sparql_query
 
             json_results = []
@@ -401,15 +402,145 @@ class TradController:
 
 
     def new_onthefly(self, evse_id, user_id):
+        
+        # connect to the SIB
+        kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
 
-        #     def get_charge_options(self, lat, lng, rad, timeto, timefrom, user_uri, vehicle_uri, bidirectional, req_energy):
+        # build URIs
+        requestURI = NS + str(uuid.uuid4())
+        intervalURI = NS + str(uuid.uuid4())
+        EnergyURI = NS + str(uuid.uuid4())
+        spaceURI = NS + str(uuid.uuid4())
+
+        # retrieve evse data (lat, lng, power)
+        latitude, longitude, power = self.get_evse_coordinates(evse_id)
+
+        # determine fromtime
+        fromTime = str(long(round(time.time())  * 1000))
+        
+        # determine totime
+        # to make a new reservation on the fly we need to know
+        # when the next recharge is scheduled
+        toTime = None
+        evse_status = self.check_evse_status(evse_id)
+        if evse_status["nextReservationIn"]:
+            toTime = int(fromTime) + int(evse_status["nextReservationIn"]) - 60000
+            if (fromTime - toTime) < 900000:
+                return False
+        else:
+            toTime = int(fromTime) + (70*60*1000)
+
+        # determine energy
+        energy_value = str(round(((long(toTime)/1000-900) - int(fromTime)) * float(power)/3600))
+
+        # build the query
+        print colored("QUERY 1", "blue", attrs=["bold"])
+        query1 = '\
+        PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
+        PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+        INSERT { <' + str(requestURI) + '> rdf:type ns:ChargeRequest . \
+        <' + str(requestURI) + '> ns:hasRequestingVehicle ns:unknownVehicle . \
+        ns:unknownVehicle ns:hasVehicleIdentifier "UnkVeh" . \
+        <' + str(requestURI) + '> ns:hasRequestingUser ?user . \
+        <' + str(requestURI) + '> ns:hasTimeInterval <' + str(intervalURI) + '> . \
+        <' + str(requestURI) + '> ns:hasSpatialRange <' + str(spaceURI) + '> . \
+        <' + str(requestURI) + '> ns:hasRequestedEnergy <' + str(EnergyURI) + '> . \
+        <' + str(intervalURI) + '> rdf:type ns:TimeInterval . \
+        <' + str(intervalURI) + '> ns:hasFromTimeMillisec "' + str(fromTime) + '" . \
+        <' + str(intervalURI) + '> ns:hasToTimeMillisec "' + str(toTime) + '" . \
+        <' + str(EnergyURI) + '> rdf:type ns:EnergyData . \
+        <' + str(EnergyURI) + '> ns:hasValue "' + "1" + '" . \
+        <' + str(EnergyURI) + '> ns:hasUnitOfMeasure ns:kiloWatthour . \
+        <' + str(spaceURI) + '> rdf:type ns:SpatialRangeData . \
+        <' + str(spaceURI) + '> ns:hasGPSLatitude "' + str(latitude) + '" . \
+        <' + str(spaceURI) + '> ns:hasGPSLongitude "' + str(longitude) + '" . \
+        <' + str(spaceURI) + '> ns:hasRadius "' + str(0.01) +'" \
+        } WHERE { \
+        ?user ns:hasUserIdentifier "' + str(user_id) + '" \
+        }'        
+        print query1
+        print str(long(round(time.time())))
+        kp.load_query_sparql(query1)
+        time.sleep(2)
+
+        print colored("QUERY 2", "blue", attrs=["bold"])
+        query2= '\
+        PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
+        PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+        SELECT ?option WHERE { \
+        ?resp ns:hasRelatedRequest <' + requestURI + '> . \
+        ?resp ns:hasChargeOption ?option \
+        }'
+        print query2
+        kp.load_query_sparql(query2)
+        queryresponse = kp.result_sparql_query
+        attempts=0
+        optionURI = None
+        while((queryresponse==None) or (attempts < 5)):
+            kp.load_query_sparql(query2)
+            queryresponse = kp.result_sparql_query
+            for results in queryresponse:
+                for result in results: 
+                    if result[0] == "option":
+                        optionURI = result[2]
+                        attempts = 5
+            attempts = attempts + 1
+            time.sleep(1)
+            print "OptionURI = " + str(optionURI) 
+		
+        if(optionURI == None):
+            print "No Option found"
+            return False
+        else:            
+            query3 = 'PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
+            PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+            INSERT DATA { <' + optionURI + '> ns:confirmByUser "true" }'
+            kp.load_query_sparql(query3)
+            print colored("QUERY 3", "blue", attrs=["bold"])
+            print query3
+            time.sleep(2)
+		
+        query4= '\
+        PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \
+        PREFIX ns:<http://www.m3.com/2012/05/m3/ioe-ontology.owl#> \
+        SELECT ?confirm WHERE { \
+        <' + optionURI + '> ns:confirmBySystem ?confirm }'
+        print colored("QUERY 4", "blue", attrs=["bold"])
+        print query4
+        confirm=""
+        kp.load_query_sparql (query4)
+        queryresponse = kp.result_sparql_query
+        for results in queryresponse:
+            for result in results: 
+                if result[0] == "confirm":
+                    confirm = result[2]
+                    
+        if (confirm == "true"):
+            kp.load_rdf_insert([Triple(URI(optionURI), URI(NS + "ackByUser"), LLiteral("true"))])
+            return True
+        else:
+            return False
 
 
-        # retrieve evse data (lat, lng)
-    
-        # request charge options
-        # charge_options = self.get_charge_options(...)
+    def get_evse_coordinates(self, evse_id):
 
-        # select a charge options
+        """This method is used to retrieve the coordinates of an EVSE"""
 
-        pass
+        # building the query
+        q = evse_coords_query % evse_id
+        print q
+
+        # connect to the SIB and perform the query
+        try:
+            kp = m3_kp_api(False, self.settings["sib_host"], self.settings["sib_port"])
+            kp.load_query_sparql(q)
+            results = kp.result_sparql_query
+
+        except Exception as e:
+            print e
+            return None
+
+        lat = results[0][0][2]
+        lng = results[0][1][2]
+        powe = results[0][2][2]
+        return lat, lng, powe

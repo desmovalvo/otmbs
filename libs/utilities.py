@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# global requirements
+import json
+
 def output_format(request):
     
     """This function is used to determine the 
@@ -29,12 +32,21 @@ def get_input_data(request):
     try:
         if request.content_type == "application/json":
 
-            # read data
             data = json.loads(request.data)
+            return data
+
+        else:
+            
+            data = {}
+            for k in request.form.keys():
+                data[k] = request.form[k]
+            for k in request.args.keys():
+                data[k] = request.args[k]
             return data
 
     except Exception as e:
 
+        print e
         # not a valid json data
         return None
 

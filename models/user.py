@@ -339,6 +339,7 @@ class User:
         # return a json representation
         udict = {}
         udict["user_uid"] = self.user_uid
+        print self.user_name
         udict["user_name"] = self.user_name.encode("utf-8").decode("unicode_escape")
         udict["user_password"] = self.user_password
         udict["user_uri"] = self.user_uri

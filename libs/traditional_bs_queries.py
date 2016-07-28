@@ -269,3 +269,18 @@ WHERE {
    ?priu ns:hasValue ?pri .
    ?time ns:hasToTimeMillisec ?to
 }"""
+
+evse_coords_query = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns: <http://www.m3.com/2012/05/m3/ioe-ontology.owl#>
+SELECT ?lat ?lng ?powvalue
+WHERE { 
+   ?evse rdf:type ns:EVSE .
+   ?evse ns:hasEVSEIdentifier "%s" .
+   ?gcp ns:hasEVSE ?evse .
+   ?gcp ns:hasGPSData ?gpsdata .
+   ?gpsdata ns:hasGPSLatitude ?lat .
+   ?gpsdata ns:hasGPSLongitude ?lng .
+   ?evse ns:hasChargeProfile ?cp .
+   ?cp ns:hasPower ?pow .
+   ?pow ns:hasValue ?powvalue
+} LIMIT 1"""

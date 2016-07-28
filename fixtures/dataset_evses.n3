@@ -35,6 +35,8 @@ ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc ns:hasValue "16.0" .
 ns:7e48c609-dc29-4cf2-ab4a-992138f6dafc ns:hasUnitOfMeasure ns:Ampere .
 ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasPrice ns:ac72279f-aaa5-4812-b004-223208216df4 .
 ns:ac72279f-aaa5-4812-b004-223208216df4 rdf:type ns:PriceData .
+ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasValidityFrom "00:00:00" .
+ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasValidityTo "23:59:59" .
 ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasValue "0.4" .
 ns:ac72279f-aaa5-4812-b004-223208216df4 ns:hasCurrency ns:Euro .
 ns:a5ba1624-0452-44f2-bbc0-7e3735c64664 ns:hasVoltage ns:cb0d9672-d782-44da-9566-b86ec27ce05c .
